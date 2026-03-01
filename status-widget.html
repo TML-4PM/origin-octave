@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T4H Research IP — Status Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --border: #1e1e2e;
+    --border2: #2a2a3e;
+    --green: #00e676;
+    --green-dim: #00e67622;
+    --green-mid: #00e67644;
+    --amber: #ff9800;
+    --amber-dim: #ff980018;
+    --red: #ff3d6b;
+    --blue: #4fc3f7;
+    --blue-dim: #4fc3f715;
+    --text: #e0e0f0;
+    --text-dim: #6b6b8a;
+    --text-mid: #9898b8;
+    --accent: #7c6af7;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border2);
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-left { display:flex; align-items:center; gap:16px; }
+  .logo { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--accent); letter-spacing:3px; text-transform:uppercase; }
+  .title { font-size:15px; font-weight:600; color:var(--text); }
+  .subtitle { font-size:11px; color:var(--text-dim); font-family:'IBM Plex Mono',monospace; }
+  .timestamp { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--text-dim); }
+
+  /* ── SUMMARY BAR ── */
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border-bottom: 1px solid var(--border2);
+  }
+  .stat {
+    padding: 16px 24px;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-val { font-size:28px; font-weight:700; font-family:'IBM Plex Mono',monospace; line-height:1; }
+  .stat-val.green { color: var(--green); }
+  .stat-val.amber { color: var(--amber); }
+  .stat-val.blue  { color: var(--blue); }
+  .stat-val.accent{ color: var(--accent); }
+  .stat-label { font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:1.5px; margin-top:4px; }
+
+  /* ── OVERALL PROGRESS ── */
+  .overall-bar-wrap {
+    padding: 12px 28px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display:flex; align-items:center; gap:16px;
+  }
+  .overall-label { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-dim); width:160px; flex-shrink:0; }
+  .bar-track { flex:1; height:6px; background:var(--border2); border-radius:3px; overflow:hidden; }
+  .bar-fill { height:100%; background: linear-gradient(90deg, var(--green), #00c853); border-radius:3px; transition: width 1s ease; }
+  .bar-pct { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--green); width:50px; text-align:right; }
+
+  /* ── TABS ── */
+  .tabs { display:flex; border-bottom:1px solid var(--border2); background:var(--surface); }
+  .tab { padding:10px 20px; font-size:11px; font-family:'IBM Plex Mono',monospace; color:var(--text-dim); cursor:pointer; border-bottom:2px solid transparent; text-transform:uppercase; letter-spacing:1px; }
+  .tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+  .tab:hover { color:var(--text); }
+
+  /* ── CONTENT ── */
+  .content { padding:20px 28px; }
+  .panel { display:none; }
+  .panel.active { display:block; }
+
+  /* ── AREA GRID ── */
+  .area-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+  .area-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .area-card:hover { border-color: var(--border2); }
+
+  .area-header {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+  }
+  .area-header:hover { background: rgba(255,255,255,0.02); }
+  .area-code { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--accent); letter-spacing:2px; }
+  .area-name { font-size:12px; font-weight:600; color:var(--text); margin-top:2px; }
+  .area-stats { text-align:right; }
+  .area-pct { font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600; }
+  .area-counts { font-size:10px; color:var(--text-dim); }
+
+  .area-progress { height:3px; background:var(--border2); }
+  .area-progress-fill { height:100%; transition: width 1s ease; }
+
+  .subtopics-wrap { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+  .subtopics-wrap.open { max-height: 600px; }
+
+  .subtopic-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 60px 140px;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+  }
+  .subtopic-row:hover { background: rgba(255,255,255,0.015); }
+  .sub-code { font-family:'IBM Plex Mono',monospace; color:var(--text-dim); font-size:10px; }
+  .sub-name { color:var(--text-mid); }
+  .sub-pct { font-family:'IBM Plex Mono',monospace; text-align:right; }
+  .sub-bar { height:4px; background:var(--border2); border-radius:2px; overflow:hidden; }
+  .sub-bar-fill { height:100%; border-radius:2px; }
+
+  .pct-0   { color: var(--text-dim); }
+  .pct-low { color: var(--amber); }
+  .pct-mid { color: var(--blue); }
+  .pct-high{ color: var(--green); }
+
+  /* Asset type mini-grid */
+  .asset-types { display:flex; flex-wrap:wrap; gap:3px; padding: 6px 16px 10px; }
+  .at-chip {
+    font-family:'IBM Plex Mono',monospace;
+    font-size:9px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .at-green { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-mid); }
+  .at-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid #ff980030; }
+
+  /* ── PLAN TABLE ── */
+  .plan-section { margin-bottom: 32px; }
+  .plan-title { font-size:11px; font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:2px; color:var(--accent); margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border2); }
+  .plan-table { width:100%; border-collapse: collapse; }
+  .plan-table th { font-family:'IBM Plex Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); padding:8px 12px; text-align:left; border-bottom:1px solid var(--border2); }
+  .plan-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); font-size:11px; vertical-align:top; }
+  .plan-table tr:hover td { background: rgba(255,255,255,0.015); }
+  .sprint-badge { display:inline-block; padding:2px 8px; border-radius:2px; font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:600; }
+  .s1 { background:#7c6af720; color:var(--accent); }
+  .s2 { background:#4fc3f715; color:var(--blue); }
+  .s3 { background:#ff980015; color:var(--amber); }
+  .s4 { background:#ff3d6b15; color:var(--red); }
+  .blocker { color:var(--red); font-size:10px; }
+  .unlock { color:var(--green); font-size:10px; }
+  .assets-count { font-family:'IBM Plex Mono',monospace; font-size:11px; }
+
+  /* ── FAST PATH ── */
+  .fast-path { display:grid; grid-template-columns: repeat(4,1fr); gap:12px; margin-bottom:24px; }
+  .fp-card { background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:14px; }
+  .fp-sprint { font-family:'IBM Plex Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:2px; margin-bottom:8px; }
+  .fp-title { font-size:12px; font-weight:600; color:var(--text); margin-bottom:4px; }
+  .fp-period { font-size:10px; color:var(--text-dim); margin-bottom:8px; }
+  .fp-target { font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:700; }
+  .fp-desc { font-size:10px; color:var(--text-mid); margin-top:4px; }
+
+  .area-toggle-all { font-size:10px; color:var(--accent); cursor:pointer; text-decoration:underline; margin-bottom:12px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div>
+      <div class="logo">Tech4Humanity</div>
+      <div class="title">Research IP — Status Dashboard</div>
+    </div>
+  </div>
+  <div class="timestamp">01 MAR 2026 — LIVE DB</div>
+</div>
+
+<div class="summary">
+  <div class="stat">
+    <div class="stat-val green">64</div>
+    <div class="stat-label">Assets GREEN</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val amber">746</div>
+    <div class="stat-label">Assets AMBER</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val blue">810</div>
+    <div class="stat-label">Total Slots (DB)</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val accent">7.9%</div>
+    <div class="stat-label">Completion</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val" style="color:#e0e0f0">9 × 9</div>
+    <div class="stat-label">Types × Areas</div>
+  </div>
+</div>
+
+<div class="overall-bar-wrap">
+  <div class="overall-label">OVERALL 810 SLOTS</div>
+  <div class="bar-track"><div class="bar-fill" id="overall-bar" style="width:0%"></div></div>
+  <div class="bar-pct">7.9%</div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showPanel('status')">Status Matrix</div>
+  <div class="tab" onclick="showPanel('plan')">Completion Plan</div>
+  <div class="tab" onclick="showPanel('sprint')">Sprint View</div>
+</div>
+
+<!-- ═══ STATUS PANEL ═══ -->
+<div id="panel-status" class="content panel active">
+  <div class="area-toggle-all" onclick="toggleAll()">▶ Expand all areas</div>
+  <div class="area-grid" id="area-grid"></div>
+</div>
+
+<!-- ═══ PLAN PANEL ═══ -->
+<div id="panel-plan" class="content panel">
+  <div class="plan-section">
+    <div class="plan-title">Fast Path to 100% — 4 Sprint Strategy</div>
+    <div class="fast-path">
+      <div class="fp-card">
+        <div class="fp-sprint s1">Sprint 1 — NOW</div>
+        <div class="fp-title">Derive from Existing</div>
+        <div class="fp-period">Weeks 1–2 · Zero new data</div>
+        <div class="fp-target green" style="color:var(--green)">+178</div>
+        <div class="fp-desc">All AMBER subtopics that share an area with a GREEN seed. Produce ABS, POST, SCHEMA, SCORE, DATA, DASH from existing IMPLs, ASSESSes, and PAPERs. No new research needed.</div>
+      </div>
+      <div class="fp-card">
+        <div class="fp-sprint s2">Sprint 2 — Data Pull</div>
+        <div class="fp-title">A01 Full Coverage</div>
+        <div class="fp-period">Weeks 3–4 · ASS dataset (n=4,247)</div>
+        <div class="fp-target" style="color:var(--blue)">+351</div>
+        <div class="fp-desc">Use existing ASS dataset to complete all A01 subtopics S05–S09 (Replication, Negative Responders, Translation, Longitudinal, RCT). Plus A03 which maps directly to A01 extended findings.</div>
+      </div>
+      <div class="fp-card">
+        <div class="fp-sprint s3">Sprint 3 — Instruments</div>
+        <div class="fp-title">Live System Coverage</div>
+        <div class="fp-period">Weeks 5–8 · Deploy instruments</div>
+        <div class="fp-target" style="color:var(--amber)">+162</div>
+        <div class="fp-desc">A06 S02–S09 from MNS platform. A08 S02–S09 from Neural Ennead pilot data. A09 all remaining from Bridge infrastructure. Instruments exist — coverage needed.</div>
+      </div>
+      <div class="fp-card">
+        <div class="fp-sprint s4">Sprint 4 — Frontier</div>
+        <div class="fp-title">New Data Required</div>
+        <div class="fp-period">Weeks 9–24 · Research sprints</div>
+        <div class="fp-target" style="color:var(--red)">+55</div>
+        <div class="fp-desc">A04, A05, A07 require new data collection or theoretical development. A02, A10 remaining subtopics. These need actual research execution, not just content production.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-section">
+    <div class="plan-title">Sprint 1 Detail — Derivable Now (178 assets)</div>
+    <table class="plan-table">
+      <thead>
+        <tr>
+          <th>Area</th><th>Subtopic</th><th>Seed</th><th>Assets to Produce</th><th>Count</th><th>Method</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="sprint-badge s1">A01.S01</span></td><td>Core Sweet Spot Curves</td><td>AT-PAPER ✅</td><td>AT-DATA, AT-IMPL, AT-SCHEMA</td><td class="assets-count">3</td><td>Extract from paper + DB</td></tr>
+        <tr><td><span class="sprint-badge s1">A01.S04</span></td><td>Adaptive Involvement</td><td>AT-ASSESS ✅</td><td>AT-IMPL, AT-SCHEMA, AT-DATA, AT-DASH</td><td class="assets-count">4</td><td>Build AIA system from assessment</td></tr>
+        <tr><td><span class="sprint-badge s1">A02.S02</span></td><td>Live Assessment Platform</td><td>AT-IMPL ✅</td><td>AT-ASSESS, AT-PAPER</td><td class="assets-count">2</td><td>Paper from platform outcomes</td></tr>
+        <tr><td><span class="sprint-badge s1">A02.S06</span></td><td>Community Governance</td><td>AT-IMPL ✅</td><td>AT-ASSESS, AT-PAPER</td><td class="assets-count">2</td><td>Paper from SM-Ban Watch data</td></tr>
+        <tr><td><span class="sprint-badge s1">A06.S01</span></td><td>Trust Spine Architecture</td><td>AT-IMPL ✅</td><td>AT-ASSESS, AT-PAPER</td><td class="assets-count">2</td><td>Paper from Reality Ledger ops</td></tr>
+        <tr><td><span class="sprint-badge s1">A08.S01</span></td><td>Neural Ennead Impact</td><td>AT-IMPL + AT-DASH ✅</td><td>AT-ASSESS, AT-PAPER</td><td class="assets-count">2</td><td>Paper from pilot data</td></tr>
+        <tr><td><span class="sprint-badge s1">A09.S05</span></td><td>Measurement Reliability</td><td>AT-IMPL ✅</td><td>AT-PAPER</td><td class="assets-count">1</td><td>Convert ABS → full paper</td></tr>
+        <tr><td><span class="sprint-badge s1">A09.S06</span></td><td>Evidence Packaging</td><td>AT-IMPL ✅</td><td>AT-PAPER</td><td class="assets-count">1</td><td>Convert ABS → full paper</td></tr>
+        <tr>
+          <td colspan="4" style="color:var(--text-dim); font-size:10px; padding-top:8px;">Sprint 1 also: produce AT-PAPER for all subtopics above → unlocks additional derivative cascade in Sprint 2</td>
+          <td class="assets-count" style="color:var(--green)">17</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="plan-section">
+    <div class="plan-title">Sprint 2 Detail — A01 Full + A03 Bridge (351 assets)</div>
+    <table class="plan-table">
+      <thead>
+        <tr><th>Subtopic</th><th>Status</th><th>Data Source</th><th>Assets Needed</th><th>Blocker</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>A01.S05 Replication & Calibration</td><td class="pct-0">0%</td><td>ASS dataset n=4,247</td><td>All 9</td><td class="unlock">None — data exists</td></tr>
+        <tr><td>A01.S06 Negative Responders</td><td class="pct-0">0%</td><td>526 negative responders in dataset</td><td>All 9</td><td class="unlock">None — subset already identified</td></tr>
+        <tr><td>A01.S07 Translation & Consequences</td><td class="pct-0">0%</td><td>ASS outcomes data</td><td>All 9</td><td class="unlock">None — outcomes captured</td></tr>
+        <tr><td>A01.S08 Longitudinal Diversity</td><td class="pct-0">0%</td><td>Repeat participants (n=312)</td><td>All 9</td><td class="unlock">Partial — expand retest cohort</td></tr>
+        <tr><td>A01.S09 Experimental / RCT</td><td class="pct-0">0%</td><td>RCT design document</td><td>All 9</td><td class="blocker">RCT not yet executed — design first</td></tr>
+        <tr><td>A03.S01–S09 Extreme AI Effects</td><td class="pct-0">0%</td><td>Cross-maps to A01 + A05</td><td>81 slots</td><td class="blocker">Needs EEG/medication cohort (n=990 planned)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="plan-section">
+    <div class="plan-title">Sprint 3–4 Blockers — What's Required to Unlock</div>
+    <table class="plan-table">
+      <thead>
+        <tr><th>Area</th><th>Subtopics Locked</th><th>Blocker Type</th><th>Unlock Action</th><th>Est. Effort</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>A04 X-Overpoints</td><td>All 9 (81 slots)</td><td class="blocker">No data collection</td><td>Deploy X-Overpoints economic model + collect corporate performance data</td><td>8 weeks</td></tr>
+        <tr><td>A05 Human Biology × AI</td><td>All 9 (81 slots)</td><td class="blocker">No instruments deployed</td><td>Deploy biomarker protocols, recruit clinical cohort</td><td>16 weeks</td></tr>
+        <tr><td>A06 S02–S09</td><td>8 of 9 (72 slots)</td><td class="amber">Instrument exists, no data</td><td>MNS platform data collection — run validation studies</td><td>4 weeks</td></tr>
+        <tr><td>A07 UBI</td><td>All 9 (81 slots)</td><td class="blocker">Theoretical — no instruments</td><td>Develop UBI certification framework, recruit expert panel</td><td>12 weeks</td></tr>
+        <tr><td>A08 S02–S09</td><td>8 of 9 (72 slots)</td><td class="amber">Pilot data exists for 3 orgs</td><td>Expand Neural Ennead pilot to 10+ orgs, publish findings</td><td>6 weeks</td></tr>
+        <tr><td>A09 S01–S04, S07–S09</td><td>6 of 9 (54 slots)</td><td class="amber">Infrastructure exists</td><td>Document RCT protocol, replication methodology, governance framework</td><td>3 weeks</td></tr>
+        <tr><td>A02 S01, S03–S05, S07–S09</td><td>7 of 9 (63 slots)</td><td class="amber">Platform exists</td><td>Run assessments across additional communities, produce per-subtopic outputs</td><td>5 weeks</td></tr>
+        <tr><td>A10 DCP</td><td>All 9 (81 slots, not in register)</td><td class="blocker">Not scaffolded in DB</td><td>Scaffold A10 in asset_register, then produce from SM-S1–S9 study data</td><td>2 weeks scaffolding + 6 weeks production</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══ SPRINT PANEL ═══ -->
+<div id="panel-sprint" class="content panel">
+  <div class="plan-section">
+    <div class="plan-title">Current State: 64 / 810 GREEN (7.9%)</div>
+    <table class="plan-table">
+      <thead>
+        <tr><th>Sprint</th><th>Target</th><th>Cumulative</th><th>%</th><th>Key Actions</th><th>Timeline</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="sprint-badge s1">NOW</span></td>
+          <td class="assets-count" style="color:var(--green)">+178 assets</td>
+          <td class="assets-count">242 GREEN</td>
+          <td style="color:var(--green); font-family:'IBM Plex Mono',monospace">30%</td>
+          <td>Produce AT-PAPER for all seeded subtopics. All derivative types from existing GREEN. Zero new research required.</td>
+          <td>2 weeks</td>
+        </tr>
+        <tr>
+          <td><span class="sprint-badge s2">S2</span></td>
+          <td class="assets-count" style="color:var(--blue)">+189 assets</td>
+          <td class="assets-count">431 GREEN</td>
+          <td style="color:var(--blue); font-family:'IBM Plex Mono',monospace">53%</td>
+          <td>A01 S05–S08 full production from ASS dataset. A09 S01–S04, S07–S09 from Bridge infrastructure docs. A08 S02–S09 from Ennead pilot expansion.</td>
+          <td>4 weeks</td>
+        </tr>
+        <tr>
+          <td><span class="sprint-badge s3">S3</span></td>
+          <td class="assets-count" style="color:var(--amber)">+216 assets</td>
+          <td class="assets-count">647 GREEN</td>
+          <td style="color:var(--amber); font-family:'IBM Plex Mono',monospace">80%</td>
+          <td>A06 S02–S09 from MNS studies. A02 remaining from CARE platform expansion. A10 scaffold + DCP study production. A01.S09 RCT protocol.</td>
+          <td>8 weeks</td>
+        </tr>
+        <tr>
+          <td><span class="sprint-badge s4">S4</span></td>
+          <td class="assets-count" style="color:var(--red)">+163 assets</td>
+          <td class="assets-count">810 GREEN</td>
+          <td style="color:var(--red); font-family:'IBM Plex Mono',monospace">100%</td>
+          <td>A04 X-Overpoints (new data). A05 Human Biology (clinical cohort). A07 UBI (expert panel + theoretical). A03 EEG/medication cohort.</td>
+          <td>16–24 weeks</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="plan-section">
+    <div class="plan-title">Critical Path — What Unblocks the Most</div>
+    <table class="plan-table">
+      <thead>
+        <tr><th>Action</th><th>Unlocks</th><th>Effort</th><th>Priority</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Produce AT-PAPER for all 8 seeded subtopics</strong></td>
+          <td class="unlock">Unlocks ~80 additional derivative assets (each paper → ABS, POST, ASSESS, DATA)</td>
+          <td>8 sessions with Claude</td>
+          <td><span class="sprint-badge s1">P0</span></td>
+        </tr>
+        <tr>
+          <td><strong>Scaffold A10 (DCP) into asset_register</strong></td>
+          <td class="unlock">Unlocks 81 slots immediately, 30+ completable from SM study data</td>
+          <td>1 Bridge SQL session</td>
+          <td><span class="sprint-badge s1">P0</span></td>
+        </tr>
+        <tr>
+          <td><strong>Run Neural Ennead pilot × 7 more orgs</strong></td>
+          <td class="unlock">A08 S02–S09 (72 slots). Requires org recruitment, not new methodology.</td>
+          <td>6 weeks</td>
+          <td><span class="sprint-badge s2">P1</span></td>
+        </tr>
+        <tr>
+          <td><strong>MNS platform: run S02–S09 validation studies</strong></td>
+          <td class="unlock">A06 S02–S09 (72 slots). Platform live, no new infra needed.</td>
+          <td>4 weeks</td>
+          <td><span class="sprint-badge s2">P1</span></td>
+        </tr>
+        <tr>
+          <td><strong>Document RCT protocol + governance framework</strong></td>
+          <td class="unlock">A09 S01, S07, S08 (27 slots). Pure documentation, no new data.</td>
+          <td>3 Claude sessions</td>
+          <td><span class="sprint-badge s2">P1</span></td>
+        </tr>
+        <tr>
+          <td><strong>Deploy X-Overpoints economic model</strong></td>
+          <td class="unlock">A04 all 9 subtopics (81 slots). Model designed, needs data pipeline.</td>
+          <td>8 weeks</td>
+          <td><span class="sprint-badge s3">P2</span></td>
+        </tr>
+        <tr>
+          <td><strong>Recruit clinical biomarker cohort (A05)</strong></td>
+          <td class="unlock">A05 all 9 subtopics (81 slots). Longest lead time in programme.</td>
+          <td>16+ weeks</td>
+          <td><span class="sprint-badge s4">P3</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+const DATA = {"areas":{"A01":{"name":"AI Sweet Spots","subtopics":{"A01.S01":{"name":"Core Sweet Spot Curves","green":4,"amber":5,"total":9,"pct":44},"A01.S02":{"name":"Measurement and Metrics","green":7,"amber":2,"total":9,"pct":78},"A01.S03":{"name":"Population Profiles","green":7,"amber":2,"total":9,"pct":78},"A01.S04":{"name":"Adaptive Involvement Architecture","green":4,"amber":5,"total":9,"pct":44},"A01.S05":{"name":"Replication and Calibration","green":0,"amber":9,"total":9,"pct":0},"A01.S06":{"name":"Negative Responders","green":0,"amber":9,"total":9,"pct":0},"A01.S07":{"name":"Translation and Consequences","green":0,"amber":9,"total":9,"pct":0},"A01.S08":{"name":"Longitudinal Diversity Study","green":0,"amber":9,"total":9,"pct":0},"A01.S09":{"name":"Experimental RCT Layer","green":0,"amber":9,"total":9,"pct":0}},"green":22,"amber":59,"total":81,"pct":27},"A02":{"name":"CARE / CSO","subtopics":{"A02.S01":{"name":"Cultural Sovereignty","green":0,"amber":9,"total":9,"pct":0},"A02.S02":{"name":"Live Assessment Platform","green":7,"amber":2,"total":9,"pct":78},"A02.S03":{"name":"Education and EdTech Pilots","green":0,"amber":9,"total":9,"pct":0},"A02.S04":{"name":"Indigenous Deployment Models","green":0,"amber":9,"total":9,"pct":0},"A02.S05":{"name":"Language and Migration Access","green":0,"amber":9,"total":9,"pct":0},"A02.S06":{"name":"Community-Led Governance","green":7,"amber":2,"total":9,"pct":78},"A02.S07":{"name":"Adoption Disparity","green":0,"amber":9,"total":9,"pct":0},"A02.S08":{"name":"Governance Maturity Index","green":0,"amber":9,"total":9,"pct":0},"A02.S09":{"name":"Community Impact Evaluation","green":0,"amber":9,"total":9,"pct":0}},"green":14,"amber":67,"total":81,"pct":17},"A03":{"name":"Extreme AI Effects","subtopics":{"A03.S01":{"name":"Extreme Performance Gains","green":0,"amber":9,"total":9,"pct":0},"A03.S02":{"name":"Adoption Disparity","green":0,"amber":9,"total":9,"pct":0},"A03.S03":{"name":"Medication and Neurochemical Interaction","green":0,"amber":9,"total":9,"pct":0},"A03.S04":{"name":"Altered State Interaction","green":0,"amber":9,"total":9,"pct":0},"A03.S05":{"name":"Negative Outcomes","green":0,"amber":9,"total":9,"pct":0},"A03.S06":{"name":"Safety Protocols","green":0,"amber":9,"total":9,"pct":0},"A03.S07":{"name":"High-Stakes Deployment","green":0,"amber":9,"total":9,"pct":0},"A03.S08":{"name":"Incident Taxonomy","green":0,"amber":9,"total":9,"pct":0},"A03.S09":{"name":"Dependency and Skill Atrophy","green":0,"amber":9,"total":9,"pct":0}},"green":0,"amber":81,"total":81,"pct":0},"A04":{"name":"X-Overpoints","subtopics":{"A04.S01":{"name":"Performance Crossover Advantage","green":0,"amber":9,"total":9,"pct":0},"A04.S02":{"name":"Economic Mispricing","green":0,"amber":9,"total":9,"pct":0},"A04.S03":{"name":"Workforce Displacement","green":0,"amber":9,"total":9,"pct":0},"A04.S04":{"name":"Team Cognitive Diversity","green":0,"amber":9,"total":9,"pct":0},"A04.S05":{"name":"Competitive Displacement","green":0,"amber":9,"total":9,"pct":0},"A04.S06":{"name":"Capital Allocation Signals","green":0,"amber":9,"total":9,"pct":0},"A04.S07":{"name":"Market Signalling","green":0,"amber":9,"total":9,"pct":0},"A04.S08":{"name":"Winner Consolidation Dynamics","green":0,"amber":9,"total":9,"pct":0},"A04.S09":{"name":"Unfair Advantage Research","green":0,"amber":9,"total":9,"pct":0}},"green":0,"amber":81,"total":81,"pct":0},"A05":{"name":"Human Biology x AI","subtopics":{"A05.S01":{"name":"Biological Inputs","green":0,"amber":9,"total":9,"pct":0},"A05.S02":{"name":"Circadian and Lifecycle Effects","green":0,"amber":9,"total":9,"pct":0},"A05.S03":{"name":"Clinical Populations","green":0,"amber":9,"total":9,"pct":0},"A05.S04":{"name":"Embodied Cognition","green":0,"amber":9,"total":9,"pct":0},"A05.S05":{"name":"Biomarkers","green":0,"amber":9,"total":9,"pct":0},"A05.S06":{"name":"Interoception and Trust","green":0,"amber":9,"total":9,"pct":0},"A05.S07":{"name":"Ageing Prediction","green":0,"amber":9,"total":9,"pct":0},"A05.S08":{"name":"Stress and Hormonal Response","green":0,"amber":9,"total":9,"pct":0},"A05.S09":{"name":"Neurodivergent Physiology Mapping","green":0,"amber":9,"total":9,"pct":0}},"green":0,"amber":81,"total":81,"pct":0},"A06":{"name":"MyNeuralSignal","subtopics":{"A06.S01":{"name":"Trust Spine Architecture","green":7,"amber":2,"total":9,"pct":78},"A06.S02":{"name":"Signal Validation","green":0,"amber":9,"total":9,"pct":0},"A06.S03":{"name":"Deployment Patterns","green":0,"amber":9,"total":9,"pct":0},"A06.S04":{"name":"Compliance Frameworks","green":0,"amber":9,"total":9,"pct":0},"A06.S05":{"name":"Audit and Explainability","green":0,"amber":9,"total":9,"pct":0},"A06.S06":{"name":"Biosignal Translation","green":0,"amber":9,"total":9,"pct":0},"A06.S07":{"name":"Risk Thresholds","green":0,"amber":9,"total":9,"pct":0},"A06.S08":{"name":"Consent Integrity","green":0,"amber":9,"total":9,"pct":0},"A06.S09":{"name":"Certification Hooks","green":0,"amber":9,"total":9,"pct":0}},"green":7,"amber":74,"total":81,"pct":9},"A07":{"name":"Unified Biological Intelligence","subtopics":{"A07.S01":{"name":"UBI Foundation Theory","green":0,"amber":9,"total":9,"pct":0},"A07.S02":{"name":"Neurobiological Intelligence","green":0,"amber":9,"total":9,"pct":0},"A07.S03":{"name":"Neuroemotional Intelligence","green":0,"amber":9,"total":9,"pct":0},"A07.S04":{"name":"Somatic Intelligence","green":0,"amber":9,"total":9,"pct":0},"A07.S05":{"name":"Bioelectromagnetic Intelligence","green":0,"amber":9,"total":9,"pct":0},"A07.S06":{"name":"Safety Thresholds","green":0,"amber":9,"total":9,"pct":0},"A07.S07":{"name":"Certification Frameworks","green":0,"amber":9,"total":9,"pct":0},"A07.S08":{"name":"Standards and Legitimacy","green":0,"amber":9,"total":9,"pct":0},"A07.S09":{"name":"Cross-Intelligence Synthesis","green":0,"amber":9,"total":9,"pct":0}},"green":0,"amber":81,"total":81,"pct":0},"A08":{"name":"Organisational and Societal Impact","subtopics":{"A08.S01":{"name":"Neural Ennead Impact Studies","green":7,"amber":2,"total":9,"pct":78},"A08.S02":{"name":"Enterprise Transformation Pilots","green":0,"amber":9,"total":9,"pct":0},"A08.S03":{"name":"Public Sector Deployment","green":0,"amber":9,"total":9,"pct":0},"A08.S04":{"name":"Education System Effects","green":0,"amber":9,"total":9,"pct":0},"A08.S05":{"name":"Workforce Redesign","green":0,"amber":9,"total":9,"pct":0},"A08.S06":{"name":"Productivity Redistribution","green":0,"amber":9,"total":9,"pct":0},"A08.S07":{"name":"Inequality Amplification","green":0,"amber":9,"total":9,"pct":0},"A08.S08":{"name":"Institutional Response","green":0,"amber":9,"total":9,"pct":0},"A08.S09":{"name":"Policy Shock Modelling","green":0,"amber":9,"total":9,"pct":0}},"green":7,"amber":74,"total":81,"pct":9},"A09":{"name":"Methods Validation and Meta Research","subtopics":{"A09.S01":{"name":"RCT Programme","green":0,"amber":9,"total":9,"pct":0},"A09.S02":{"name":"Replication Methodology","green":0,"amber":9,"total":9,"pct":0},"A09.S03":{"name":"Assessment Adoption Behaviour","green":0,"amber":9,"total":9,"pct":0},"A09.S04":{"name":"Intensity Rule Research","green":0,"amber":9,"total":9,"pct":0},"A09.S05":{"name":"Measurement Reliability","green":7,"amber":2,"total":9,"pct":78},"A09.S06":{"name":"Evidence Packaging","green":7,"amber":2,"total":9,"pct":78},"A09.S07":{"name":"Study Registry and Indexing","green":0,"amber":9,"total":9,"pct":0},"A09.S08":{"name":"Research Governance","green":0,"amber":9,"total":9,"pct":0},"A09.S09":{"name":"Future Experimental Design","green":0,"amber":9,"total":9,"pct":0}},"green":14,"amber":67,"total":81,"pct":17},"A10":{"name":"Parking Lot","subtopics":{"A10.S01":{"name":"Poster Structure Experiments","green":0,"amber":9,"total":9,"pct":0},"A10.S02":{"name":"Pages Missing Completion Packs","green":0,"amber":9,"total":9,"pct":0},"A10.S03":{"name":"Early Psychedelic Drafts","green":0,"amber":9,"total":9,"pct":0},"A10.S04":{"name":"Medication Interaction Fragments","green":0,"amber":9,"total":9,"pct":0},"A10.S05":{"name":"Format Tolerance Micro-Study","green":0,"amber":9,"total":9,"pct":0},"A10.S06":{"name":"Course-Derived Research Fragments","green":0,"amber":9,"total":9,"pct":0},"A10.S07":{"name":"Narrative and Media Variants","green":0,"amber":9,"total":9,"pct":0},"A10.S08":{"name":"Prototype Dashboards Without Metrics","green":0,"amber":9,"total":9,"pct":0},"A10.S09":{"name":"One-Off Exploratory Case Observations","green":0,"amber":9,"total":9,"pct":0}},"green":0,"amber":81,"total":81,"pct":0}},"total_green":64,"total_amber":746,"total":810,"pct":7.9};
+
+const AT_TYPES = ['AT-ABS','AT-ASSESS','AT-DASH','AT-DATA','AT-IMPL','AT-PAPER','AT-POST','AT-SCHEMA','AT-SCORE'];
+
+// Known GREEN by subtopic+type (from live DB)
+const GREEN_SEEDS = {
+  'A01.S01': ['AT-PAPER','AT-POST','AT-ABS','AT-ASSESS'],
+  'A01.S02': ['AT-IMPL','AT-ABS','AT-POST','AT-SCHEMA','AT-SCORE','AT-DATA','AT-DASH'],
+  'A01.S03': ['AT-IMPL','AT-ABS','AT-DATA','AT-POST','AT-SCHEMA','AT-SCORE','AT-DASH'],
+  'A01.S04': ['AT-ASSESS','AT-ABS','AT-POST','AT-SCORE'],
+  'A02.S02': ['AT-IMPL','AT-ABS','AT-SCHEMA','AT-POST','AT-SCORE','AT-DATA','AT-DASH'],
+  'A02.S06': ['AT-IMPL','AT-ABS','AT-SCHEMA','AT-POST','AT-SCORE','AT-DATA','AT-DASH'],
+  'A06.S01': ['AT-IMPL','AT-ABS','AT-SCHEMA','AT-SCORE','AT-DATA','AT-POST','AT-DASH'],
+  'A08.S01': ['AT-DASH','AT-IMPL','AT-ABS','AT-POST','AT-SCHEMA','AT-DATA','AT-SCORE'],
+  'A09.S05': ['AT-IMPL','AT-ABS','AT-POST','AT-SCHEMA','AT-SCORE','AT-DATA','AT-DASH'],
+  'A09.S06': ['AT-IMPL','AT-ABS','AT-POST','AT-SCHEMA','AT-SCORE','AT-DATA','AT-DASH'],
+};
+
+function getPctClass(p) {
+  if(p===0) return 'pct-0';
+  if(p<50) return 'pct-low';
+  if(p<80) return 'pct-mid';
+  return 'pct-high';
+}
+
+function getBarColor(p) {
+  if(p===0) return '#2a2a3e';
+  if(p<50) return '#ff9800';
+  if(p<80) return '#4fc3f7';
+  return '#00e676';
+}
+
+function buildAreaCard(acode, area) {
+  const pct = area.pct;
+  const pctClass = getPctClass(pct);
+  const barColor = getBarColor(pct);
+
+  // Build subtopic rows
+  let subRows = '';
+  for(const [sc, sub] of Object.entries(area.subtopics)) {
+    const sp = getPctClass(sub.pct);
+    const bc = getBarColor(sub.pct);
+
+    // Build AT chip row
+    let chips = '';
+    const seeds = GREEN_SEEDS[sc] || [];
+    for(const at of AT_TYPES) {
+      const isGreen = seeds.includes(at);
+      chips += `<span class="at-chip ${isGreen?'at-green':'at-amber'}">${at.replace('AT-','')}</span>`;
+    }
+
+    subRows += `
+      <div class="subtopic-row">
+        <div class="sub-code">${sc}</div>
+        <div class="sub-name">${sub.name}</div>
+        <div class="sub-pct ${sp}">${sub.pct}%</div>
+        <div class="sub-bar"><div class="sub-bar-fill" style="width:${sub.pct}%;background:${bc}"></div></div>
+      </div>
+      <div style="padding:0 16px 4px;border-top:none;border-bottom:1px solid #1e1e2e;">
+        <div class="asset-types">${chips}</div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="area-card">
+      <div class="area-header" onclick="toggleArea('${acode}')">
+        <div>
+          <div class="area-code">${acode}</div>
+          <div class="area-name">${area.name}</div>
+        </div>
+        <div class="area-stats">
+          <div class="area-pct ${pctClass}">${pct}%</div>
+          <div class="area-counts">${area.green} / ${area.total} GREEN</div>
+        </div>
+      </div>
+      <div class="area-progress">
+        <div class="area-progress-fill" style="width:${pct}%;background:${barColor}"></div>
+      </div>
+      <div class="subtopics-wrap" id="subs-${acode}">
+        ${subRows}
+      </div>
+    </div>
+  `;
+}
+
+// Render area grid
+const grid = document.getElementById('area-grid');
+for(const [ac, area] of Object.entries(DATA.areas)) {
+  grid.innerHTML += buildAreaCard(ac, area);
+}
+
+// Animate overall bar
+setTimeout(() => {
+  document.getElementById('overall-bar').style.width = DATA.pct + '%';
+}, 100);
+
+let allOpen = false;
+function toggleAll() {
+  allOpen = !allOpen;
+  document.querySelectorAll('.subtopics-wrap').forEach(el => {
+    el.classList.toggle('open', allOpen);
+  });
+  document.querySelector('.area-toggle-all').textContent = allOpen ? '▼ Collapse all areas' : '▶ Expand all areas';
+}
+
+function toggleArea(code) {
+  const el = document.getElementById('subs-' + code);
+  el.classList.toggle('open');
+}
+
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
