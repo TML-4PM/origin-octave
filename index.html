@@ -4,189 +4,220 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Tech 4 Humanity — Research Organism</title>
-  <meta name="description" content="8 governed research programmes. 64 measurable capability lanes. Staged R&D." />
+  <meta name="description" content="8 governed research programmes. 64 measurable capability lanes. Staged R&D from exploration to control." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --ink:#0a0c0f;--ink2:#141720;--paper:#f5f2eb;--paper2:#ede9df;
-      --rule:rgba(10,12,15,.12);--rule2:rgba(10,12,15,.06);
-      --accent:#c8410a;--accent2:#1a4d6e;--accent3:#5c7a2e;
-      --muted:rgba(10,12,15,.48);--dim:rgba(10,12,15,.28);
-      --serif:'Playfair Display',Georgia,serif;
-      --sans:'Space Grotesk',system-ui,sans-serif;
-      --mono:'JetBrains Mono',ui-monospace,monospace;
-      --max:1240px;
-    }
+    :root{--ink:#0a0c0f;--ink2:#1e2128;--paper:#f5f2eb;--paper2:#ede9df;--paper3:#e4dfd3;--rule:rgba(10,12,15,.1);--rule2:rgba(10,12,15,.06);--rule3:rgba(10,12,15,.03);--accent:#c8410a;--accent2:#1a4d6e;--accent3:#5c7a2e;--muted:rgba(10,12,15,.48);--dim:rgba(10,12,15,.28);--faint:rgba(10,12,15,.1);--ctrl:#22a05a;--meas:#d97706;--expl:rgba(10,12,15,.2);--serif:'Playfair Display',Georgia,serif;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--max:1240px;--rad:4px;}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
     body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.5;overflow-x:hidden;}
     main{position:relative;z-index:1;}
-
-    /* MASTHEAD */
-    .mh{border-bottom:2px solid var(--ink);padding:0 40px;}
-    .mhi{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;padding:18px 0;}
+    img{display:block;max-width:100%;}
+    .mh{border-bottom:2px solid var(--ink);padding:0 40px;position:sticky;top:0;z-index:200;background:var(--paper);}
+    .mhi{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;padding:16px 0;}
     .mhl{display:flex;align-items:center;gap:12px;}
-    .bmark{width:36px;height:36px;background:var(--ink);border-radius:8px;display:flex;align-items:center;justify-content:center;}
-    .bname{font-family:var(--serif);font-size:15px;font-weight:700;letter-spacing:-.01em;line-height:1.2;}
-    .bname span{display:block;font-family:var(--mono);font-size:9px;font-weight:400;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:2px;}
+    .bmark{width:34px;height:34px;background:var(--ink);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .bname{font-family:var(--serif);font-size:15px;font-weight:600;letter-spacing:-.01em;line-height:1.2;}
+    .bname span{display:block;font-family:var(--mono);font-size:8.5px;font-weight:400;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:1px;}
     .mhc{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:center;white-space:nowrap;}
-    .mhr{display:flex;justify-content:flex-end;align-items:center;gap:24px;}
-    .navl{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .15s;}
-    .navl:hover{color:var(--ink);}
-    .lpill{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;padding:5px 10px;border-radius:99px;border:1px solid rgba(10,12,15,.2);color:var(--muted);}
-    .ldot{width:6px;height:6px;border-radius:99px;background:#22a05a;animation:pulse 2s ease-in-out infinite;}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-
-    /* HERO */
+    .mhr{display:flex;justify-content:flex-end;align-items:center;gap:20px;}
+    .navl{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .15s;padding:4px 0;border-bottom:1px solid transparent;}
+    .navl:hover,.navl.active{color:var(--ink);border-bottom-color:var(--ink);}
+    .lpill{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:5px 10px;border-radius:99px;border:1px solid var(--faint);color:var(--muted);}
+    .ldot{width:6px;height:6px;border-radius:99px;background:var(--ctrl);animation:pulse 2.4s ease-in-out infinite;}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
     .hero{padding:0 40px;border-bottom:1px solid var(--rule);}
-    .heroi{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 300px;align-items:stretch;}
-    .herot{padding:60px 60px 60px 0;border-right:1px solid var(--rule);}
+    .heroi{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 280px;align-items:stretch;}
+    .herot{padding:64px 56px 64px 0;border-right:1px solid var(--rule);}
     .issue{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
     .issue::after{content:'';flex:1;max-width:60px;height:1px;background:var(--accent);opacity:.4;}
-    .hh{font-family:var(--serif);font-size:clamp(36px,5vw,62px);font-weight:400;line-height:1.05;letter-spacing:-.02em;margin-bottom:20px;}
+    .hh{font-family:var(--serif);font-size:clamp(34px,4.5vw,58px);font-weight:400;line-height:1.05;letter-spacing:-.025em;margin-bottom:22px;}
     .hh em{font-style:italic;color:var(--accent);}
-    .hdeck{font-size:15px;color:var(--muted);line-height:1.6;max-width:52ch;margin-bottom:32px;}
-    .ctas{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
-    .btn1{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:11px 20px;background:var(--ink);color:var(--paper);border:1px solid var(--ink);border-radius:4px;cursor:pointer;transition:all .15s;}
+    .hdeck{font-size:15px;color:var(--muted);line-height:1.65;max-width:52ch;margin-bottom:36px;}
+    .ctas{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+    .btn1{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:12px 22px;background:var(--ink);color:var(--paper);border:1px solid var(--ink);border-radius:var(--rad);cursor:pointer;transition:all .15s;white-space:nowrap;}
     .btn1:hover{background:var(--accent2);border-color:var(--accent2);}
-    .btn2{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:11px 20px;background:transparent;color:var(--ink);border:1px solid rgba(10,12,15,.25);border-radius:4px;cursor:pointer;transition:all .15s;}
+    .btn2{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:12px 22px;background:transparent;color:var(--ink);border:1px solid rgba(10,12,15,.22);border-radius:var(--rad);cursor:pointer;transition:all .15s;white-space:nowrap;}
     .btn2:hover{border-color:var(--ink);}
-    .heros{padding:40px 32px;display:flex;flex-direction:column;gap:0;}
-    .kpib{padding:20px 0;border-bottom:1px solid var(--rule);}
+    .heros{padding:36px 28px;display:flex;flex-direction:column;gap:0;}
+    .kpib{padding:22px 0;border-bottom:1px solid var(--rule);}
     .kpib:last-child{border-bottom:none;}
-    .kpin{font-family:var(--serif);font-size:52px;font-weight:400;line-height:1;letter-spacing:-.03em;margin-bottom:6px;}
-    .kpil{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
-    .kpis{font-size:12px;color:var(--dim);margin-top:4px;}
-
-    /* SECTION RULE */
-    .srule{padding:0 40px;border-bottom:1px solid var(--rule);}
-    .srulei{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:16px;padding:14px 0;flex-wrap:wrap;}
+    .kpin{font-family:var(--serif);font-size:54px;font-weight:400;line-height:1;letter-spacing:-.04em;margin-bottom:6px;}
+    .kpil{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+    .kpis{font-size:11.5px;color:var(--dim);margin-top:3px;line-height:1.4;}
+    .srule{padding:0 40px;border-bottom:1px solid var(--rule);background:var(--paper2);}
+    .srulei{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:16px;padding:13px 0;flex-wrap:wrap;}
     .srl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
     .srline{flex:1;height:1px;background:var(--rule);min-width:20px;}
-    .tog{display:flex;gap:0;border:1px solid var(--rule);border-radius:4px;overflow:hidden;}
-    .togb{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;background:transparent;border:none;color:var(--dim);cursor:pointer;transition:all .12s;}
+    .tog{display:flex;border:1px solid var(--rule);border-radius:var(--rad);overflow:hidden;}
+    .togb{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;background:transparent;border:none;color:var(--dim);cursor:pointer;transition:all .12s;}
     .togb.active{background:var(--ink);color:var(--paper);}
-    .leg{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
-    .legi{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
-    .ldotn{width:8px;height:8px;border-radius:99px;}
-    .sc{background:#22a05a;}.sm{background:#d97706;}.se{background:rgba(10,12,15,.2);}
-
-    /* SURFACE GRID */
+    .leg{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+    .legi{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+    .ldotn{width:7px;height:7px;border-radius:99px;}
+    .sc{background:var(--ctrl);}.sm{background:var(--meas);}.se{background:var(--expl);}
     .sursec{padding:0 40px;}
     .suri{max-width:var(--max);margin:0 auto;}
     .sgrid{display:grid;grid-template-columns:130px repeat(8,1fr);border-left:1px solid var(--rule);border-top:1px solid var(--rule);}
     .sgrid.hidden{display:none;}
-    .ghdr{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding:10px 8px;border-right:1px solid var(--rule2);border-bottom:2px solid var(--rule);background:var(--paper2);writing-mode:vertical-lr;transform:rotate(180deg);text-align:center;min-height:80px;display:flex;align-items:center;justify-content:center;}
+    .ghdr{font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding:10px 8px;border-right:1px solid var(--rule2);border-bottom:2px solid var(--rule);background:var(--paper2);writing-mode:vertical-lr;transform:rotate(180deg);text-align:center;min-height:88px;display:flex;align-items:center;justify-content:center;line-height:1.4;}
     .ghdr0{writing-mode:horizontal-tb!important;transform:none!important;font-size:8px;min-height:auto;}
-    .garml{padding:12px 10px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule2);display:flex;flex-direction:column;justify-content:center;gap:4px;background:var(--paper2);}
+    .garml{padding:12px 10px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule2);display:flex;flex-direction:column;justify-content:center;gap:3px;background:var(--paper2);}
     .garmid{font-family:var(--mono);font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);}
-    .garmn{font-family:var(--mono);font-size:9px;letter-spacing:.04em;font-weight:500;line-height:1.3;}
-    .gcell{padding:8px 6px;border-right:1px solid var(--rule2);border-bottom:1px solid var(--rule2);cursor:pointer;transition:background .1s;display:flex;flex-direction:column;justify-content:center;gap:4px;}
-    .gcell:hover{background:rgba(10,12,15,.04);}
-    .gcn{font-size:10px;line-height:1.3;color:var(--ink);}
-    .gcs{width:6px;height:6px;border-radius:99px;flex-shrink:0;}
-
-    /* TABLE */
+    .garmn{font-family:var(--mono);font-size:9px;letter-spacing:.03em;font-weight:500;line-height:1.3;}
+    .gcell{padding:8px 6px;border-right:1px solid var(--rule2);border-bottom:1px solid var(--rule2);cursor:pointer;transition:background .1s;display:flex;flex-direction:column;justify-content:flex-start;gap:4px;min-height:64px;}
+    .gcell:hover{background:rgba(10,12,15,.05);}
+    .gcn{font-size:9.5px;line-height:1.3;color:var(--ink2);}
+    .gcs{width:6px;height:6px;border-radius:99px;flex-shrink:0;margin-top:1px;}
+    .gcrow{display:flex;gap:4px;align-items:flex-start;}
     .surtw{overflow-x:auto;display:none;}
     .surtw.visible{display:block;}
     .surt{width:100%;border-collapse:collapse;border-top:2px solid var(--ink);}
-    .surt thead th{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:12px 14px;border-bottom:1px solid var(--rule);background:var(--paper2);white-space:nowrap;}
+    .surt thead th{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:12px 14px;border-bottom:1px solid var(--rule);background:var(--paper2);white-space:nowrap;}
     .surt tbody td{padding:14px 14px;border-bottom:1px solid var(--rule2);vertical-align:top;font-size:13px;line-height:1.4;}
-    .surt tbody tr:hover td{background:rgba(10,12,15,.03);}
-    .acn{font-weight:600;font-size:13.5px;margin-bottom:3px;}
-    .acl{font-size:11.5px;color:var(--muted);}
-    .acid{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.04em;margin-top:4px;}
-    .linl{display:flex;flex-wrap:wrap;gap:4px;}
-    .ltag{font-family:var(--mono);font-size:9.5px;padding:3px 7px;border-radius:3px;border:1px solid var(--rule);color:var(--muted);cursor:pointer;transition:all .1s;}
-    .ltag:hover{border-color:var(--ink);color:var(--ink);}
-    .ltag.control{border-color:rgba(34,160,90,.4);color:#167a42;background:rgba(34,160,90,.06);}
-    .ltag.measurement{border-color:rgba(217,119,6,.4);color:#a85a00;background:rgba(217,119,6,.06);}
-    .mbadge{font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:3px;border:1px solid currentColor;white-space:nowrap;display:inline-block;}
-    .mw{color:#d97706;}.mb{color:var(--dim);}.mg{color:#22a05a;}
-    .etag{font-family:var(--mono);font-size:10px;color:var(--accent2);}
-
-    /* ARM CARDS */
-    .armssec{padding:0 40px 60px;}
-    .armsi{max-width:var(--max);margin:0 auto;}
-    .armsg{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1px;border:1px solid var(--rule);}
-    .acard{padding:28px 28px 24px;background:var(--paper);border:none;cursor:pointer;transition:background .15s;text-align:left;display:flex;flex-direction:column;gap:10px;width:100%;}
+    .surt tbody tr:hover td{background:rgba(10,12,15,.025);}
+    .acn{font-weight:600;font-size:13.5px;margin-bottom:3px;font-family:var(--serif);}
+    .acl{font-size:12px;color:var(--muted);line-height:1.4;}
+    .acid{font-family:var(--mono);font-size:9.5px;color:var(--dim);letter-spacing:.04em;margin-top:4px;}
+    .linl{display:flex;flex-wrap:wrap;gap:5px;}
+    .ltag{font-family:var(--mono);font-size:9px;padding:3px 8px;border-radius:2px;border:1px solid var(--faint);color:var(--dim);white-space:nowrap;}
+    .ltag.control{background:rgba(34,160,90,.08);border-color:rgba(34,160,90,.2);color:var(--ctrl);}
+    .ltag.measurement{background:rgba(217,119,6,.08);border-color:rgba(217,119,6,.2);color:var(--meas);}
+    .mbadge{font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:2px;}
+    .mg{background:rgba(34,160,90,.1);color:var(--ctrl);}.mw{background:rgba(217,119,6,.1);color:var(--meas);}.mb{background:var(--rule3);color:var(--dim);}
+    .etag{font-family:var(--mono);font-size:9px;letter-spacing:.04em;color:var(--accent2);padding:3px 8px;border:1px solid rgba(26,77,110,.2);border-radius:2px;white-space:nowrap;}
+    .armssec{padding:0 40px;}
+    .armsi{max-width:var(--max);margin:0 auto;padding:32px 0;}
+    .armsg{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);}
+    .acard{background:var(--paper);border:none;text-align:left;cursor:pointer;transition:background .15s;padding:0;overflow:hidden;width:100%;}
     .acard:hover{background:var(--paper2);}
-    .actop{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
-    .acid2{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);}
-    .acname{font-family:var(--serif);font-size:18px;font-weight:400;line-height:1.2;letter-spacing:-.01em;}
-    .acliner{font-size:12.5px;color:var(--muted);line-height:1.5;}
-    .acentry{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--accent2);text-transform:uppercase;}
-    .alanes{display:flex;flex-wrap:wrap;gap:4px;padding-top:4px;border-top:1px solid var(--rule2);}
-    .alc{font-family:var(--mono);font-size:9px;padding:3px 6px;border-radius:2px;background:rgba(10,12,15,.05);color:var(--dim);}
-    .alc.control{background:rgba(34,160,90,.08);color:#167a42;}
-    .alc.measurement{background:rgba(217,119,6,.08);color:#a85a00;}
-    .arev{font-size:11.5px;color:var(--muted);line-height:1.4;border-top:1px solid var(--rule2);padding-top:8px;}
-    .arev strong{font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);font-weight:500;display:block;margin-bottom:3px;}
-
-    /* LOADING */
-    .ldst{padding:80px 40px;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--dim);text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:12px;}
-    .sp{width:14px;height:14px;border:1.5px solid var(--rule);border-top-color:var(--ink);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .erst{padding:40px;font-family:var(--mono);font-size:11px;color:var(--accent);text-align:center;}
-
-    /* FOOTER */
-    .ft{padding:0 40px;border-top:2px solid var(--ink);}
-    .fti{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;padding:40px 0;}
-    .fth{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
-    .ftc p{font-size:12.5px;color:var(--muted);line-height:1.6;}
-    .ftls{display:flex;flex-direction:column;gap:6px;}
-    .ftl{font-size:12.5px;color:var(--muted);text-decoration:none;transition:color .15s;}
+    .acard-img{width:100%;height:148px;overflow:hidden;background:var(--paper3);position:relative;}
+    .acard-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}
+    .acard:hover .acard-img img{transform:scale(1.04);}
+    .acard-img-fb{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2rem;opacity:.2;}
+    .acard-body{padding:20px 20px 22px;}
+    .actop{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px;}
+    .acid2{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:3px;}
+    .acname{font-family:var(--serif);font-size:17px;font-weight:600;letter-spacing:-.01em;line-height:1.2;}
+    .acliner{font-size:12.5px;color:var(--muted);line-height:1.55;margin-bottom:14px;}
+    .acentry{font-family:var(--mono);font-size:9px;letter-spacing:.04em;color:var(--accent2);margin-bottom:12px;}
+    .alanes{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px;}
+    .alc{font-family:var(--mono);font-size:8.5px;padding:3px 7px;border-radius:2px;border:1px solid var(--faint);color:var(--dim);}
+    .alc.control{background:rgba(34,160,90,.06);border-color:rgba(34,160,90,.15);color:var(--ctrl);}
+    .alc.measurement{background:rgba(217,119,6,.06);border-color:rgba(217,119,6,.15);color:var(--meas);}
+    .arev{font-size:12px;color:var(--muted);line-height:1.4;padding-top:12px;border-top:1px solid var(--rule2);}
+    .arev strong{font-weight:600;color:var(--ink);margin-right:6px;font-size:10.5px;font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;}
+    .defsec{padding:0 40px;background:var(--ink);color:var(--paper);}
+    .defsi{max-width:var(--max);margin:0 auto;padding:64px 0;}
+    .def-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;}
+    .def-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,242,235,.4);margin-bottom:16px;}
+    .def-h{font-family:var(--serif);font-size:clamp(24px,3vw,38px);font-weight:400;line-height:1.1;letter-spacing:-.02em;margin-bottom:20px;}
+    .def-h em{font-style:italic;color:rgba(200,65,10,.85);}
+    .def-p{font-size:14px;line-height:1.7;color:rgba(245,242,235,.58);margin-bottom:24px;}
+    .def-statuses{display:flex;flex-direction:column;gap:10px;}
+    .def-status{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;border:1px solid rgba(245,242,235,.08);border-radius:var(--rad);}
+    .def-status-dot{width:10px;height:10px;border-radius:99px;flex-shrink:0;margin-top:4px;}
+    .ds-real{background:var(--ctrl);}.ds-partial{background:var(--meas);}.ds-pretend{background:rgba(245,242,235,.2);}
+    .def-status-name{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,242,235,.9);min-width:70px;margin-top:2px;}
+    .def-status-desc{font-size:13px;color:rgba(245,242,235,.45);line-height:1.45;}
+    .rdval{font-family:var(--serif);font-size:clamp(28px,4vw,52px);font-weight:400;line-height:1;letter-spacing:-.03em;margin-top:40px;}
+    .rdlabel{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,242,235,.4);margin-top:8px;}
+    .schema-header{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,242,235,.3);padding-bottom:12px;border-bottom:1px solid rgba(245,242,235,.08);margin-bottom:2px;}
+    .schema-table{width:100%;border-collapse:collapse;}
+    .schema-table tr{border-bottom:1px solid rgba(245,242,235,.06);}
+    .schema-table tr:last-child{border-bottom:none;}
+    .schema-table td{padding:10px 0;vertical-align:top;}
+    .st-field{font-family:var(--mono);font-size:11px;color:#7eb8d4;font-weight:500;padding-right:14px;white-space:nowrap;}
+    .st-type{font-family:var(--mono);font-size:10px;color:rgba(245,242,235,.28);padding-right:14px;white-space:nowrap;}
+    .st-desc{color:rgba(245,242,235,.48);font-size:12px;line-height:1.4;}
+    .ipsec{padding:0 40px;}
+    .ipsi{max-width:var(--max);margin:0 auto;padding:56px 0;}
+    .ip-header{display:grid;grid-template-columns:1fr auto;align-items:start;gap:32px;margin-bottom:28px;}
+    .ip-h{font-family:var(--serif);font-size:clamp(22px,3vw,34px);font-weight:400;letter-spacing:-.02em;margin-bottom:8px;}
+    .ip-sub{font-size:13.5px;color:var(--muted);line-height:1.6;max-width:52ch;}
+    .ip-filters{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
+    .ip-fsel{font-family:var(--mono);font-size:10px;letter-spacing:.04em;background:var(--paper2);border:1px solid var(--rule);color:var(--ink);padding:8px 12px;border-radius:var(--rad);cursor:pointer;}
+    .ip-counts{display:flex;gap:24px;margin-bottom:20px;flex-wrap:wrap;}
+    .ip-count{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;}
+    .ipc-dot{width:8px;height:8px;border-radius:99px;}
+    .ipc-real{background:var(--ctrl);}.ipc-partial{background:var(--meas);}.ipc-pretend{background:var(--expl);}
+    .ipc-val{font-size:20px;font-family:var(--serif);font-weight:400;margin-right:2px;}
+    .ipc-label{color:var(--muted);}
+    .iptable{width:100%;border-collapse:collapse;border-top:2px solid var(--ink);}
+    .iptable thead th{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:11px 14px;border-bottom:1px solid var(--rule);background:var(--paper2);white-space:nowrap;}
+    .iptable tbody td{padding:14px 14px;border-bottom:1px solid var(--rule2);vertical-align:top;font-size:13px;}
+    .iptable tbody tr:hover td{background:var(--rule3);}
+    .ip-claim-name{font-weight:500;font-size:13.5px;line-height:1.3;margin-bottom:3px;}
+    .ip-arm-id{font-family:var(--mono);font-size:10px;color:var(--dim);}
+    .ip-status{font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:2px;}
+    .ip-real{background:rgba(34,160,90,.1);color:var(--ctrl);}
+    .ip-partial{background:rgba(217,119,6,.1);color:var(--meas);}
+    .ip-pretend{background:var(--rule3);color:var(--dim);}
+    .ip-rd{font-family:var(--mono);font-size:11.5px;color:var(--muted);}
+    .ip-ev a{font-family:var(--mono);font-size:9.5px;color:var(--accent2);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s;margin-right:6px;}
+    .ip-ev a:hover{border-bottom-color:var(--accent2);}
+    .fundingsec{padding:80px 40px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+    .fundingi{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+    .fund-hl{font-family:var(--serif);font-size:clamp(28px,4vw,52px);font-weight:400;line-height:1.08;letter-spacing:-.03em;margin-bottom:20px;}
+    .fund-hl em{font-style:italic;color:var(--accent);}
+    .fund-p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;max-width:44ch;}
+    .fund-arms{display:flex;flex-direction:column;gap:0;border:1px solid var(--rule);}
+    .fund-arm{display:flex;align-items:center;gap:14px;padding:13px 16px;border-bottom:1px solid var(--rule);transition:background .15s;cursor:pointer;text-decoration:none;color:inherit;}
+    .fund-arm:last-child{border-bottom:none;}
+    .fund-arm:hover{background:var(--paper2);}
+    .fund-arm-img{width:40px;height:40px;border-radius:3px;overflow:hidden;background:var(--paper3);flex-shrink:0;}
+    .fund-arm-img img{width:100%;height:100%;object-fit:cover;}
+    .fund-arm-id{font-family:var(--mono);font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;}
+    .fund-arm-name{font-family:var(--serif);font-size:13.5px;font-weight:600;line-height:1.2;}
+    .fund-arm-arrow{margin-left:auto;color:var(--dim);}
+    .ft{border-top:2px solid var(--ink);padding:0 40px;}
+    .fti{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;padding:48px 0 40px;}
+    .fth{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--rule);}
+    .ftc p{font-size:13px;color:var(--muted);line-height:1.6;}
+    .ftls{display:flex;flex-direction:column;gap:10px;}
+    .ftl{font-size:13px;color:var(--muted);text-decoration:none;transition:color .15s;}
     .ftl:hover{color:var(--ink);}
-    .ftm{border-top:1px solid var(--rule);padding:0;}
-    .ftmi{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 0;}
-    .ftmi p{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--dim);}
-
-    /* DETAIL PANEL */
-    .dov{position:fixed;inset:0;z-index:100;background:rgba(10,12,15,.45);display:none;align-items:stretch;}
-    .dov.open{display:flex;}
-    .dbk{flex:1;cursor:pointer;}
-    .dpn{width:440px;max-width:90vw;background:var(--paper);border-left:2px solid var(--ink);overflow-y:auto;animation:slin .2s ease-out;}
-    @keyframes slin{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
-    .dph{padding:28px 28px 20px;border-bottom:1px solid var(--rule);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
-    .dpcl{background:none;border:1px solid var(--rule);color:var(--muted);cursor:pointer;width:28px;height:28px;border-radius:4px;font-size:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .12s;}
-    .dpcl:hover{border-color:var(--ink);color:var(--ink);}
-    .dpid{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;}
-    .dpnm{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.2;letter-spacing:-.01em;}
-    .dpb{padding:24px 28px;display:flex;flex-direction:column;gap:20px;}
-    .dpr label{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:5px;}
-    .dpr p{font-size:13px;line-height:1.5;color:var(--muted);}
-    .dpr .at{color:var(--accent2);font-size:13px;}
-    .dpll{display:flex;flex-direction:column;gap:8px;}
-    .dpli{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--rule2);border-radius:3px;font-size:12.5px;}
-    .dpln{font-family:var(--mono);font-size:9px;color:var(--dim);width:16px;text-align:right;flex-shrink:0;}
-
-    /* SKEL */
-    .skel{background:var(--rule);border-radius:3px;animation:shimmer 1.4s ease-in-out infinite;}
-    @keyframes shimmer{0%,100%{opacity:.5}50%{opacity:1}}
-
+    .ftm{border-top:1px solid var(--rule);padding:20px 0;}
+    .ftmi{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+    .ftmi p{font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;color:var(--dim);}
+    .dov{position:fixed;inset:0;z-index:500;pointer-events:none;}
+    .dov.open{pointer-events:all;}
+    .dbk{position:absolute;inset:0;background:rgba(10,12,15,.5);opacity:0;transition:opacity .25s;}
+    .dov.open .dbk{opacity:1;}
+    .dpn{position:absolute;top:0;right:0;bottom:0;width:480px;max-width:100%;background:var(--paper);border-left:1px solid var(--rule);transform:translateX(100%);transition:transform .3s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column;overflow-y:auto;}
+    .dov.open .dpn{transform:none;}
+    .dph{padding:24px 28px;border-bottom:1px solid var(--rule);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;position:sticky;top:0;background:var(--paper);z-index:1;}
+    .dpid{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:4px;}
+    .dpnm{font-family:var(--serif);font-size:22px;font-weight:600;letter-spacing:-.01em;line-height:1.2;}
+    .dpcl{width:32px;height:32px;border:1px solid var(--rule);border-radius:var(--rad);background:transparent;cursor:pointer;font-size:16px;color:var(--muted);transition:all .15s;flex-shrink:0;}
+    .dpcl:hover{background:var(--paper2);color:var(--ink);}
+    .dpb{padding:24px 28px;flex:1;}
+    .dpimg{width:100%;height:180px;border-radius:var(--rad);overflow:hidden;margin-bottom:24px;background:var(--paper3);}
+    .dpimg img{width:100%;height:100%;object-fit:cover;}
+    .dpr{margin-bottom:20px;}
+    .dpr label{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:6px;}
+    .dpr p{font-size:13.5px;color:var(--ink);line-height:1.55;}
+    .dpr p.at{font-family:var(--mono);font-size:11px;color:var(--accent2);}
+    .dpll{display:flex;flex-direction:column;gap:4px;margin-top:8px;}
+    .dpli{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--paper2);border-radius:var(--rad);font-size:12.5px;}
+    .dpln{font-family:var(--mono);font-size:9px;color:var(--dim);min-width:16px;}
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease;}
+    .reveal.in{opacity:1;transform:none;}
     @media(max-width:900px){
-      .mhi{grid-template-columns:1fr auto;}
-      .mhc{display:none;}
-      .heroi{grid-template-columns:1fr;}
-      .herot{border-right:none;border-bottom:1px solid var(--rule);padding:40px 0;}
-      .heros{display:grid;grid-template-columns:repeat(3,1fr);padding:24px 0;}
-      .kpib{border-bottom:none;padding:0;}
-      .fti{grid-template-columns:1fr;}
-      .sgrid{display:none!important;}
-      .togb[data-view=grid]{display:none;}
-      .surtw{display:block!important;}
+      .mhc{display:none;}.heroi{grid-template-columns:1fr;}.herot{padding:48px 0 0;border-right:none;border-bottom:1px solid var(--rule);}
+      .heros{flex-direction:row;flex-wrap:wrap;padding:28px 0;}.kpib{flex:1;min-width:120px;padding:16px 20px 16px 0;border-bottom:none;border-right:1px solid var(--rule);}.kpib:last-child{border-right:none;}
+      .def-grid,.fundingi{grid-template-columns:1fr;gap:40px;}.fti{grid-template-columns:1fr 1fr;}
+      .mhr .navl:not(:last-child){display:none;}
+      .armssec,.sursec,.ipsec,.fundingsec,.defsec,.hero,.srule{padding-left:20px;padding-right:20px;}
+      .mh,.ft{padding-left:20px;padding-right:20px;}
     }
-    @media(max-width:600px){
-      .mh,.hero,.srule,.sursec,.armssec,.ft{padding-left:20px;padding-right:20px;}
-    }
+    @media(max-width:600px){.fti{grid-template-columns:1fr;}.fundingi{gap:40px;}}
   </style>
 </head>
 <body>
 <main>
-
-<!-- MASTHEAD -->
 <header class="mh">
   <div class="mhi">
     <div class="mhl">
@@ -204,53 +235,41 @@
       </div>
       <div class="bname">Tech 4 Humanity<span>Research Organism</span></div>
     </div>
-    <div class="mhc">Sydney, AU · 8×8 Surface</div>
+    <div class="mhc">Sydney, AU · 8x8 Surface · Origin Octave</div>
     <div class="mhr">
       <a href="#surface" class="navl">Surface</a>
       <a href="#arms" class="navl">Programmes</a>
+      <a href="#ip" class="navl">IP Registry</a>
       <a href="mailto:contact@tech4humanity.com.au" class="navl">Contact</a>
-      <div class="lpill"><span class="ldot"></span><span>Bridge · Live</span></div>
+      <div class="lpill"><span class="ldot"></span><span id="bridgePill">Static</span></div>
     </div>
   </div>
 </header>
 
-<!-- HERO -->
-<section class="hero">
+<section class="hero" id="top">
   <div class="heroi">
     <div class="herot">
-      <div class="issue">Research Organism · Origin Octave</div>
-      <h1 class="hh">8 governed arms.<br>64 measurable lanes.<br><em>Defensible R&D.</em></h1>
-      <p class="hdeck">Not a portfolio site. Not thought leadership. A staged research organism — from exploration through measurement to control and deployment. Same surface. Any audience.</p>
+      <div class="issue">Research Organism &middot; Origin Octave v1.2</div>
+      <h1 class="hh">8 governed arms.<br>64 measurable lanes.<br><em>Defensible R&amp;D.</em></h1>
+      <p class="hdeck">Not a portfolio site. Not thought leadership. A staged research organism &mdash; from exploration through measurement to control and deployment. Same surface. Any audience.</p>
       <div class="ctas">
-        <a href="#surface" class="btn1">View the surface →</a>
+        <a href="#surface" class="btn1">View the surface &rarr;</a>
         <a href="#arms" class="btn2">All programmes</a>
+        <a href="#ip" class="btn2">IP registry</a>
       </div>
     </div>
     <div class="heros">
-      <div class="kpib">
-        <div class="kpin" id="kpiArms">—</div>
-        <div class="kpil">Governed Arms</div>
-        <div class="kpis">Independent programmes</div>
-      </div>
-      <div class="kpib">
-        <div class="kpin" id="kpiLanes">—</div>
-        <div class="kpil">Capability Lanes</div>
-        <div class="kpis">Measurable artefact slots</div>
-      </div>
-      <div class="kpib">
-        <div class="kpin" id="kpiActive">—</div>
-        <div class="kpil">Active Arms</div>
-        <div class="kpis">Measurement or above</div>
-      </div>
+      <div class="kpib"><div class="kpin" id="kpiArms">8</div><div class="kpil">Governed Arms</div><div class="kpis">Independent programmes</div></div>
+      <div class="kpib"><div class="kpin" id="kpiLanes">64</div><div class="kpil">Capability Lanes</div><div class="kpis">Measurable artefact slots</div></div>
+      <div class="kpib"><div class="kpin" id="kpiActive">5</div><div class="kpil">Active Arms</div><div class="kpis">Measurement or above</div></div>
     </div>
   </div>
 </section>
 
-<!-- SURFACE -->
 <div id="surface">
   <div class="srule">
     <div class="srulei">
-      <span class="srl">Organism Surface — 8 × 8</span>
+      <span class="srl">Organism Surface &mdash; 8 &times; 8</span>
       <div class="srline"></div>
       <div class="leg">
         <div class="legi"><span class="ldotn sc"></span>Control</div>
@@ -258,86 +277,147 @@
         <div class="legi"><span class="ldotn se"></span>Exploration</div>
       </div>
       <div class="tog">
-        <button class="togb active" data-view="grid" id="btnGrid">Grid</button>
-        <button class="togb" data-view="table" id="btnTable">Table</button>
+        <button class="togb active" id="btnGrid">Grid</button>
+        <button class="togb" id="btnTable">Table</button>
       </div>
     </div>
   </div>
-  <div class="sursec">
-    <div class="suri">
-      <div class="sgrid" id="surfaceGrid">
-        <div class="ldst" style="grid-column:1/-1;padding:60px">
-          <div class="sp"></div>Fetching surface from Supabase…
+  <div class="sursec"><div class="suri">
+    <div class="sgrid" id="surfaceGrid"></div>
+    <div class="surtw" id="surfaceTableWrap">
+      <table class="surt">
+        <thead><tr><th>Programme</th><th>Capability Lanes</th><th>Stage</th><th>Entry Point</th><th>Revenue Hook</th></tr></thead>
+        <tbody id="surfaceTableBody"></tbody>
+      </table>
+    </div>
+  </div></div>
+</div>
+
+<div id="arms">
+  <div class="srule">
+    <div class="srulei">
+      <span class="srl">Programmes &middot; All Arms</span>
+      <div class="srline"></div>
+      <span class="srl" id="armsMeta" style="color:var(--dim)">8 programmes &middot; 64 lanes</span>
+    </div>
+  </div>
+  <div class="armssec"><div class="armsi"><div class="armsg" id="armsGrid"></div></div></div>
+</div>
+
+<section class="defsec reveal" id="defensibility">
+  <div class="defsi">
+    <div class="def-grid">
+      <div>
+        <div class="def-label">Defensibility Framing &middot; ip_claims</div>
+        <h2 class="def-h">One registry.<br>Every claim <em>linked.</em></h2>
+        <p class="def-p">Every asset has a verifiable status. Partners and ATO auditors get the same surface &mdash; claims linked to artefacts, artefacts linked to evidence. No aspirational language.</p>
+        <div class="def-statuses">
+          <div class="def-status"><div class="def-status-dot ds-real"></div><div class="def-status-name">REAL</div><div class="def-status-desc">Verified artefact exists &mdash; code deployed, paper published, system running.</div></div>
+          <div class="def-status"><div class="def-status-dot ds-partial"></div><div class="def-status-name">PARTIAL</div><div class="def-status-desc">In progress &mdash; prototype or research underway, measurable output expected.</div></div>
+          <div class="def-status"><div class="def-status-dot ds-pretend"></div><div class="def-status-name">PRETEND</div><div class="def-status-desc">Intent only &mdash; conceptual, no artefact yet. Honest signal, not an excuse.</div></div>
         </div>
+        <div class="rdval" id="rdValue">$1.37M</div>
+        <div class="rdlabel">Total R&amp;D Substantiation (ATO FY25)</div>
       </div>
-      <div class="surtw" id="surfaceTableWrap">
-        <table class="surt">
-          <thead><tr><th>Programme</th><th>Capability Lanes</th><th>Stage</th><th>Entry Point</th><th>Revenue Hook</th></tr></thead>
-          <tbody id="surfaceTableBody"><tr><td colspan="5" class="ldst"><div class="sp"></div>Loading…</td></tr></tbody>
+      <div>
+        <div class="schema-header">Table: ip_claims</div>
+        <table class="schema-table">
+          <tr><td class="st-field">claim_id</td><td class="st-type">UUID</td><td class="st-desc">Primary key &mdash; immutable identifier</td></tr>
+          <tr><td class="st-field">arm_id</td><td class="st-type">TEXT</td><td class="st-desc">&rarr; research_arms(id) &mdash; foreign key</td></tr>
+          <tr><td class="st-field">claim</td><td class="st-type">TEXT</td><td class="st-desc">Human-readable claim statement</td></tr>
+          <tr><td class="st-field">status</td><td class="st-type">ENUM</td><td class="st-desc">'REAL' | 'PARTIAL' | 'PRETEND'</td></tr>
+          <tr><td class="st-field">evidence_urls</td><td class="st-type">JSONB</td><td class="st-desc">Array of {url, type, verified_at}</td></tr>
+          <tr><td class="st-field">commercial_angle</td><td class="st-type">TEXT</td><td class="st-desc">Partner-facing commercial framing</td></tr>
+          <tr><td class="st-field">rd_substantiation</td><td class="st-type">NUMERIC</td><td class="st-desc">ATO R&amp;D dollar value (AUD)</td></tr>
+          <tr><td class="st-field">lane_id</td><td class="st-type">TEXT</td><td class="st-desc">&rarr; research_lanes(id)</td></tr>
+          <tr><td class="st-field">created_at</td><td class="st-type">TIMESTAMPTZ</td><td class="st-desc">Auto &mdash; immutable creation timestamp</td></tr>
+          <tr><td class="st-field">updated_at</td><td class="st-type">TIMESTAMPTZ</td><td class="st-desc">Auto &mdash; last status change</td></tr>
         </table>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ARMS -->
-<div id="arms">
-  <div class="srule">
-    <div class="srulei">
-      <span class="srl">Programmes · All Arms</span>
-      <div class="srline"></div>
-      <span class="srl" id="armsMeta" style="color:var(--dim)">Loading…</span>
-    </div>
-  </div>
-  <div class="armssec">
-    <div class="armsi">
-      <div class="armsg" id="armsGrid">
-        <div class="acard"><div class="skel" style="height:16px;width:60%;margin-bottom:8px"></div><div class="skel" style="height:12px;width:80%"></div></div>
-        <div class="acard"><div class="skel" style="height:16px;width:55%;margin-bottom:8px"></div><div class="skel" style="height:12px;width:75%"></div></div>
-        <div class="acard"><div class="skel" style="height:16px;width:65%;margin-bottom:8px"></div><div class="skel" style="height:12px;width:70%"></div></div>
+<section class="ipsec reveal" id="ip">
+  <div class="ipsi">
+    <div class="ip-header">
+      <div>
+        <h2 class="ip-h">IP Registry</h2>
+        <p class="ip-sub">Live IP asset table. Every claim cross-referenced to its research arm, evidence artefacts, and ATO R&amp;D substantiation value.</p>
+      </div>
+      <div class="ip-filters">
+        <select class="ip-fsel" id="armFilter"><option value="">All Arms</option></select>
+        <select class="ip-fsel" id="statusFilter">
+          <option value="">All Status</option>
+          <option value="REAL">REAL</option>
+          <option value="PARTIAL">PARTIAL</option>
+          <option value="PRETEND">PRETEND</option>
+        </select>
       </div>
     </div>
+    <div class="ip-counts">
+      <div class="ip-count"><div class="ipc-dot ipc-real"></div><span class="ipc-val" id="cntReal">0</span><span class="ipc-label">Real</span></div>
+      <div class="ip-count"><div class="ipc-dot ipc-partial"></div><span class="ipc-val" id="cntPartial">0</span><span class="ipc-label">Partial</span></div>
+      <div class="ip-count"><div class="ipc-dot ipc-pretend"></div><span class="ipc-val" id="cntPretend">0</span><span class="ipc-label">Pretend</span></div>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="iptable">
+        <thead><tr><th>Claim</th><th>Arm</th><th>Status</th><th>R&amp;D Value</th><th>Evidence</th></tr></thead>
+        <tbody id="ipBody"></tbody>
+      </table>
+    </div>
+    <div style="margin-top:12px;font-family:var(--mono);font-size:9.5px;color:var(--dim)" id="ipFooter"></div>
   </div>
-</div>
+</section>
 
-<!-- FOOTER -->
+<section class="fundingsec reveal" id="fund">
+  <div class="fundingi">
+    <div>
+      <h2 class="fund-hl">You can fund one arm<br>without buying<br><em>the whole animal.</em></h2>
+      <p class="fund-p">Partners attach to individual research arms. Commercial exposure limited to one programme. Funding without revealing the full organism structure or cross-arm IP dependencies.</p>
+      <div class="ctas">
+        <a href="mailto:contact@tech4humanity.com.au?subject=Research Arm Partnership" class="btn1">Express Interest &rarr;</a>
+        <a href="#ip" class="btn2">View IP Registry</a>
+      </div>
+    </div>
+    <div class="fund-arms" id="fundArms"></div>
+  </div>
+</section>
+
 <footer class="ft">
   <div class="fti">
     <div class="ftc">
       <div class="fth">About</div>
-      <p>Tech 4 Humanity is a Sydney-based research organism studying human performance, cultural sovereignty, and the science of AI deployment — building defensible R&D, not thought leadership.</p>
+      <p>Tech 4 Humanity is a Sydney-based research organism studying human performance, cultural sovereignty, and the science of AI deployment &mdash; building defensible R&amp;D, not thought leadership.</p>
     </div>
     <div class="ftc">
       <div class="fth">Research Network</div>
       <div class="ftls">
         <a href="https://tech4humanity.com.au" class="ftl">Tech4Humanity.com.au</a>
         <a href="https://aisweetspots.com" class="ftl">AI Sweet Spots Programme</a>
-        <a href="https://workfamilyai.org" class="ftl">WorkFamilyAI · Neural Ennead</a>
+        <a href="https://workfamilyai.org" class="ftl">WorkFamilyAI &middot; Neural Ennead</a>
+        <a href="https://gcbat.org" class="ftl">GC-BAT Council</a>
         <a href="mailto:contact@tech4humanity.com.au" class="ftl">contact@tech4humanity.com.au</a>
       </div>
     </div>
     <div class="ftc">
       <div class="fth">Infrastructure</div>
-      <p>Live data via Bridge → Supabase. Registry: <span id="footerTs">—</span></p>
+      <p>Bridge &rarr; Supabase &middot; 86 Lambda functions &middot; Static fallback always live.<br><br>Registry: <span id="footerTs">—</span></p>
     </div>
   </div>
-  <div class="ftm">
-    <div class="ftmi">
-      <p>© 2025 Tech 4 Humanity · Sydney, AU · Origin Octave v1.1</p>
-      <p>research_arms + research_lanes · Bridge-native</p>
-    </div>
-  </div>
+  <div class="ftm"><div class="ftmi">
+    <p>&copy; 2025&ndash;2026 Tech 4 Humanity &middot; Sydney, AU &middot; Origin Octave v1.2</p>
+    <p>research_arms + research_lanes + ip_claims &middot; Bridge-native with static fallback</p>
+  </div></div>
 </footer>
-
 </main>
 
-<!-- DETAIL PANEL -->
 <div class="dov" id="detailOverlay">
   <div class="dbk" id="detailBackdrop"></div>
   <div class="dpn">
     <div class="dph">
       <div><div class="dpid" id="detailId">—</div><div class="dpnm" id="detailName">—</div></div>
-      <button class="dpcl" id="detailClose">✕</button>
+      <button class="dpcl" id="detailClose">&#x2715;</button>
     </div>
     <div class="dpb" id="detailBody"></div>
   </div>
@@ -347,41 +427,57 @@
 const BRIDGE='https://m5oqj21chd.execute-api.ap-southeast-2.amazonaws.com/lambda/invoke';
 const SQLFN='troy-sql-executor';
 
-async function bq(sql){
-  const res=await fetch(BRIDGE,{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({functionName:SQLFN,payload:{sql}})});
-  const d=await res.json();
-  const body=typeof d.result.body==='string'?JSON.parse(d.result.body):d.result.body;
-  if(body.error)throw new Error(body.error);
-  return body.rows||[];
-}
+const STATIC_ARMS=[
+  {id:'a01',name:'AI Orchestration & MCP Infrastructure',one_liner:'Multi-agent orchestration, Lambda fleet management, autonomous pipeline design at scale.',entry_point:'Productised MCP Bridge — 86 Lambda functions, 800+ tables',revenue_hook:'Infrastructure-as-a-Service licensing to enterprise clients building on Bridge architecture',progress:'Active deployment',maturity:'good',img:'https://images.unsplash.com/photo-1677442136019-21780ecad979?w=600&h=280&fit=crop&auto=format&q=80',lanes:[{lane_name:'Bridge architecture design',lane_order:1,status:'control'},{lane_name:'Lambda fleet orchestration',lane_order:2,status:'control'},{lane_name:'Neural Ennead multi-agent routing',lane_order:3,status:'control'},{lane_name:'Queue monitoring & EventBridge',lane_order:4,status:'control'},{lane_name:'MCP protocol standardisation',lane_order:5,status:'measurement'},{lane_name:'Autonomous task scheduling',lane_order:6,status:'measurement'},{lane_name:'Cross-agent memory synthesis',lane_order:7,status:'measurement'},{lane_name:'Edge deployment patterns',lane_order:8,status:'exploration'}]},
+  {id:'a02',name:'Human-AI Performance Science',one_liner:'Cognitive augmentation frameworks, operator performance metrics, AI Sweet Spots research programme.',entry_point:'27-study AI Sweet Spots Research Programme — validated methodology',revenue_hook:'Enterprise workforce transformation — optimise human-AI collaboration in high-stakes operations',progress:'Research active',maturity:'good',img:'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=280&fit=crop&auto=format&q=80',lanes:[{lane_name:'AI Sweet Spots methodology',lane_order:1,status:'control'},{lane_name:'Operator performance baselines',lane_order:2,status:'control'},{lane_name:'Cognitive load measurement',lane_order:3,status:'measurement'},{lane_name:'Flow state induction protocols',lane_order:4,status:'measurement'},{lane_name:'Human-AI handover design',lane_order:5,status:'measurement'},{lane_name:'Performance prediction models',lane_order:6,status:'exploration'},{lane_name:'Cross-domain skill transfer',lane_order:7,status:'exploration'},{lane_name:'Longitudinal cohort studies',lane_order:8,status:'exploration'}]},
+  {id:'a03',name:'BCI & Neural Interface Research',one_liner:'EEG signal processing, closed-loop neurofeedback systems, brain-computer interface protocols.',entry_point:'EEG-based focus classifier — prototype stage, 3-participant pilot',revenue_hook:'Licensed BCI protocols to workplace wellness and elite performance sectors',progress:'Prototype stage',maturity:'warn',img:'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&h=280&fit=crop&auto=format&q=80',lanes:[{lane_name:'EEG signal acquisition',lane_order:1,status:'control'},{lane_name:'Artefact rejection pipeline',lane_order:2,status:'measurement'},{lane_name:'Focus-state classifier v1',lane_order:3,status:'measurement'},{lane_name:'Closed-loop feedback protocol',lane_order:4,status:'exploration'},{lane_name:'Multi-modal sensor fusion',lane_order:5,status:'exploration'},{lane_name:'Real-time cognitive state API',lane_order:6,status:'exploration'},{lane_name:'Clinical validation study',lane_order:7,status:'exploration'},{lane_name:'Wearable integration layer',lane_order:8,status:'exploration'}]},
+  {id:'a04',name:'Autonomous Robotics & Embodied AI',one_liner:'Sensor fusion frameworks, embodied AI deployment, real-world autonomous systems research.',entry_point:'Sensor fusion architecture — design phase, partner engagement underway',revenue_hook:'Autonomous systems IP licensing for industrial and agricultural robotics deployments',progress:'Design phase',maturity:'warn',img:'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&h=280&fit=crop&auto=format&q=80',lanes:[{lane_name:'Sensor fusion architecture',lane_order:1,status:'measurement'},{lane_name:'Embodied reasoning frameworks',lane_order:2,status:'exploration'},{lane_name:'Real-world deployment protocols',lane_order:3,status:'exploration'},{lane_name:'Human-robot collaboration design',lane_order:4,status:'exploration'},{lane_name:'Tactile perception systems',lane_order:5,status:'exploration'},{lane_name:'Edge inference optimisation',lane_order:6,status:'exploration'},{lane_name:'Safety & constraint systems',lane_order:7,status:'exploration'},{lane_name:'Agricultural robotics pilot',lane_order:8,status:'exploration'}]},
+  {id:'a05',name:'Labour Market Intelligence',one_liner:'Role universe engine, job market dynamics modelling, workforce forecasting and PLMOS automation.',entry_point:'PLMOS — deployed, processing live job data via Adzuna API integration',revenue_hook:'Subscription intelligence platform for HR tech, executive search, and career transition firms',progress:'Live system',maturity:'good',img:'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=280&fit=crop&auto=format&q=80',lanes:[{lane_name:'PLMOS job search automation',lane_order:1,status:'control'},{lane_name:'Adzuna API integration & fit scoring',lane_order:2,status:'control'},{lane_name:'Role universe taxonomy (JET)',lane_order:3,status:'measurement'},{lane_name:'Salary intelligence modelling',lane_order:4,status:'measurement'},{lane_name:'Executive career transition engine',lane_order:5,status:'measurement'},{lane_name:'Workforce trend forecasting',lane_order:6,status:'exploration'},{lane_name:'Skills adjacency mapping',lane_order:7,status:'exploration'},{lane_name:'Employer signal analysis',lane_order:8,status:'exploration'}]},
+  {id:'a06',name:'Ethical AI & Governance (GC-BAT)',one_liner:'Consent architecture, cultural sovereignty frameworks, responsible deployment standards at scale.',entry_point:'GC-BAT framework — published, council active, governance standards in development',revenue_hook:'Governance consulting and certification programmes for enterprise AI deployments in APAC',progress:'Framework live',maturity:'good',img:'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&h=280&fit=crop&auto=format&q=80',lanes:[{lane_name:'Consent architecture (GC-BAT)',lane_order:1,status:'control'},{lane_name:'Cultural sovereignty protocols',lane_order:2,status:'control'},{lane_name:'Bias audit methodologies',lane_order:3,status:'measurement'},{lane_name:'Indigenous data governance',lane_order:4,status:'measurement'},{lane_name:'Responsible deployment standards',lane_order:5,status:'measurement'},{lane_name:'AI Act compliance mapping',lane_order:6,status:'exploration'},{lane_name:'Certification programme design',lane_order:7,status:'exploration'},{lane_name:'Cross-jurisdiction policy alignment',lane_order:8,status:'exploration'}]},
+  {id:'a07',name:'Health & Wellbeing Technology',one_liner:'Wearable integration, chronic disease management AI, preventive health monitoring systems.',entry_point:'CalmBound screen-time management — deployed (household, B2C)',revenue_hook:'Digital health platform partnerships with private health insurers and employer wellness programmes',progress:'Product live',maturity:'good',img:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=280&fit=crop&auto=format&q=80',lanes:[{lane_name:'CalmBound screen-time management',lane_order:1,status:'control'},{lane_name:'Wearable data ingestion',lane_order:2,status:'measurement'},{lane_name:'Chronic disease risk modelling',lane_order:3,status:'measurement'},{lane_name:'Preventive health nudge engine',lane_order:4,status:'exploration'},{lane_name:'Mental health signal detection',lane_order:5,status:'exploration'},{lane_name:'GP referral pathway integration',lane_order:6,status:'exploration'},{lane_name:'Longitudinal health tracking',lane_order:7,status:'exploration'},{lane_name:'Clinical outcomes measurement',lane_order:8,status:'exploration'}]},
+  {id:'a08',name:'IP Monetisation & R&D Frameworks',one_liner:'R&D tax substantiation, IP licensing frameworks, research commercialisation pathways.',entry_point:'$970K ATO R&D substantiation framework — verified and documented',revenue_hook:'IP licensing across all arms — each arm independently fundable and exit-ready',progress:'Portfolio active',maturity:'good',img:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&h=280&fit=crop&auto=format&q=80',lanes:[{lane_name:'ATO R&D substantiation (FY25)',lane_order:1,status:'control'},{lane_name:'IP portfolio documentation',lane_order:2,status:'control'},{lane_name:'Licensing framework design',lane_order:3,status:'control'},{lane_name:'Reality Ledger verification system',lane_order:4,status:'control'},{lane_name:'Per-arm exit pathway mapping',lane_order:5,status:'measurement'},{lane_name:'Partner NDA & term sheet templates',lane_order:6,status:'measurement'},{lane_name:'Cross-arm bundling strategy',lane_order:7,status:'exploration'},{lane_name:'International IP filings',lane_order:8,status:'exploration'}]},
+];
+const STATIC_IP=[
+  {claim:'MCP Bridge Lambda Orchestration Architecture',arm_id:'a01',status:'REAL',rd_substantiation:120000,evidence_urls:[{url:'https://github.com/TML-4PM',type:'GitHub'},{url:'#',type:'Deployed'}]},
+  {claim:'Neural Ennead Multi-Agent Routing System',arm_id:'a01',status:'REAL',rd_substantiation:85000,evidence_urls:[{url:'#',type:'Schema'}]},
+  {claim:'86-Function Lambda Fleet Infrastructure',arm_id:'a01',status:'REAL',rd_substantiation:95000,evidence_urls:[{url:'#',type:'AWS'}]},
+  {claim:'AI Sweet Spots Research Methodology (27 studies)',arm_id:'a02',status:'REAL',rd_substantiation:180000,evidence_urls:[{url:'https://aisweetspots.com',type:'Published'}]},
+  {claim:'PLMOS Job Search Automation Engine',arm_id:'a05',status:'REAL',rd_substantiation:55000,evidence_urls:[{url:'#',type:'Deployed'}]},
+  {claim:'ATO R&D Substantiation Framework — $970K',arm_id:'a08',status:'REAL',rd_substantiation:45000,evidence_urls:[{url:'#',type:'ATO Filing'}]},
+  {claim:'GC-BAT Consent Architecture',arm_id:'a06',status:'REAL',rd_substantiation:75000,evidence_urls:[{url:'https://gcbat.org',type:'Published'}]},
+  {claim:'CalmBound Screen-Time Management Platform',arm_id:'a07',status:'REAL',rd_substantiation:40000,evidence_urls:[{url:'#',type:'Deployed'}]},
+  {claim:'Reality Ledger IP Verification System',arm_id:'a08',status:'REAL',rd_substantiation:35000,evidence_urls:[{url:'#',type:'Schema'}]},
+  {claim:'IP Portfolio Documentation & Licensing Framework',arm_id:'a08',status:'REAL',rd_substantiation:60000,evidence_urls:[{url:'#',type:'Legal'}]},
+  {claim:'EEG Focus-State Classifier v1 (3-participant pilot)',arm_id:'a03',status:'PARTIAL',rd_substantiation:80000,evidence_urls:[{url:'#',type:'Research'}]},
+  {claim:'Role Universe Engine JET v2.0',arm_id:'a05',status:'PARTIAL',rd_substantiation:45000,evidence_urls:[]},
+  {claim:'Operator Cognitive Load Measurement Protocol',arm_id:'a02',status:'PARTIAL',rd_substantiation:60000,evidence_urls:[]},
+  {claim:'Cultural Sovereignty Data Governance Standards',arm_id:'a06',status:'PARTIAL',rd_substantiation:50000,evidence_urls:[]},
+  {claim:'Chronic Disease Risk Modelling Pipeline',arm_id:'a07',status:'PARTIAL',rd_substantiation:45000,evidence_urls:[]},
+  {claim:'Sensor Fusion Architecture — Embodied AI',arm_id:'a04',status:'PARTIAL',rd_substantiation:70000,evidence_urls:[]},
+  {claim:'MAAT Unified Financial Operations Terminal',arm_id:'a08',status:'PARTIAL',rd_substantiation:30000,evidence_urls:[]},
+  {claim:'Per-Arm IP Exit Pathway Mapping',arm_id:'a08',status:'PARTIAL',rd_substantiation:25000,evidence_urls:[]},
+  {claim:'Closed-Loop Neurofeedback Protocol v1',arm_id:'a03',status:'PRETEND',rd_substantiation:40000,evidence_urls:[]},
+  {claim:'Agricultural Robotics Pilot — Queensland',arm_id:'a04',status:'PRETEND',rd_substantiation:90000,evidence_urls:[]},
+  {claim:'AI Governance Certification Programme',arm_id:'a06',status:'PRETEND',rd_substantiation:35000,evidence_urls:[]},
+  {claim:'Longitudinal Health Cohort Study (5yr)',arm_id:'a07',status:'PRETEND',rd_substantiation:60000,evidence_urls:[]},
+  {claim:'Cross-Jurisdiction IP Filings (PCT)',arm_id:'a08',status:'PRETEND',rd_substantiation:30000,evidence_urls:[]},
+];
 
-let ARMS=[];
-
-async function loadSurface(){
-  const[arms,lanes]=await Promise.all([
-    bq("SELECT id,name,entry_point,one_liner,progress,maturity,revenue_hook FROM research_arms ORDER BY CASE maturity WHEN 'good' THEN 1 WHEN 'warn' THEN 2 ELSE 3 END,id"),
-    bq("SELECT arm_id,lane_name,lane_order,status FROM research_lanes ORDER BY arm_id,lane_order")
-  ]);
-  const lm={};
-  for(const l of lanes){if(!lm[l.arm_id])lm[l.arm_id]=[];lm[l.arm_id].push(l);}
-  return arms.map(a=>({...a,lanes:lm[a.id]||[]}));
-}
-
+let ARMS=STATIC_ARMS,IP_CLAIMS=STATIC_IP,filteredIp=[...STATIC_IP];
 function lc(s){return s==='control'?'control':s==='measurement'?'measurement':'';}
 function sc(s){return s==='control'?'sc':s==='measurement'?'sm':'se';}
 function mc(m){return m==='good'?'mg':m==='warn'?'mw':'mb';}
 
 function renderGrid(arms){
   const g=document.getElementById('surfaceGrid');
-  let h=`<div class="ghdr ghdr0">Arm / Lane</div>`;
-  for(let i=1;i<=8;i++) h+=`<div class="ghdr">Lane ${i}</div>`;
+  let h='<div class="ghdr ghdr0">Arm / Lane</div>';
+  for(let i=1;i<=8;i++)h+='<div class="ghdr">Lane '+i+'</div>';
   for(const a of arms){
-    h+=`<div class="garml"><div class="garmid">${a.id.toUpperCase()}</div><div class="garmn">${a.name}</div></div>`;
+    h+='<div class="garml"><div class="garmid">'+a.id.toUpperCase()+'</div><div class="garmn">'+a.name+'</div></div>';
     for(let i=0;i<8;i++){
       const l=a.lanes[i];
-      if(l){h+=`<div class="gcell" data-arm="${a.id}" title="${a.name}: ${l.lane_name}"><div class="gcs ${sc(l.status)}"></div><div class="gcn">${l.lane_name}</div></div>`;}
-      else{h+=`<div class="gcell" style="opacity:.2"></div>`;}
+      if(l){h+='<div class="gcell" data-arm="'+a.id+'" title="'+a.name+': '+l.lane_name+'"><div class="gcrow"><div class="gcs '+sc(l.status)+'"></div><div class="gcn">'+l.lane_name+'</div></div></div>';}
+      else{h+='<div class="gcell" style="opacity:.12"></div>';}
     }
   }
   g.innerHTML=h;
@@ -389,70 +485,77 @@ function renderGrid(arms){
 
 function renderTable(arms){
   document.getElementById('surfaceTableBody').innerHTML=arms.map(a=>{
-    const lt=a.lanes.map(l=>`<span class="ltag ${lc(l.status)}">${l.lane_name}</span>`).join('');
-    return `<tr>
-      <td><div class="acn">${a.name}</div><div class="acl">${a.one_liner}</div><div class="acid">${a.id.toUpperCase()}</div></td>
-      <td><div class="linl">${lt}</div></td>
-      <td><span class="mbadge ${mc(a.maturity)}">${a.progress}</span></td>
-      <td><span class="etag">${a.entry_point}</span></td>
-      <td style="font-size:12px;color:var(--muted);max-width:180px;line-height:1.4">${a.revenue_hook||'—'}</td>
-    </tr>`;
+    const lt=a.lanes.map(l=>'<span class="ltag '+lc(l.status)+'">'+l.lane_name+'</span>').join('');
+    return '<tr><td><div class="acn">'+a.name+'</div><div class="acl">'+a.one_liner+'</div><div class="acid">'+a.id.toUpperCase()+'</div></td><td><div class="linl">'+lt+'</div></td><td><span class="mbadge '+mc(a.maturity)+'">'+a.progress+'</span></td><td><span class="etag">'+a.entry_point.split(' — ')[0]+'</span></td><td style="font-size:12px;color:var(--muted);max-width:200px;line-height:1.4">'+( a.revenue_hook||'—')+'</td></tr>';
   }).join('');
 }
 
 function renderCards(arms){
   document.getElementById('armsGrid').innerHTML=arms.map(a=>{
-    const ch=a.lanes.map(l=>`<span class="alc ${lc(l.status)}">${l.lane_name}</span>`).join('');
-    return `<button class="acard" data-id="${a.id}">
-      <div class="actop">
-        <div><div class="acid2">${a.id.toUpperCase()}</div><div class="acname">${a.name}</div></div>
-        <span class="mbadge ${mc(a.maturity)}" style="flex-shrink:0">${a.maturity}</span>
-      </div>
-      <div class="acliner">${a.one_liner}</div>
-      <div class="acentry">${a.entry_point}</div>
-      <div class="alanes">${ch}</div>
-      <div class="arev"><strong>Revenue hook</strong>${a.revenue_hook||'TBD'}</div>
-    </button>`;
+    const ch=a.lanes.map(l=>'<span class="alc '+lc(l.status)+'">'+l.lane_name+'</span>').join('');
+    const imgH=a.img?'<img src="'+a.img+'" alt="'+a.name+'" loading="lazy" onerror="this.parentElement.innerHTML=\'<div class=acard-img-fb>&#128300;</div>\'">':'<div class="acard-img-fb">&#128300;</div>';
+    return '<button class="acard" data-id="'+a.id+'"><div class="acard-img">'+imgH+'</div><div class="acard-body"><div class="actop"><div><div class="acid2">'+a.id.toUpperCase()+'</div><div class="acname">'+a.name+'</div></div><span class="mbadge '+mc(a.maturity)+'" style="flex-shrink:0;white-space:nowrap">'+(a.maturity==='good'?'Active':a.maturity==='warn'?'In progress':'Early')+'</span></div><div class="acliner">'+a.one_liner+'</div><div class="acentry">'+a.entry_point.split(' — ')[0]+'</div><div class="alanes">'+ch+'</div><div class="arev"><strong>Revenue hook</strong>'+(a.revenue_hook||'TBD')+'</div></div></button>';
   }).join('');
-  document.getElementById('armsMeta').textContent=`${arms.length} programmes · ${arms.reduce((s,a)=>s+a.lanes.length,0)} lanes · live`;
+  document.getElementById('armsMeta').textContent=arms.length+' programmes · '+arms.reduce((s,a)=>s+a.lanes.length,0)+' lanes';
+}
+
+function renderFundArms(arms){
+  document.getElementById('fundArms').innerHTML=arms.slice(0,6).map(a=>'<a class="fund-arm" href="#arms" onclick="setTimeout(()=>{var x=ARMS.find(z=>z.id===\''+a.id+'\');if(x)openDetail(x);},300)"><div class="fund-arm-img">'+(a.img?'<img src="'+a.img+'" alt="'+a.name+'" loading="lazy">':'')+'</div><div><div class="fund-arm-id">'+a.id.toUpperCase()+'</div><div class="fund-arm-name">'+a.name+'</div></div><div class="fund-arm-arrow">&rarr;</div></a>').join('');
+}
+
+function renderIp(claims){
+  const real=claims.filter(c=>c.status==='REAL').length;
+  const partial=claims.filter(c=>c.status==='PARTIAL').length;
+  const pretend=claims.filter(c=>c.status==='PRETEND').length;
+  document.getElementById('cntReal').textContent=real;
+  document.getElementById('cntPartial').textContent=partial;
+  document.getElementById('cntPretend').textContent=pretend;
+  const totalRd=claims.reduce((s,c)=>s+(Number(c.rd_substantiation)||0),0);
+  document.getElementById('rdValue').textContent='$'+totalRd.toLocaleString('en-AU',{minimumFractionDigits:0});
+  document.getElementById('ipFooter').textContent=claims.length+' claims shown · Total R&D: $'+totalRd.toLocaleString('en-AU')+' · Updated '+new Date().toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric'});
+  document.getElementById('ipBody').innerHTML=claims.map(row=>{
+    const evLinks=Array.isArray(row.evidence_urls)&&row.evidence_urls.length?row.evidence_urls.map(e=>'<a href="'+(e.url||'#')+'" target="_blank">'+(e.type||'link')+'</a>').join(' '):'—';
+    const rdStr=row.rd_substantiation?('$'+Number(row.rd_substantiation).toLocaleString('en-AU')):'—';
+    const armName=(ARMS.find(a=>a.id===row.arm_id)||{}).name||row.arm_id||'—';
+    return '<tr><td><div class="ip-claim-name">'+(row.claim||'—')+'</div><div class="ip-arm-id">'+armName+'</div></td><td><span class="ip-arm-id">'+(row.arm_id||'').toUpperCase()+'</span></td><td><span class="ip-status ip-'+(row.status||'pretend').toLowerCase()+'">'+(row.status||'PRETEND')+'</span></td><td class="ip-rd">'+rdStr+'</td><td class="ip-ev">'+evLinks+'</td></tr>';
+  }).join('');
 }
 
 function openDetail(arm){
+  if(!arm)return;
   document.getElementById('detailId').textContent=arm.id.toUpperCase();
   document.getElementById('detailName').textContent=arm.name;
-  const ll=arm.lanes.map((l,i)=>`
-    <div class="dpli">
-      <span class="dpln">${i+1}</span>
-      <span class="gcs ${sc(l.status)}" style="width:6px;height:6px;border-radius:99px;flex-shrink:0"></span>
-      <span>${l.lane_name}</span>
-      <span style="margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--dim);text-transform:uppercase">${l.status}</span>
-    </div>`).join('');
-  document.getElementById('detailBody').innerHTML=`
-    <div class="dpr"><label>One-liner</label><p>${arm.one_liner}</p></div>
-    <div class="dpr"><label>Stage</label><p class="at">${arm.progress}</p></div>
-    <div class="dpr"><label>Entry Point</label><p>${arm.entry_point}</p></div>
-    <div class="dpr"><label>Revenue Hook</label><p>${arm.revenue_hook||'—'}</p></div>
-    <div class="dpr"><label>Capability Lanes (${arm.lanes.length})</label><div class="dpll">${ll}</div></div>`;
+  const ll=arm.lanes.map((l,i)=>'<div class="dpli"><span class="dpln">'+(i+1)+'</span><span class="gcs '+sc(l.status)+'" style="width:6px;height:6px;border-radius:99px;flex-shrink:0"></span><span style="flex:1">'+l.lane_name+'</span><span style="font-family:var(--mono);font-size:9px;color:var(--dim);text-transform:uppercase">'+l.status+'</span></div>').join('');
+  const armIp=IP_CLAIMS.filter(c=>c.arm_id===arm.id);
+  const rdTotal=armIp.reduce((s,c)=>s+(Number(c.rd_substantiation)||0),0);
+  document.getElementById('detailBody').innerHTML=(arm.img?'<div class="dpimg"><img src="'+arm.img+'" alt="'+arm.name+'" onerror="this.parentElement.style.display=\'none\'"></div>':'')+'<div class="dpr"><label>One-liner</label><p>'+arm.one_liner+'</p></div><div class="dpr"><label>Stage</label><p class="at">'+arm.progress+'</p></div><div class="dpr"><label>Entry Point</label><p>'+arm.entry_point+'</p></div><div class="dpr"><label>Revenue Hook</label><p>'+(arm.revenue_hook||'—')+'</p></div><div class="dpr"><label>R&D Substantiation (ATO)</label><p class="at">$'+rdTotal.toLocaleString('en-AU')+' across '+armIp.length+' claims</p></div><div class="dpr"><label>Capability Lanes ('+arm.lanes.length+')</label><div class="dpll">'+ll+'</div></div>';
   document.getElementById('detailOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
 }
+function closeDetail(){document.getElementById('detailOverlay').classList.remove('open');document.body.style.overflow='';}
 
-function closeDetail(){document.getElementById('detailOverlay').classList.remove('open');}
+function buildArmFilter(){
+  const sel=document.getElementById('armFilter');
+  sel.innerHTML='<option value="">All Arms</option>';
+  ARMS.forEach(a=>{const o=document.createElement('option');o.value=a.id;o.textContent=a.id.toUpperCase()+' · '+a.name.slice(0,28);sel.appendChild(o);});
+}
+function applyFilters(){
+  const arm=document.getElementById('armFilter').value;
+  const status=document.getElementById('statusFilter').value;
+  filteredIp=IP_CLAIMS.filter(c=>(!arm||c.arm_id===arm)&&(!status||c.status===status));
+  renderIp(filteredIp);
+}
+document.getElementById('armFilter').addEventListener('change',applyFilters);
+document.getElementById('statusFilter').addEventListener('change',applyFilters);
 
 document.getElementById('btnGrid').addEventListener('click',()=>{
-  document.getElementById('btnGrid').classList.add('active');
-  document.getElementById('btnTable').classList.remove('active');
-  document.getElementById('surfaceGrid').classList.remove('hidden');
-  document.getElementById('surfaceTableWrap').style.display='none';
+  document.getElementById('btnGrid').classList.add('active');document.getElementById('btnTable').classList.remove('active');
+  document.getElementById('surfaceGrid').classList.remove('hidden');document.getElementById('surfaceTableWrap').classList.remove('visible');
 });
 document.getElementById('btnTable').addEventListener('click',()=>{
-  document.getElementById('btnTable').classList.add('active');
-  document.getElementById('btnGrid').classList.add('active');
-  document.getElementById('btnGrid').classList.remove('active');
-  document.getElementById('surfaceGrid').classList.add('hidden');
-  document.getElementById('surfaceTableWrap').style.display='block';
+  document.getElementById('btnTable').classList.add('active');document.getElementById('btnGrid').classList.remove('active');
+  document.getElementById('surfaceGrid').classList.add('hidden');document.getElementById('surfaceTableWrap').classList.add('visible');
 });
-document.getElementById('detailClose').addEventListener('click',closeDetail);
-document.getElementById('detailBackdrop').addEventListener('click',closeDetail);
 
 document.addEventListener('click',e=>{
   const card=e.target.closest('.acard[data-id]');
@@ -460,26 +563,55 @@ document.addEventListener('click',e=>{
   const cell=e.target.closest('.gcell[data-arm]');
   if(cell){const a=ARMS.find(x=>x.id===cell.dataset.arm);if(a)openDetail(a);}
 });
+document.getElementById('detailClose').addEventListener('click',closeDetail);
+document.getElementById('detailBackdrop').addEventListener('click',closeDetail);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDetail();});
 
-(async()=>{
+const revealObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+
+function boot(){
+  renderGrid(ARMS);renderTable(ARMS);renderCards(ARMS);renderFundArms(ARMS);buildArmFilter();renderIp(IP_CLAIMS);
+  filteredIp=[...IP_CLAIMS];
+  document.getElementById('kpiArms').textContent=ARMS.length;
+  document.getElementById('kpiLanes').textContent=ARMS.reduce((s,a)=>s+a.lanes.length,0);
+  document.getElementById('kpiActive').textContent=ARMS.filter(a=>a.maturity!=='bad').length;
+  document.getElementById('footerTs').textContent=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});
+}
+
+async function tryBridge(){
+  const pill=document.getElementById('bridgePill');
+  const ctrl=new AbortController();
+  setTimeout(()=>ctrl.abort(),7000);
   try{
-    ARMS=await loadSurface();
-    const total=ARMS.reduce((s,a)=>s+a.lanes.length,0);
-    const active=ARMS.filter(a=>a.maturity!=='bad').length;
+    const[armsR,lanesR,claimsR]=await Promise.all([
+      fetch(BRIDGE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({functionName:SQLFN,payload:{sql:"SELECT id,name,entry_point,one_liner,progress,maturity,revenue_hook FROM research_arms ORDER BY CASE maturity WHEN 'good' THEN 1 WHEN 'warn' THEN 2 ELSE 3 END,id"}}),signal:ctrl.signal}).then(r=>r.json()),
+      fetch(BRIDGE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({functionName:SQLFN,payload:{sql:"SELECT arm_id,lane_name,lane_order,status FROM research_lanes ORDER BY arm_id,lane_order"}}),signal:ctrl.signal}).then(r=>r.json()),
+      fetch(BRIDGE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({functionName:SQLFN,payload:{sql:"SELECT claim_id,arm_id,claim,status,evidence_urls,commercial_angle,rd_substantiation FROM ip_claims ORDER BY status,rd_substantiation DESC LIMIT 100"}}),signal:ctrl.signal}).then(r=>r.json()),
+    ]);
+    const parseB=d=>typeof d.result?.body==='string'?JSON.parse(d.result.body):d.result?.body||{};
+    const ab=parseB(armsR),lb=parseB(lanesR),cb=parseB(claimsR);
+    if(ab.error||armsR.result?.errorType)throw new Error(ab.error||armsR.result?.errorMessage||'Bridge error');
+    const arms=ab.rows||[],lanes=lb.rows||[],claims=cb.rows||[];
+    if(arms.length>0){
+      const lm={};for(const l of lanes){if(!lm[l.arm_id])lm[l.arm_id]=[];lm[l.arm_id].push(l);}
+      ARMS=arms.map((a,i)=>({...STATIC_ARMS[i]||{},...a,lanes:(lm[a.id]||[]).sort((x,y)=>x.lane_order-y.lane_order),img:(STATIC_ARMS.find(s=>s.id===a.id)||{}).img||STATIC_ARMS[i]?.img||''}));
+    }
+    if(claims.length>0){IP_CLAIMS=claims.map(r=>({...r,evidence_urls:typeof r.evidence_urls==='string'?JSON.parse(r.evidence_urls||'[]'):(r.evidence_urls||[])}));}
+    renderGrid(ARMS);renderTable(ARMS);renderCards(ARMS);renderFundArms(ARMS);buildArmFilter();renderIp(IP_CLAIMS);filteredIp=[...IP_CLAIMS];
     document.getElementById('kpiArms').textContent=ARMS.length;
-    document.getElementById('kpiLanes').textContent=total;
-    document.getElementById('kpiActive').textContent=active;
-    renderGrid(ARMS);
-    renderTable(ARMS);
-    renderCards(ARMS);
-    document.getElementById('footerTs').textContent=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});
+    document.getElementById('kpiLanes').textContent=ARMS.reduce((s,a)=>s+a.lanes.length,0);
+    document.getElementById('kpiActive').textContent=ARMS.filter(a=>a.maturity!=='bad').length;
+    pill.textContent='Bridge · Live';
+    document.getElementById('armsMeta').textContent=ARMS.length+' programmes · '+ARMS.reduce((s,a)=>s+a.lanes.length,0)+' lanes · live';
   }catch(err){
-    console.error(err);
-    document.getElementById('surfaceGrid').innerHTML=`<div class="erst" style="grid-column:1/-1;padding:60px">Bridge error: ${err.message}</div>`;
-    document.getElementById('surfaceTableBody').innerHTML=`<tr><td colspan="5" class="erst">Bridge error: ${err.message}</td></tr>`;
-    document.getElementById('armsGrid').innerHTML=`<div class="erst" style="padding:40px">Bridge error: ${err.message}</div>`;
+    console.info('Bridge unavailable, static data active:',err.message);
+    pill.textContent='Offline · Static';
   }
-})();
+}
+
+boot();
+tryBridge();
 </script>
 </body>
 </html>
