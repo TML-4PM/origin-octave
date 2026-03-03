@@ -308,7 +308,7 @@
   <div class="defsi">
     <div class="def-grid">
       <div>
-        <div class="def-label">Defensibility Framing &middot; ip_claims</div>
+        <div class="def-label">Defensibility Framing &middot; ip_assets</div>
         <h2 class="def-h">One registry.<br>Every claim <em>linked.</em></h2>
         <p class="def-p">Every asset has a verifiable status. Partners and ATO auditors get the same surface &mdash; claims linked to artefacts, artefacts linked to evidence. No aspirational language.</p>
         <div class="def-statuses">
@@ -320,16 +320,16 @@
         <div class="rdlabel">Total R&amp;D Substantiation (ATO FY25)</div>
       </div>
       <div>
-        <div class="schema-header">Table: ip_claims</div>
+        <div class="schema-header">Table: ip_assets</div>
         <table class="schema-table">
-          <tr><td class="st-field">claim_id</td><td class="st-type">UUID</td><td class="st-desc">Primary key &mdash; immutable identifier</td></tr>
-          <tr><td class="st-field">arm_id</td><td class="st-type">TEXT</td><td class="st-desc">&rarr; research_arms(id) &mdash; foreign key</td></tr>
-          <tr><td class="st-field">claim</td><td class="st-type">TEXT</td><td class="st-desc">Human-readable claim statement</td></tr>
-          <tr><td class="st-field">status</td><td class="st-type">ENUM</td><td class="st-desc">'REAL' | 'PARTIAL' | 'PRETEND'</td></tr>
-          <tr><td class="st-field">evidence_urls</td><td class="st-type">JSONB</td><td class="st-desc">Array of {url, type, verified_at}</td></tr>
-          <tr><td class="st-field">commercial_angle</td><td class="st-type">TEXT</td><td class="st-desc">Partner-facing commercial framing</td></tr>
-          <tr><td class="st-field">rd_substantiation</td><td class="st-type">NUMERIC</td><td class="st-desc">ATO R&amp;D dollar value (AUD)</td></tr>
-          <tr><td class="st-field">lane_id</td><td class="st-type">TEXT</td><td class="st-desc">&rarr; research_lanes(id)</td></tr>
+          <tr><td class="st-field">id</td><td class="st-type">INTEGER</td><td class="st-desc">Primary key &mdash; immutable identifier</td></tr>
+          <tr><td class="st-field">asset_name</td><td class="st-type">TEXT</td><td class="st-desc">Human-readable asset name</td></tr>
+          <tr><td class="st-field">asset_class</td><td class="st-type">TEXT</td><td class="st-desc">patent | trade_secret | trademark | copyright | domain | framework | methodology | research | content | project</td></tr>
+          <tr><td class="st-field">status</td><td class="st-type">TEXT</td><td class="st-desc">deployed | active | published | file_now | file_later | concept | demo | research | aspirational</td></tr>
+          <tr><td class="st-field">verification_status</td><td class="st-type">TEXT</td><td class="st-desc">verified | pending | unverified | found-N-copies | N-participants | N-articles</td></tr>
+          <tr><td class="st-field">estimated_value_aud</td><td class="st-type">NUMERIC</td><td class="st-desc">Asset portfolio value (AUD)</td></tr>
+          <tr><td class="st-field">annual_license_aud</td><td class="st-type">NUMERIC</td><td class="st-desc">Recurring licence revenue potential (AUD)</td></tr>
+          <tr><td class="st-field">owner_entity</td><td class="st-type">TEXT</td><td class="st-desc">Owning legal entity</td></tr>
           <tr><td class="st-field">created_at</td><td class="st-type">TIMESTAMPTZ</td><td class="st-desc">Auto &mdash; immutable creation timestamp</td></tr>
           <tr><td class="st-field">updated_at</td><td class="st-type">TIMESTAMPTZ</td><td class="st-desc">Auto &mdash; last status change</td></tr>
         </table>
@@ -346,7 +346,7 @@
         <p class="ip-sub">Live IP asset table. Every claim cross-referenced to its research arm, evidence artefacts, and ATO R&amp;D substantiation value.</p>
       </div>
       <div class="ip-filters">
-        <select class="ip-fsel" id="armFilter"><option value="">All Arms</option></select>
+        <select class="ip-fsel" id="armFilter"><option value="">All Classes</option></select>
         <select class="ip-fsel" id="statusFilter">
           <option value="">All Status</option>
           <option value="REAL">REAL</option>
@@ -407,7 +407,7 @@
   </div>
   <div class="ftm"><div class="ftmi">
     <p>&copy; 2025&ndash;2026 Tech 4 Humanity &middot; Sydney, AU &middot; Origin Octave v1.2</p>
-    <p>research_arms + research_lanes + ip_claims &middot; Bridge-native with static fallback</p>
+    <p>research_arms + research_lanes + ip_assets &middot; Bridge-native with static fallback</p>
   </div></div>
 </footer>
 </main>
@@ -428,41 +428,66 @@ const BRIDGE='https://m5oqj21chd.execute-api.ap-southeast-2.amazonaws.com/lambda
 const SQLFN='troy-sql-executor';
 
 const STATIC_ARMS=[
-  {id:'a01',name:'AI Orchestration & MCP Infrastructure',one_liner:'Multi-agent orchestration, Lambda fleet management, autonomous pipeline design at scale.',entry_point:'Productised MCP Bridge — 86 Lambda functions, 800+ tables',revenue_hook:'Infrastructure-as-a-Service licensing to enterprise clients building on Bridge architecture',progress:'Active deployment',maturity:'good',img:'https://images.unsplash.com/photo-1677442136019-21780ecad979?w=600&h=280&fit=crop&auto=format&q=80',lanes:[{lane_name:'Bridge architecture design',lane_order:1,status:'control'},{lane_name:'Lambda fleet orchestration',lane_order:2,status:'control'},{lane_name:'Neural Ennead multi-agent routing',lane_order:3,status:'control'},{lane_name:'Queue monitoring & EventBridge',lane_order:4,status:'control'},{lane_name:'MCP protocol standardisation',lane_order:5,status:'measurement'},{lane_name:'Autonomous task scheduling',lane_order:6,status:'measurement'},{lane_name:'Cross-agent memory synthesis',lane_order:7,status:'measurement'},{lane_name:'Edge deployment patterns',lane_order:8,status:'exploration'}]},
-  {id:'a02',name:'Human-AI Performance Science',one_liner:'Cognitive augmentation frameworks, operator performance metrics, AI Sweet Spots research programme.',entry_point:'27-study AI Sweet Spots Research Programme — validated methodology',revenue_hook:'Enterprise workforce transformation — optimise human-AI collaboration in high-stakes operations',progress:'Research active',maturity:'good',img:'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=280&fit=crop&auto=format&q=80',lanes:[{lane_name:'AI Sweet Spots methodology',lane_order:1,status:'control'},{lane_name:'Operator performance baselines',lane_order:2,status:'control'},{lane_name:'Cognitive load measurement',lane_order:3,status:'measurement'},{lane_name:'Flow state induction protocols',lane_order:4,status:'measurement'},{lane_name:'Human-AI handover design',lane_order:5,status:'measurement'},{lane_name:'Performance prediction models',lane_order:6,status:'exploration'},{lane_name:'Cross-domain skill transfer',lane_order:7,status:'exploration'},{lane_name:'Longitudinal cohort studies',lane_order:8,status:'exploration'}]},
-  {id:'a03',name:'BCI & Neural Interface Research',one_liner:'EEG signal processing, closed-loop neurofeedback systems, brain-computer interface protocols.',entry_point:'EEG-based focus classifier — prototype stage, 3-participant pilot',revenue_hook:'Licensed BCI protocols to workplace wellness and elite performance sectors',progress:'Prototype stage',maturity:'warn',img:'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&h=280&fit=crop&auto=format&q=80',lanes:[{lane_name:'EEG signal acquisition',lane_order:1,status:'control'},{lane_name:'Artefact rejection pipeline',lane_order:2,status:'measurement'},{lane_name:'Focus-state classifier v1',lane_order:3,status:'measurement'},{lane_name:'Closed-loop feedback protocol',lane_order:4,status:'exploration'},{lane_name:'Multi-modal sensor fusion',lane_order:5,status:'exploration'},{lane_name:'Real-time cognitive state API',lane_order:6,status:'exploration'},{lane_name:'Clinical validation study',lane_order:7,status:'exploration'},{lane_name:'Wearable integration layer',lane_order:8,status:'exploration'}]},
-  {id:'a04',name:'Autonomous Robotics & Embodied AI',one_liner:'Sensor fusion frameworks, embodied AI deployment, real-world autonomous systems research.',entry_point:'Sensor fusion architecture — design phase, partner engagement underway',revenue_hook:'Autonomous systems IP licensing for industrial and agricultural robotics deployments',progress:'Design phase',maturity:'warn',img:'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&h=280&fit=crop&auto=format&q=80',lanes:[{lane_name:'Sensor fusion architecture',lane_order:1,status:'measurement'},{lane_name:'Embodied reasoning frameworks',lane_order:2,status:'exploration'},{lane_name:'Real-world deployment protocols',lane_order:3,status:'exploration'},{lane_name:'Human-robot collaboration design',lane_order:4,status:'exploration'},{lane_name:'Tactile perception systems',lane_order:5,status:'exploration'},{lane_name:'Edge inference optimisation',lane_order:6,status:'exploration'},{lane_name:'Safety & constraint systems',lane_order:7,status:'exploration'},{lane_name:'Agricultural robotics pilot',lane_order:8,status:'exploration'}]},
-  {id:'a05',name:'Labour Market Intelligence',one_liner:'Role universe engine, job market dynamics modelling, workforce forecasting and PLMOS automation.',entry_point:'PLMOS — deployed, processing live job data via Adzuna API integration',revenue_hook:'Subscription intelligence platform for HR tech, executive search, and career transition firms',progress:'Live system',maturity:'good',img:'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=280&fit=crop&auto=format&q=80',lanes:[{lane_name:'PLMOS job search automation',lane_order:1,status:'control'},{lane_name:'Adzuna API integration & fit scoring',lane_order:2,status:'control'},{lane_name:'Role universe taxonomy (JET)',lane_order:3,status:'measurement'},{lane_name:'Salary intelligence modelling',lane_order:4,status:'measurement'},{lane_name:'Executive career transition engine',lane_order:5,status:'measurement'},{lane_name:'Workforce trend forecasting',lane_order:6,status:'exploration'},{lane_name:'Skills adjacency mapping',lane_order:7,status:'exploration'},{lane_name:'Employer signal analysis',lane_order:8,status:'exploration'}]},
-  {id:'a06',name:'Ethical AI & Governance (GC-BAT)',one_liner:'Consent architecture, cultural sovereignty frameworks, responsible deployment standards at scale.',entry_point:'GC-BAT framework — published, council active, governance standards in development',revenue_hook:'Governance consulting and certification programmes for enterprise AI deployments in APAC',progress:'Framework live',maturity:'good',img:'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&h=280&fit=crop&auto=format&q=80',lanes:[{lane_name:'Consent architecture (GC-BAT)',lane_order:1,status:'control'},{lane_name:'Cultural sovereignty protocols',lane_order:2,status:'control'},{lane_name:'Bias audit methodologies',lane_order:3,status:'measurement'},{lane_name:'Indigenous data governance',lane_order:4,status:'measurement'},{lane_name:'Responsible deployment standards',lane_order:5,status:'measurement'},{lane_name:'AI Act compliance mapping',lane_order:6,status:'exploration'},{lane_name:'Certification programme design',lane_order:7,status:'exploration'},{lane_name:'Cross-jurisdiction policy alignment',lane_order:8,status:'exploration'}]},
-  {id:'a07',name:'Health & Wellbeing Technology',one_liner:'Wearable integration, chronic disease management AI, preventive health monitoring systems.',entry_point:'CalmBound screen-time management — deployed (household, B2C)',revenue_hook:'Digital health platform partnerships with private health insurers and employer wellness programmes',progress:'Product live',maturity:'good',img:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=280&fit=crop&auto=format&q=80',lanes:[{lane_name:'CalmBound screen-time management',lane_order:1,status:'control'},{lane_name:'Wearable data ingestion',lane_order:2,status:'measurement'},{lane_name:'Chronic disease risk modelling',lane_order:3,status:'measurement'},{lane_name:'Preventive health nudge engine',lane_order:4,status:'exploration'},{lane_name:'Mental health signal detection',lane_order:5,status:'exploration'},{lane_name:'GP referral pathway integration',lane_order:6,status:'exploration'},{lane_name:'Longitudinal health tracking',lane_order:7,status:'exploration'},{lane_name:'Clinical outcomes measurement',lane_order:8,status:'exploration'}]},
-  {id:'a08',name:'IP Monetisation & R&D Frameworks',one_liner:'R&D tax substantiation, IP licensing frameworks, research commercialisation pathways.',entry_point:'$970K ATO R&D substantiation framework — verified and documented',revenue_hook:'IP licensing across all arms — each arm independently fundable and exit-ready',progress:'Portfolio active',maturity:'good',img:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&h=280&fit=crop&auto=format&q=80',lanes:[{lane_name:'ATO R&D substantiation (FY25)',lane_order:1,status:'control'},{lane_name:'IP portfolio documentation',lane_order:2,status:'control'},{lane_name:'Licensing framework design',lane_order:3,status:'control'},{lane_name:'Reality Ledger verification system',lane_order:4,status:'control'},{lane_name:'Per-arm exit pathway mapping',lane_order:5,status:'measurement'},{lane_name:'Partner NDA & term sheet templates',lane_order:6,status:'measurement'},{lane_name:'Cross-arm bundling strategy',lane_order:7,status:'exploration'},{lane_name:'International IP filings',lane_order:8,status:'exploration'}]},
+  {id:'ass',name:'AI Sweet Spots',one_liner:'From performance curiosity to measurable productivity science.',entry_point:'Economic entry point',revenue_hook:'Research licensing, enterprise benchmarking, certification',progress:'Measurement → Control',maturity:'warn',img:'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=280&fit=crop&auto=format&q=80',lanes:[
+    {lane_name:'Core curves',status:'control'},{lane_name:'Measurement metrics',status:'control'},{lane_name:'Population profiles',status:'measurement'},{lane_name:'Adaptive involvement',status:'measurement'},{lane_name:'Replication',status:'measurement'},{lane_name:'Negative responders',status:'exploration'},{lane_name:'Translation layer',status:'exploration'},{lane_name:'Deployment playbooks',status:'exploration'}
+  ]},
+  {id:'care',name:'CARE / Cultural Sovereignty',one_liner:'From inclusion conversation to sovereign AI capability.',entry_point:'Trust entry point',revenue_hook:'Community grants, sovereign model licensing, advisory',progress:'Exploration',maturity:'bad',img:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=280&fit=crop&auto=format&q=80',lanes:[
+    {lane_name:'Cultural risk',status:'exploration'},{lane_name:'Community AI literacy',status:'exploration'},{lane_name:'Indigenous models',status:'exploration'},{lane_name:'Language access',status:'exploration'},{lane_name:'Trust frameworks',status:'exploration'},{lane_name:'Governance patterns',status:'exploration'},{lane_name:'Adoption disparity',status:'exploration'},{lane_name:'Community deployment',status:'exploration'}
+  ]},
+  {id:'dcp',name:'Digital Child Protection',one_liner:'From safety concern to ecosystem protection infrastructure.',entry_point:'Immediate societal entry point',revenue_hook:'Gov contracts, compliance tooling, platform licensing',progress:'Exploration → Measurement',maturity:'warn',img:'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=280&fit=crop&auto=format&q=80',lanes:[
+    {lane_name:'Platform compliance',status:'measurement'},{lane_name:'Ban monitoring',status:'measurement'},{lane_name:'Network protection',status:'exploration'},{lane_name:'Consent architecture',status:'exploration'},{lane_name:'Behaviour modelling',status:'exploration'},{lane_name:'Cost-benefit analysis',status:'exploration'},{lane_name:'Family tooling',status:'exploration'},{lane_name:'Policy translation',status:'exploration'}
+  ]},
+  {id:'mns',name:'MyNeuralSignal',one_liner:'From abstract trust to measurable human signal integrity.',entry_point:'Long-horizon moat',revenue_hook:'Signal data licensing, compliance tooling, BCI integration',progress:'Exploration → Measurement',maturity:'warn',img:'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&h=280&fit=crop&auto=format&q=80',lanes:[
+    {lane_name:'Signal capture',status:'measurement'},{lane_name:'Trust metrics',status:'measurement'},{lane_name:'Consent telemetry',status:'exploration'},{lane_name:'Validation methods',status:'exploration'},{lane_name:'Compliance mapping',status:'exploration'},{lane_name:'Biosignal translation',status:'exploration'},{lane_name:'Risk detection',status:'exploration'},{lane_name:'Auditability',status:'exploration'}
+  ]},
+  {id:'ubi',name:'Unified Biological Intelligence',one_liner:'From research synthesis to long-term human protection doctrine.',entry_point:'Long-horizon moat',revenue_hook:'Foundational IP, standards body, long-horizon licensing',progress:'Exploration',maturity:'bad',img:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=280&fit=crop&auto=format&q=80',lanes:[
+    {lane_name:'Foundational theory',status:'exploration'},{lane_name:'Neuro intelligence',status:'exploration'},{lane_name:'Emotional intelligence',status:'exploration'},{lane_name:'Somatic intelligence',status:'exploration'},{lane_name:'Bioelectromagnetic',status:'exploration'},{lane_name:'Safety boundaries',status:'exploration'},{lane_name:'Certification models',status:'exploration'},{lane_name:'Human preservation',status:'exploration'}
+  ]},
+  {id:'xai',name:'Extreme AI Effects',one_liner:'From edge curiosity to safety science.',entry_point:'Safety entry point',revenue_hook:'Safety audits, enterprise risk consulting, publication',progress:'Exploration → Measurement',maturity:'warn',img:'https://images.unsplash.com/photo-1677442136019-21780ecad979?w=600&h=280&fit=crop&auto=format&q=80',lanes:[
+    {lane_name:'Extreme gains',status:'measurement'},{lane_name:'Skill atrophy',status:'measurement'},{lane_name:'Psychological effects',status:'exploration'},{lane_name:'Medication interaction',status:'exploration'},{lane_name:'Cognitive overload',status:'exploration'},{lane_name:'Safety thresholds',status:'exploration'},{lane_name:'High-stakes scenarios',status:'exploration'},{lane_name:'Mitigation protocols',status:'exploration'}
+  ]},
+  {id:'xover',name:'X-overpoints',one_liner:'From labour change to economic restructuring insight.',entry_point:'Market entry point',revenue_hook:'Economic advisory, workforce analytics, policy consulting',progress:'Exploration',maturity:'bad',img:'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=280&fit=crop&auto=format&q=80',lanes:[
+    {lane_name:'Hiring distortion',status:'exploration'},{lane_name:'Cognitive arbitrage',status:'exploration'},{lane_name:'Market mispricing',status:'exploration'},{lane_name:'Team asymmetry',status:'exploration'},{lane_name:'Capability stacking',status:'exploration'},{lane_name:'Competitive displacement',status:'exploration'},{lane_name:'Capital signalling',status:'exploration'},{lane_name:'Labour redesign',status:'exploration'}
+  ]},
+  {id:'bio',name:'Human Biology × AI',one_liner:'From body ignored to embodied intelligence models.',entry_point:'Clinical entry point',revenue_hook:'Clinical partnerships, biomarker licensing, med-tech',progress:'Exploration',maturity:'bad',img:'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=600&h=280&fit=crop&auto=format&q=80',lanes:[
+    {lane_name:'Sleep',status:'exploration'},{lane_name:'Hormones',status:'exploration'},{lane_name:'Neurodivergence',status:'exploration'},{lane_name:'Physical cognition',status:'exploration'},{lane_name:'Biomarkers',status:'exploration'},{lane_name:'Interoception',status:'exploration'},{lane_name:'Ageing effects',status:'exploration'},{lane_name:'Clinical integration',status:'exploration'}
+  ]},
 ];
 const STATIC_IP=[
-  {claim:'MCP Bridge Lambda Orchestration Architecture',arm_id:'a01',status:'REAL',rd_substantiation:120000,evidence_urls:[{url:'https://github.com/TML-4PM',type:'GitHub'},{url:'#',type:'Deployed'}]},
-  {claim:'Neural Ennead Multi-Agent Routing System',arm_id:'a01',status:'REAL',rd_substantiation:85000,evidence_urls:[{url:'#',type:'Schema'}]},
-  {claim:'86-Function Lambda Fleet Infrastructure',arm_id:'a01',status:'REAL',rd_substantiation:95000,evidence_urls:[{url:'#',type:'AWS'}]},
-  {claim:'AI Sweet Spots Research Methodology (27 studies)',arm_id:'a02',status:'REAL',rd_substantiation:180000,evidence_urls:[{url:'https://aisweetspots.com',type:'Published'}]},
-  {claim:'PLMOS Job Search Automation Engine',arm_id:'a05',status:'REAL',rd_substantiation:55000,evidence_urls:[{url:'#',type:'Deployed'}]},
-  {claim:'ATO R&D Substantiation Framework — $970K',arm_id:'a08',status:'REAL',rd_substantiation:45000,evidence_urls:[{url:'#',type:'ATO Filing'}]},
-  {claim:'GC-BAT Consent Architecture',arm_id:'a06',status:'REAL',rd_substantiation:75000,evidence_urls:[{url:'https://gcbat.org',type:'Published'}]},
-  {claim:'CalmBound Screen-Time Management Platform',arm_id:'a07',status:'REAL',rd_substantiation:40000,evidence_urls:[{url:'#',type:'Deployed'}]},
-  {claim:'Reality Ledger IP Verification System',arm_id:'a08',status:'REAL',rd_substantiation:35000,evidence_urls:[{url:'#',type:'Schema'}]},
-  {claim:'IP Portfolio Documentation & Licensing Framework',arm_id:'a08',status:'REAL',rd_substantiation:60000,evidence_urls:[{url:'#',type:'Legal'}]},
-  {claim:'EEG Focus-State Classifier v1 (3-participant pilot)',arm_id:'a03',status:'PARTIAL',rd_substantiation:80000,evidence_urls:[{url:'#',type:'Research'}]},
-  {claim:'Role Universe Engine JET v2.0',arm_id:'a05',status:'PARTIAL',rd_substantiation:45000,evidence_urls:[]},
-  {claim:'Operator Cognitive Load Measurement Protocol',arm_id:'a02',status:'PARTIAL',rd_substantiation:60000,evidence_urls:[]},
-  {claim:'Cultural Sovereignty Data Governance Standards',arm_id:'a06',status:'PARTIAL',rd_substantiation:50000,evidence_urls:[]},
-  {claim:'Chronic Disease Risk Modelling Pipeline',arm_id:'a07',status:'PARTIAL',rd_substantiation:45000,evidence_urls:[]},
-  {claim:'Sensor Fusion Architecture — Embodied AI',arm_id:'a04',status:'PARTIAL',rd_substantiation:70000,evidence_urls:[]},
-  {claim:'MAAT Unified Financial Operations Terminal',arm_id:'a08',status:'PARTIAL',rd_substantiation:30000,evidence_urls:[]},
-  {claim:'Per-Arm IP Exit Pathway Mapping',arm_id:'a08',status:'PARTIAL',rd_substantiation:25000,evidence_urls:[]},
-  {claim:'Closed-Loop Neurofeedback Protocol v1',arm_id:'a03',status:'PRETEND',rd_substantiation:40000,evidence_urls:[]},
-  {claim:'Agricultural Robotics Pilot — Queensland',arm_id:'a04',status:'PRETEND',rd_substantiation:90000,evidence_urls:[]},
-  {claim:'AI Governance Certification Programme',arm_id:'a06',status:'PRETEND',rd_substantiation:35000,evidence_urls:[]},
-  {claim:'Longitudinal Health Cohort Study (5yr)',arm_id:'a07',status:'PRETEND',rd_substantiation:60000,evidence_urls:[]},
-  {claim:'Cross-Jurisdiction IP Filings (PCT)',arm_id:'a08',status:'PRETEND',rd_substantiation:30000,evidence_urls:[]},
+  {id:1,asset_name:'Consent Registry Architecture',asset_class:'patent',status:'deployed',verification_status:'verified',estimated_value_aud:50000,display_tier:'REAL'},
+  {id:2,asset_name:'MCP Bridge',asset_class:'trade_secret',status:'deployed',verification_status:'verified',estimated_value_aud:25000,display_tier:'REAL'},
+  {id:3,asset_name:'Skills Proof Marketplace (SPM)',asset_class:'patent',status:'deployed',verification_status:'verified',estimated_value_aud:50000,display_tier:'REAL'},
+  {id:4,asset_name:'189 Lambda Functions',asset_class:'trade_secret',status:'deployed',verification_status:'verified',estimated_value_aud:25000,display_tier:'REAL'},
+  {id:5,asset_name:'Atlas Cognitive Profiles',asset_class:'trade_secret',status:'deployed',verification_status:'verified',estimated_value_aud:25000,display_tier:'REAL'},
+  {id:6,asset_name:'AI Sweet Spots Research',asset_class:'research',status:'active',verification_status:'4247-participants',estimated_value_aud:20000,display_tier:'REAL'},
+  {id:7,asset_name:'Neural Ennead Framework',asset_class:'methodology',status:'active',verification_status:'found-10-copies',estimated_value_aud:30000,display_tier:'REAL'},
+  {id:8,asset_name:'Public Sector Architecture Kit',asset_class:'framework',status:'active',verification_status:'found-6-copies',estimated_value_aud:40000,display_tier:'REAL'},
+  {id:9,asset_name:'The Integrity Stack',asset_class:'framework',status:'active',verification_status:'core-differentiator',estimated_value_aud:40000,display_tier:'REAL'},
+  {id:10,asset_name:'727 Named AI Agents',asset_class:'trade_secret',status:'active',verification_status:'verified',estimated_value_aud:25000,display_tier:'REAL'},
+  {id:11,asset_name:'5,983 Chat Archives',asset_class:'trade_secret',status:'active',verification_status:'verified',estimated_value_aud:25000,display_tier:'REAL'},
+  {id:12,asset_name:'96 GitHub Repositories',asset_class:'copyright',status:'active',verification_status:'verified',estimated_value_aud:10000,display_tier:'REAL'},
+  {id:13,asset_name:'LinkedIn Article Archive',asset_class:'content',status:'active',verification_status:'6670-articles',estimated_value_aud:5000,display_tier:'REAL'},
+  {id:14,asset_name:'GC-BAT Vignettes (32)',asset_class:'copyright',status:'published',verification_status:'verified',estimated_value_aud:10000,display_tier:'REAL'},
+  {id:15,asset_name:'AI Sweet Spots Research Paper',asset_class:'copyright',status:'published',verification_status:'verified',estimated_value_aud:10000,display_tier:'REAL'},
+  {id:16,asset_name:'AI Sweet Spots',asset_class:'patent',status:'file_now',verification_status:'verified',estimated_value_aud:50000,display_tier:'PARTIAL'},
+  {id:17,asset_name:'Neural Ennead',asset_class:'patent',status:'file_now',verification_status:'verified',estimated_value_aud:50000,display_tier:'PARTIAL'},
+  {id:18,asset_name:'GAIN Platform',asset_class:'patent',status:'file_now',verification_status:'verified',estimated_value_aud:50000,display_tier:'PARTIAL'},
+  {id:19,asset_name:'MyNeuralSignal',asset_class:'patent',status:'file_now',verification_status:'pending',estimated_value_aud:50000,display_tier:'PARTIAL'},
+  {id:20,asset_name:'NEUROPAK',asset_class:'patent',status:'file_now',verification_status:'pending',estimated_value_aud:50000,display_tier:'PARTIAL'},
+  {id:21,asset_name:'HoloOrg',asset_class:'patent',status:'file_now',verification_status:'pending',estimated_value_aud:50000,display_tier:'PARTIAL'},
+  {id:22,asset_name:'MCP Bridge',asset_class:'patent',status:'file_now',verification_status:'pending',estimated_value_aud:50000,display_tier:'PARTIAL'},
+  {id:23,asset_name:'Biological Resilience Score',asset_class:'patent',status:'file_now',verification_status:'pending',estimated_value_aud:50000,display_tier:'PARTIAL'},
+  {id:24,asset_name:'Living Stack',asset_class:'patent',status:'file_later',verification_status:'verified',estimated_value_aud:50000,display_tier:'PARTIAL'},
+  {id:25,asset_name:'BCI Standards Framework',asset_class:'patent',status:'research',verification_status:'verified',estimated_value_aud:50000,display_tier:'PARTIAL'},
+  {id:26,asset_name:'BRS (Biological Reality Signal)',asset_class:'patent',status:'concept',verification_status:'verified',estimated_value_aud:50000,display_tier:'PARTIAL'},
+  {id:27,asset_name:'ConsentX',asset_class:'patent',status:'concept',verification_status:'verified',estimated_value_aud:50000,display_tier:'PARTIAL'},
+  {id:28,asset_name:'Signal Economy',asset_class:'patent',status:'concept',verification_status:'verified',estimated_value_aud:50000,display_tier:'PARTIAL'},
+  {id:29,asset_name:'Agent Personality Mapping',asset_class:'patent',status:'concept',verification_status:'verified',estimated_value_aud:50000,display_tier:'PARTIAL'},
+  {id:30,asset_name:'Biological Truth Engine',asset_class:'patent',status:'concept',verification_status:'verified',estimated_value_aud:50000,display_tier:'PARTIAL'},
+  {id:31,asset_name:'LaserDrone',asset_class:'project',status:'active',verification_status:'pending',estimated_value_aud:35000,display_tier:'PRETEND'},
+  {id:32,asset_name:'WorkFamilyAI',asset_class:'project',status:'active',verification_status:'pending',estimated_value_aud:35000,display_tier:'PRETEND'},
+  {id:33,asset_name:'AICS (AI Content Scoring)',asset_class:'patent',status:'blocked',verification_status:'verified',estimated_value_aud:50000,display_tier:'PRETEND'},
 ];
-
 let ARMS=STATIC_ARMS,IP_CLAIMS=STATIC_IP,filteredIp=[...STATIC_IP];
 function lc(s){return s==='control'?'control':s==='measurement'?'measurement':'';}
 function sc(s){return s==='control'?'sc':s==='measurement'?'sm':'se';}
@@ -504,20 +529,25 @@ function renderFundArms(arms){
 }
 
 function renderIp(claims){
-  const real=claims.filter(c=>c.status==='REAL').length;
-  const partial=claims.filter(c=>c.status==='PARTIAL').length;
-  const pretend=claims.filter(c=>c.status==='PRETEND').length;
+  const tier=c=>c.display_tier||c.status||'PRETEND';
+  const real=claims.filter(c=>tier(c)==='REAL').length;
+  const partial=claims.filter(c=>tier(c)==='PARTIAL').length;
+  const pretend=claims.filter(c=>tier(c)==='PRETEND').length;
   document.getElementById('cntReal').textContent=real;
   document.getElementById('cntPartial').textContent=partial;
   document.getElementById('cntPretend').textContent=pretend;
-  const totalRd=claims.reduce((s,c)=>s+(Number(c.rd_substantiation)||0),0);
+  const totalRd=claims.reduce((s,c)=>s+(Number(c.estimated_value_aud)||Number(c.rd_substantiation)||0),0);
   document.getElementById('rdValue').textContent='$'+totalRd.toLocaleString('en-AU',{minimumFractionDigits:0});
-  document.getElementById('ipFooter').textContent=claims.length+' claims shown · Total R&D: $'+totalRd.toLocaleString('en-AU')+' · Updated '+new Date().toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric'});
+  document.getElementById('ipFooter').textContent=claims.length+' assets shown · Portfolio value: $'+totalRd.toLocaleString('en-AU')+' · Updated '+new Date().toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric'});
   document.getElementById('ipBody').innerHTML=claims.map(row=>{
-    const evLinks=Array.isArray(row.evidence_urls)&&row.evidence_urls.length?row.evidence_urls.map(e=>'<a href="'+(e.url||'#')+'" target="_blank">'+(e.type||'link')+'</a>').join(' '):'—';
-    const rdStr=row.rd_substantiation?('$'+Number(row.rd_substantiation).toLocaleString('en-AU')):'—';
-    const armName=(ARMS.find(a=>a.id===row.arm_id)||{}).name||row.arm_id||'—';
-    return '<tr><td><div class="ip-claim-name">'+(row.claim||'—')+'</div><div class="ip-arm-id">'+armName+'</div></td><td><span class="ip-arm-id">'+(row.arm_id||'').toUpperCase()+'</span></td><td><span class="ip-status ip-'+(row.status||'pretend').toLowerCase()+'">'+(row.status||'PRETEND')+'</span></td><td class="ip-rd">'+rdStr+'</td><td class="ip-ev">'+evLinks+'</td></tr>';
+    const t=tier(row);
+    const rdVal=Number(row.estimated_value_aud)||Number(row.rd_substantiation)||0;
+    const rdStr=rdVal?('$'+rdVal.toLocaleString('en-AU')):'—';
+    const verif=row.verification_status||'—';
+    const cls=row.asset_class||'—';
+    const name=row.asset_name||row.claim||'—';
+    const rawStatus=row.status||'—';
+    return '<tr><td><div class="ip-claim-name">'+name+'</div><div class="ip-arm-id">'+cls+' · '+rawStatus+'</div></td><td><span class="ip-arm-id">'+verif+'</span></td><td><span class="ip-status ip-'+t.toLowerCase()+'">'+t+'</span></td><td class="ip-rd">'+rdStr+'</td><td class="ip-ev">—</td></tr>';
   }).join('');
 }
 
@@ -526,8 +556,8 @@ function openDetail(arm){
   document.getElementById('detailId').textContent=arm.id.toUpperCase();
   document.getElementById('detailName').textContent=arm.name;
   const ll=arm.lanes.map((l,i)=>'<div class="dpli"><span class="dpln">'+(i+1)+'</span><span class="gcs '+sc(l.status)+'" style="width:6px;height:6px;border-radius:99px;flex-shrink:0"></span><span style="flex:1">'+l.lane_name+'</span><span style="font-family:var(--mono);font-size:9px;color:var(--dim);text-transform:uppercase">'+l.status+'</span></div>').join('');
-  const armIp=IP_CLAIMS.filter(c=>c.arm_id===arm.id);
-  const rdTotal=armIp.reduce((s,c)=>s+(Number(c.rd_substantiation)||0),0);
+  const armIp=[];
+  const rdTotal=0;
   document.getElementById('detailBody').innerHTML=(arm.img?'<div class="dpimg"><img src="'+arm.img+'" alt="'+arm.name+'" onerror="this.parentElement.style.display=\'none\'"></div>':'')+'<div class="dpr"><label>One-liner</label><p>'+arm.one_liner+'</p></div><div class="dpr"><label>Stage</label><p class="at">'+arm.progress+'</p></div><div class="dpr"><label>Entry Point</label><p>'+arm.entry_point+'</p></div><div class="dpr"><label>Revenue Hook</label><p>'+(arm.revenue_hook||'—')+'</p></div><div class="dpr"><label>R&D Substantiation (ATO)</label><p class="at">$'+rdTotal.toLocaleString('en-AU')+' across '+armIp.length+' claims</p></div><div class="dpr"><label>Capability Lanes ('+arm.lanes.length+')</label><div class="dpll">'+ll+'</div></div>';
   document.getElementById('detailOverlay').classList.add('open');
   document.body.style.overflow='hidden';
@@ -536,13 +566,14 @@ function closeDetail(){document.getElementById('detailOverlay').classList.remove
 
 function buildArmFilter(){
   const sel=document.getElementById('armFilter');
-  sel.innerHTML='<option value="">All Arms</option>';
-  ARMS.forEach(a=>{const o=document.createElement('option');o.value=a.id;o.textContent=a.id.toUpperCase()+' · '+a.name.slice(0,28);sel.appendChild(o);});
+  const classes=[...new Set(IP_CLAIMS.map(c=>c.asset_class).filter(Boolean))].sort();
+  sel.innerHTML='<option value="">All Classes</option>';
+  classes.forEach(cls=>{const o=document.createElement('option');o.value=cls;o.textContent=cls.replace(/_/g,' ');sel.appendChild(o);});
 }
 function applyFilters(){
   const arm=document.getElementById('armFilter').value;
   const status=document.getElementById('statusFilter').value;
-  filteredIp=IP_CLAIMS.filter(c=>(!arm||c.arm_id===arm)&&(!status||c.status===status));
+  filteredIp=IP_CLAIMS.filter(c=>(!arm||c.asset_class===arm)&&(!status||(c.display_tier||c.status)===status));
   renderIp(filteredIp);
 }
 document.getElementById('armFilter').addEventListener('change',applyFilters);
@@ -587,7 +618,7 @@ async function tryBridge(){
     const[armsR,lanesR,claimsR]=await Promise.all([
       fetch(BRIDGE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({functionName:SQLFN,payload:{sql:"SELECT id,name,entry_point,one_liner,progress,maturity,revenue_hook FROM research_arms ORDER BY CASE maturity WHEN 'good' THEN 1 WHEN 'warn' THEN 2 ELSE 3 END,id"}}),signal:ctrl.signal}).then(r=>r.json()),
       fetch(BRIDGE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({functionName:SQLFN,payload:{sql:"SELECT arm_id,lane_name,lane_order,status FROM research_lanes ORDER BY arm_id,lane_order"}}),signal:ctrl.signal}).then(r=>r.json()),
-      fetch(BRIDGE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({functionName:SQLFN,payload:{sql:"SELECT claim_id,arm_id,claim,status,evidence_urls,commercial_angle,rd_substantiation FROM ip_claims ORDER BY status,rd_substantiation DESC LIMIT 100"}}),signal:ctrl.signal}).then(r=>r.json()),
+      fetch(BRIDGE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({functionName:SQLFN,payload:{sql:"SELECT id,asset_name,asset_class,status,verification_status,estimated_value_aud,description FROM ip_assets WHERE status NOT IN ('aspirational') ORDER BY CASE status WHEN 'deployed' THEN 1 WHEN 'active' THEN 2 WHEN 'published' THEN 3 WHEN 'file_now' THEN 4 WHEN 'file_later' THEN 5 WHEN 'research' THEN 6 WHEN 'concept' THEN 7 ELSE 8 END, estimated_value_aud DESC NULLS LAST LIMIT 80"}}),signal:ctrl.signal}).then(r=>r.json()),
     ]);
     const parseB=d=>typeof d.result?.body==='string'?JSON.parse(d.result.body):d.result?.body||{};
     const ab=parseB(armsR),lb=parseB(lanesR),cb=parseB(claimsR);
@@ -597,7 +628,13 @@ async function tryBridge(){
       const lm={};for(const l of lanes){if(!lm[l.arm_id])lm[l.arm_id]=[];lm[l.arm_id].push(l);}
       ARMS=arms.map((a,i)=>({...STATIC_ARMS[i]||{},...a,lanes:(lm[a.id]||[]).sort((x,y)=>x.lane_order-y.lane_order),img:(STATIC_ARMS.find(s=>s.id===a.id)||{}).img||STATIC_ARMS[i]?.img||''}));
     }
-    if(claims.length>0){IP_CLAIMS=claims.map(r=>({...r,evidence_urls:typeof r.evidence_urls==='string'?JSON.parse(r.evidence_urls||'[]'):(r.evidence_urls||[])}));}
+    if(claims.length>0){IP_CLAIMS=claims.map(r=>({
+      ...r,
+      display_tier: r.status==='deployed'||r.status==='published'||(r.status==='active'&&r.verification_status&&r.verification_status!=='pending'&&r.verification_status!=='unverified') ? 'REAL'
+        : r.status==='file_now'||(r.status==='file_later'&&r.verification_status==='verified')||(r.status==='concept'&&r.verification_status==='verified')||r.status==='research' ? 'PARTIAL'
+        : 'PRETEND',
+      evidence_urls:[]
+    }));}
     renderGrid(ARMS);renderTable(ARMS);renderCards(ARMS);renderFundArms(ARMS);buildArmFilter();renderIp(IP_CLAIMS);filteredIp=[...IP_CLAIMS];
     document.getElementById('kpiArms').textContent=ARMS.length;
     document.getElementById('kpiLanes').textContent=ARMS.reduce((s,a)=>s+a.lanes.length,0);
