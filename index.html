@@ -312,12 +312,12 @@
         <h2 class="def-h">One registry.<br>Every claim <em>linked.</em></h2>
         <p class="def-p">Every asset has a verifiable status. Partners and ATO auditors get the same surface &mdash; claims linked to artefacts, artefacts linked to evidence. No aspirational language.</p>
         <div class="def-statuses">
-          <div class="def-status"><div class="def-status-dot ds-real"></div><div class="def-status-name">REAL</div><div class="def-status-desc">Verified artefact exists &mdash; code deployed, paper published, system running.</div></div>
-          <div class="def-status"><div class="def-status-dot ds-partial"></div><div class="def-status-name">PARTIAL</div><div class="def-status-desc">In progress &mdash; prototype or research underway, measurable output expected.</div></div>
-          <div class="def-status"><div class="def-status-dot ds-pretend"></div><div class="def-status-name">PRETEND</div><div class="def-status-desc">Intent only &mdash; conceptual, no artefact yet. Honest signal, not an excuse.</div></div>
+          <div class="def-status"><div class="def-status-dot ds-real"></div><div class="def-status-name">DEPLOYED</div><div class="def-status-desc">Verified artefact exists &mdash; code running, paper published, system live.</div></div>
+          <div class="def-status"><div class="def-status-dot ds-partial"></div><div class="def-status-name">IN PROGRESS</div><div class="def-status-desc">Active development &mdash; prototype, pending filing, or research underway with measurable output.</div></div>
+          <div class="def-status"><div class="def-status-dot ds-pretend" style="opacity:.4"></div><div class="def-status-name" style="opacity:.5">EXPLORATORY</div><div class="def-status-desc" style="opacity:.45">Concept or early signal &mdash; included for completeness, not for investor claims.</div></div>
         </div>
-        <div class="rdval" id="rdValue">$1.37M</div>
-        <div class="rdlabel">Total R&amp;D Substantiation (ATO FY25)</div>
+        <div class="rdval">$548K</div>
+        <div class="rdlabel">MAAT-Allocated R&amp;D Expenditure (FY25)</div>
       </div>
       <div>
         <div class="schema-header">Table: ip_assets</div>
@@ -349,20 +349,20 @@
         <select class="ip-fsel" id="armFilter"><option value="">All Classes</option></select>
         <select class="ip-fsel" id="statusFilter">
           <option value="">All Status</option>
-          <option value="REAL">REAL</option>
-          <option value="PARTIAL">PARTIAL</option>
-          <option value="PRETEND">PRETEND</option>
+          <option value="REAL">Deployed</option>
+          <option value="PARTIAL">In Progress</option>
+          <option value="PRETEND">Exploratory</option>
         </select>
       </div>
     </div>
     <div class="ip-counts">
-      <div class="ip-count"><div class="ipc-dot ipc-real"></div><span class="ipc-val" id="cntReal">0</span><span class="ipc-label">Real</span></div>
-      <div class="ip-count"><div class="ipc-dot ipc-partial"></div><span class="ipc-val" id="cntPartial">0</span><span class="ipc-label">Partial</span></div>
-      <div class="ip-count"><div class="ipc-dot ipc-pretend"></div><span class="ipc-val" id="cntPretend">0</span><span class="ipc-label">Pretend</span></div>
+      <div class="ip-count"><div class="ipc-dot ipc-real"></div><span class="ipc-val" id="cntReal">0</span><span class="ipc-label">Deployed</span></div>
+      <div class="ip-count"><div class="ipc-dot ipc-partial"></div><span class="ipc-val" id="cntPartial">0</span><span class="ipc-label">In Progress</span></div>
+      <div class="ip-count"><div class="ipc-dot ipc-pretend"></div><span class="ipc-val" id="cntPretend">0</span><span class="ipc-label" style="opacity:.6">Exploratory</span></div>
     </div>
     <div style="overflow-x:auto">
       <table class="iptable">
-        <thead><tr><th>Claim</th><th>Arm</th><th>Status</th><th>R&amp;D Value</th><th>Evidence</th></tr></thead>
+        <thead><tr><th>Asset</th><th>Class · Status</th><th>Status</th><th>R&amp;D Value</th><th>Evidence</th></tr></thead>
         <tbody id="ipBody"></tbody>
       </table>
     </div>
@@ -373,8 +373,9 @@
 <section class="fundingsec reveal" id="fund">
   <div class="fundingi">
     <div>
-      <h2 class="fund-hl">You can fund one arm<br>without buying<br><em>the whole animal.</em></h2>
-      <p class="fund-p">Partners attach to individual research arms. Commercial exposure limited to one programme. Funding without revealing the full organism structure or cross-arm IP dependencies.</p>
+      <h2 class="fund-hl">The bee and the flower<br>work together.<br><em>Nobody kills to win.</em></h2>
+      <p class="fund-p">You don't have to fund the whole organism to get something valuable. Attach to a single lane &mdash; a new shoot, a specific measurement, a pilot study. You get the honey from that branch. The organism keeps growing. Partners see one arm, not the full dependency map. Commercial exposure stays contained.</p>
+      <p class="fund-p" style="margin-top:12px;font-size:13px;opacity:.7">Not looking for acquirers. Looking for collaborators who want the tastiest bit of a living thing.</p>
       <div class="ctas">
         <a href="mailto:contact@tech4humanity.com.au?subject=Research Arm Partnership" class="btn1">Express Interest &rarr;</a>
         <a href="#ip" class="btn2">View IP Registry</a>
