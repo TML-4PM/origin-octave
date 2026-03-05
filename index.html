@@ -310,7 +310,7 @@
   <div class="defsi">
     <div class="def-grid">
       <div>
-        <div class="def-label">Defensibility Framing &middot; ip_assets</div>
+        <div class="def-label">Defensibility Framing &middot; 110 Assets</div>
         <h2 class="def-h">One registry.<br>Every claim <em>linked.</em></h2>
         <p class="def-p">Every asset has a verifiable status. Partners and ATO auditors get the same surface &mdash; claims linked to artefacts, artefacts linked to evidence. No aspirational language.</p>
         <div class="def-statuses">
@@ -621,10 +621,11 @@ function renderIp(claims){
   document.getElementById('cntPartial').textContent=partial;
   document.getElementById('cntPretend').textContent=pretend;
   const totalRd=claims.reduce((s,c)=>s+(Number(c.estimated_value_aud)||Number(c.rd_substantiation)||0),0);
-  document.getElementById('rdValue').textContent='$'+totalRd.toLocaleString('en-AU',{minimumFractionDigits:0});
+  const totalPortfolio=IP_CLAIMS.reduce((s,c)=>s+(Number(c.estimated_value_aud)||0),0);
+  document.getElementById('rdValue').textContent='$'+totalPortfolio.toLocaleString('en-AU',{minimumFractionDigits:0});
   const heroIp=document.getElementById('kpiIpCount');if(heroIp)heroIp.textContent=IP_CLAIMS.length;
   const heroPv=document.getElementById('kpiPortValue');if(heroPv){const t=IP_CLAIMS.reduce((s,c)=>s+(Number(c.estimated_value_aud)||0),0);heroPv.textContent='$'+(t/1000000).toFixed(1)+'M';}
-  document.getElementById('ipFooter').textContent=claims.length+' assets shown · Portfolio value: $'+totalRd.toLocaleString('en-AU')+' · Updated '+new Date().toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric'});
+  document.getElementById('ipFooter').textContent=claims.length+' assets shown · Full portfolio: $'+totalPortfolio.toLocaleString('en-AU')+' · Updated '+new Date().toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric'});
   document.getElementById('ipBody').innerHTML=claims.map(row=>{
     const t=tier(row);
     const rdVal=Number(row.estimated_value_aud)||Number(row.rd_substantiation)||0;
@@ -642,9 +643,26 @@ function openDetail(arm){
   document.getElementById('detailId').textContent=arm.id.toUpperCase();
   document.getElementById('detailName').textContent=arm.name;
   const ll=arm.lanes.map((l,i)=>'<div class="dpli"><span class="dpln">'+(i+1)+'</span><span class="gcs '+sc(l.status)+'" style="width:6px;height:6px;border-radius:99px;flex-shrink:0"></span><span style="flex:1">'+l.lane_name+'</span><span style="font-family:var(--mono);font-size:9px;color:var(--dim);text-transform:uppercase">'+l.status+'</span></div>').join('');
-  const armIp=[];
-  const rdTotal=0;
-  document.getElementById('detailBody').innerHTML=(arm.img?'<div class="dpimg"><img src="'+arm.img+'" alt="'+arm.name+'" onerror="this.parentElement.style.display=\'none\'"></div>':'')+'<div class="dpr"><label>One-liner</label><p>'+arm.one_liner+'</p></div><div class="dpr"><label>Stage</label><p class="at">'+arm.progress+'</p></div><div class="dpr"><label>Entry Point</label><p>'+arm.entry_point+'</p></div><div class="dpr"><label>Revenue Hook</label><p>'+(arm.revenue_hook||'—')+'</p></div><div class="dpr"><label>R&D Substantiation (ATO)</label><p class="at">$'+rdTotal.toLocaleString('en-AU')+' across '+armIp.length+' claims</p></div><div class="dpr"><label>Capability Lanes ('+arm.lanes.length+')</label><div class="dpll">'+ll+'</div></div>';
+  // Map IP assets to this arm by keyword matching on arm name/id
+  const armKeywords = {
+    ass: ['sweet spot','assessment','performance','atlas','cognitive','neural ennead','augmented humanity','human-ai'],
+    care: ['cultural','indigenous','sovereignty','care','community'],
+    dcp: ['child','calmbound','digital protect','consent registry','consent telemetry'],
+    mns: ['neural signal','myneuralsignal','signal economy','brs','biological reality','signal capture'],
+    ubi: ['biological','ubi','neuro-gov','living stack','neural evolution','bioelectro','interoception','hormonal','sleep-ai','neurodivergence'],
+    xai: ['extreme ai','skill atrophy','medication','cognitive overload','fifth quadrant','psychedelic','xai'],
+    xover: ['x-overpoint','labour market','job engine','plmos','jet ','cognitive arbitrage','hiring','workforce','xover'],
+    bio: ['biology','biomarker','physical','ageing','clinical','biological resilience','sweet spot drift','bio ']
+  };
+  const kw = armKeywords[arm.id] || [];
+  const armIp = IP_CLAIMS.filter(c => {
+    const n = (c.asset_name||'').toLowerCase();
+    return kw.some(k => n.includes(k));
+  });
+  const rdTotal = armIp.reduce((s,c)=>s+(Number(c.estimated_value_aud)||0),0);
+  const tierDot = t => t==='REAL'?'<span style="display:inline-block;width:7px;height:7px;border-radius:99px;background:var(--ctrl);margin-right:5px"></span>':t==='PARTIAL'?'<span style="display:inline-block;width:7px;height:7px;border-radius:99px;background:var(--meas);margin-right:5px"></span>':'<span style="display:inline-block;width:7px;height:7px;border-radius:99px;background:var(--expl);margin-right:5px"></span>';
+  const ipRows = armIp.length ? '<div class="dpr"><label>Linked IP Assets ('+armIp.length+')</label><div style="display:flex;flex-direction:column;gap:4px;margin-top:6px">'+armIp.map(c=>'<div style="display:flex;align-items:center;font-size:12px;gap:4px">'+tierDot(c.display_tier)+'<span>'+c.asset_name+'</span><span style="margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--muted)">$'+Number(c.estimated_value_aud).toLocaleString('en-AU')+'</span></div>').join('')+'</div></div>' : '';
+  document.getElementById('detailBody').innerHTML=(arm.img?'<div class="dpimg"><img src="'+arm.img+'" alt="'+arm.name+'" onerror="this.parentElement.style.display=\'none\'"></div>':'')+'<div class="dpr"><label>One-liner</label><p>'+arm.one_liner+'</p></div><div class="dpr"><label>Stage</label><p class="at">'+arm.progress+'</p></div><div class="dpr"><label>Entry Point</label><p>'+arm.entry_point+'</p></div><div class="dpr"><label>Revenue Hook</label><p>'+(arm.revenue_hook||'—')+'</p></div><div class="dpr"><label>R&D Substantiation (ATO)</label><p class="at">'+(rdTotal>0?'$'+rdTotal.toLocaleString('en-AU')+' across '+armIp.length+' linked assets':'No linked IP assets yet')+'</p></div>'+ipRows+'<div class="dpr"><label>Capability Lanes ('+arm.lanes.length+')</label><div class="dpll">'+ll+'</div></div>';
   document.getElementById('detailOverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
