@@ -329,7 +329,12 @@
           <tr><td class="st-field">asset_class</td><td class="st-type">TEXT</td><td class="st-desc">patent | trade_secret | trademark | copyright | domain | framework | methodology | research | content | project</td></tr>
           <tr><td class="st-field">status</td><td class="st-type">TEXT</td><td class="st-desc">deployed | active | published | file_now | file_later | concept | demo | research | aspirational</td></tr>
           <tr><td class="st-field">verification_status</td><td class="st-type">TEXT</td><td class="st-desc">verified | pending | unverified | found-N-copies | N-participants | N-articles</td></tr>
-          <tr><td class="st-field">estimated_value_aud</td><td class="st-type">NUMERIC</td><td class="st-desc">Asset portfolio value (AUD)</td></tr>
+          <tr><td class="st-field">replacement_value_aud</td><td class="st-type">NUMERIC</td><td class="st-desc">Replacement cost — ATO substantiation basis</td></tr>
+          <tr><td class="st-field">market_value_aud</td><td class="st-type">NUMERIC</td><td class="st-desc">Market value — what a buyer/licensee pays</td></tr>
+          <tr><td class="st-field">rd_expenditure_aud</td><td class="st-type">NUMERIC</td><td class="st-desc">Actual R&amp;D spend — ATO claim basis</td></tr>
+          <tr><td class="st-field">licensing_potential</td><td class="st-type">TEXT</td><td class="st-desc">none | low | medium | high | strategic</td></tr>
+          <tr><td class="st-field">priority_flag</td><td class="st-type">BOOLEAN</td><td class="st-desc">Top-tier asset flag</td></tr>
+          <tr><td class="st-field">is_aspirational</td><td class="st-type">BOOLEAN</td><td class="st-desc">Excluded from portfolio display</td></tr>
           <tr><td class="st-field">annual_license_aud</td><td class="st-type">NUMERIC</td><td class="st-desc">Recurring licence revenue potential (AUD)</td></tr>
           <tr><td class="st-field">owner_entity</td><td class="st-type">TEXT</td><td class="st-desc">Owning legal entity</td></tr>
           <tr><td class="st-field">created_at</td><td class="st-type">TIMESTAMPTZ</td><td class="st-desc">Auto &mdash; immutable creation timestamp</td></tr>
@@ -461,116 +466,116 @@ const STATIC_ARMS=[
   ]},
 ];
 const STATIC_IP=[
-  {id:1,asset_name:'Consent Registry Architecture',asset_class:'patent',status:'deployed',verification_status:'verified',estimated_value_aud:95000,display_tier:'REAL'},
-  {id:2,asset_name:'MCP Bridge Infrastructure',asset_class:'trade_secret',status:'deployed',verification_status:'verified',estimated_value_aud:120000,display_tier:'REAL'},
-  {id:3,asset_name:'Skills Proof Marketplace (SPM)',asset_class:'patent',status:'deployed',verification_status:'verified',estimated_value_aud:75000,display_tier:'REAL'},
-  {id:4,asset_name:'Lambda Function Fleet (345 functions)',asset_class:'trade_secret',status:'deployed',verification_status:'verified',estimated_value_aud:60000,display_tier:'REAL'},
-  {id:5,asset_name:'Atlas Cognitive Profiles',asset_class:'trade_secret',status:'deployed',verification_status:'verified',estimated_value_aud:45000,display_tier:'REAL'},
-  {id:6,asset_name:'Neural Ennead Framework',asset_class:'methodology',status:'deployed',verification_status:'verified',estimated_value_aud:55000,display_tier:'REAL'},
-  {id:7,asset_name:'Bridge API Gateway Architecture',asset_class:'trade_secret',status:'deployed',verification_status:'verified',estimated_value_aud:40000,display_tier:'REAL'},
-  {id:8,asset_name:'Supabase Schema System (800+ tables)',asset_class:'trade_secret',status:'deployed',verification_status:'verified',estimated_value_aud:50000,display_tier:'REAL'},
-  {id:9,asset_name:'HoloOrg Architecture',asset_class:'methodology',status:'deployed',verification_status:'verified',estimated_value_aud:65000,display_tier:'REAL'},
-  {id:10,asset_name:'MAAT Financial Engine',asset_class:'trade_secret',status:'deployed',verification_status:'verified',estimated_value_aud:45000,display_tier:'REAL'},
-  {id:11,asset_name:'Loop OS Operating System',asset_class:'methodology',status:'deployed',verification_status:'verified',estimated_value_aud:55000,display_tier:'REAL'},
-  {id:12,asset_name:'PLMOS Labour Market OS',asset_class:'methodology',status:'deployed',verification_status:'verified',estimated_value_aud:40000,display_tier:'REAL'},
-  {id:13,asset_name:'JET Job Engine Technology',asset_class:'trade_secret',status:'deployed',verification_status:'verified',estimated_value_aud:35000,display_tier:'REAL'},
-  {id:14,asset_name:'Reality Ledger Verification',asset_class:'methodology',status:'deployed',verification_status:'verified',estimated_value_aud:40000,display_tier:'REAL'},
-  {id:15,asset_name:'Ops Ledger System',asset_class:'trade_secret',status:'deployed',verification_status:'verified',estimated_value_aud:30000,display_tier:'REAL'},
-  {id:16,asset_name:'AI Sweet Spots Research Programme',asset_class:'research',status:'active',verification_status:'4247-participants',estimated_value_aud:85000,display_tier:'REAL'},
-  {id:17,asset_name:'Public Sector Architecture Kit',asset_class:'framework',status:'active',verification_status:'found-6-copies',estimated_value_aud:40000,display_tier:'REAL'},
-  {id:18,asset_name:'The Integrity Stack',asset_class:'framework',status:'active',verification_status:'core-differentiator',estimated_value_aud:45000,display_tier:'REAL'},
-  {id:19,asset_name:'727 Named AI Agents',asset_class:'trade_secret',status:'active',verification_status:'verified',estimated_value_aud:30000,display_tier:'REAL'},
-  {id:20,asset_name:'5,983 Conversation Archives',asset_class:'trade_secret',status:'active',verification_status:'verified',estimated_value_aud:25000,display_tier:'REAL'},
-  {id:21,asset_name:'96 GitHub Repositories',asset_class:'copyright',status:'active',verification_status:'verified',estimated_value_aud:20000,display_tier:'REAL'},
-  {id:22,asset_name:'AssetPak Pipeline',asset_class:'trade_secret',status:'active',verification_status:'verified',estimated_value_aud:20000,display_tier:'REAL'},
-  {id:23,asset_name:'CalmBound Platform',asset_class:'trade_secret',status:'active',verification_status:'verified',estimated_value_aud:30000,display_tier:'REAL'},
-  {id:24,asset_name:'Tech4Humanity Portfolio Dashboard',asset_class:'copyright',status:'active',verification_status:'verified',estimated_value_aud:15000,display_tier:'REAL'},
-  {id:25,asset_name:'Research Hub (Origin Octave)',asset_class:'copyright',status:'active',verification_status:'verified',estimated_value_aud:15000,display_tier:'REAL'},
-  {id:26,asset_name:'MAAT Money Console',asset_class:'copyright',status:'active',verification_status:'verified',estimated_value_aud:20000,display_tier:'REAL'},
-  {id:27,asset_name:'MCP Command Centre',asset_class:'copyright',status:'active',verification_status:'verified',estimated_value_aud:20000,display_tier:'REAL'},
-  {id:28,asset_name:'AI Sweet Spots Research Hub',asset_class:'copyright',status:'active',verification_status:'verified',estimated_value_aud:25000,display_tier:'REAL'},
-  {id:29,asset_name:'Augmented Humanity Coach',asset_class:'trade_secret',status:'active',verification_status:'verified',estimated_value_aud:35000,display_tier:'REAL'},
-  {id:30,asset_name:'WorkFamilyAI Framework',asset_class:'methodology',status:'active',verification_status:'verified',estimated_value_aud:30000,display_tier:'REAL'},
-  {id:31,asset_name:'AI Sweet Spots Research Paper',asset_class:'copyright',status:'published',verification_status:'verified',estimated_value_aud:15000,display_tier:'REAL'},
-  {id:32,asset_name:'GC-BAT Vignettes (32 studies)',asset_class:'copyright',status:'published',verification_status:'verified',estimated_value_aud:20000,display_tier:'REAL'},
-  {id:33,asset_name:'LinkedIn Article Archive (6,670)',asset_class:'content',status:'published',verification_status:'6670-articles',estimated_value_aud:18000,display_tier:'REAL'},
-  {id:34,asset_name:'Neural Ennead White Paper',asset_class:'copyright',status:'published',verification_status:'verified',estimated_value_aud:12000,display_tier:'REAL'},
-  {id:35,asset_name:'AI Sweet Spots Poster Series',asset_class:'copyright',status:'published',verification_status:'verified',estimated_value_aud:8000,display_tier:'REAL'},
-  {id:36,asset_name:'Augmented Humanity Research Papers',asset_class:'copyright',status:'published',verification_status:'verified',estimated_value_aud:12000,display_tier:'REAL'},
-  {id:37,asset_name:'Human-AI Performance Science Corpus',asset_class:'research',status:'published',verification_status:'verified',estimated_value_aud:30000,display_tier:'REAL'},
-  {id:38,asset_name:'GCBAT Council Charter',asset_class:'copyright',status:'published',verification_status:'verified',estimated_value_aud:10000,display_tier:'REAL'},
-  {id:39,asset_name:'MyNeuralSignal White Paper',asset_class:'copyright',status:'published',verification_status:'verified',estimated_value_aud:10000,display_tier:'REAL'},
-  {id:40,asset_name:'R&D Tax Incentive Portfolio (RDTI)',asset_class:'framework',status:'published',verification_status:'verified',estimated_value_aud:391000,display_tier:'REAL'},
-  {id:41,asset_name:'Tech4Humanity (TM)',asset_class:'trademark',status:'active',verification_status:'verified',estimated_value_aud:12000,display_tier:'REAL'},
-  {id:42,asset_name:'AI Sweet Spots (TM)',asset_class:'trademark',status:'active',verification_status:'verified',estimated_value_aud:12000,display_tier:'REAL'},
-  {id:43,asset_name:'Neural Ennead (TM)',asset_class:'trademark',status:'active',verification_status:'verified',estimated_value_aud:10000,display_tier:'REAL'},
-  {id:44,asset_name:'HoloOrg (TM)',asset_class:'trademark',status:'active',verification_status:'verified',estimated_value_aud:10000,display_tier:'REAL'},
-  {id:45,asset_name:'MyNeuralSignal (TM)',asset_class:'trademark',status:'active',verification_status:'verified',estimated_value_aud:10000,display_tier:'REAL'},
-  {id:46,asset_name:'ConsentX (TM)',asset_class:'trademark',status:'active',verification_status:'verified',estimated_value_aud:10000,display_tier:'REAL'},
-  {id:47,asset_name:'tech4humanity.com.au',asset_class:'domain',status:'active',verification_status:'verified',estimated_value_aud:3000,display_tier:'REAL'},
-  {id:48,asset_name:'aisweetspots.com',asset_class:'domain',status:'active',verification_status:'verified',estimated_value_aud:5000,display_tier:'REAL'},
-  {id:49,asset_name:'myneuralsignal.com',asset_class:'domain',status:'active',verification_status:'verified',estimated_value_aud:3000,display_tier:'REAL'},
-  {id:50,asset_name:'hologram.org.au',asset_class:'domain',status:'active',verification_status:'verified',estimated_value_aud:3000,display_tier:'REAL'},
-  {id:51,asset_name:'calmbound.com',asset_class:'domain',status:'active',verification_status:'verified',estimated_value_aud:3000,display_tier:'REAL'},
-  {id:52,asset_name:'t4hresearchhub.vercel.app',asset_class:'domain',status:'active',verification_status:'verified',estimated_value_aud:2000,display_tier:'REAL'},
-  {id:53,asset_name:'AI Sweet Spots — Method Patent',asset_class:'patent',status:'file_now',verification_status:'pending',estimated_value_aud:95000,display_tier:'PARTIAL'},
-  {id:54,asset_name:'Neural Ennead — Scoring Patent',asset_class:'patent',status:'file_now',verification_status:'pending',estimated_value_aud:90000,display_tier:'PARTIAL'},
-  {id:55,asset_name:'GAIN Platform Patent',asset_class:'patent',status:'file_now',verification_status:'pending',estimated_value_aud:85000,display_tier:'PARTIAL'},
-  {id:56,asset_name:'MyNeuralSignal Signal Capture',asset_class:'patent',status:'file_now',verification_status:'pending',estimated_value_aud:80000,display_tier:'PARTIAL'},
-  {id:57,asset_name:'NEUROPAK Method Patent',asset_class:'patent',status:'file_now',verification_status:'pending',estimated_value_aud:75000,display_tier:'PARTIAL'},
-  {id:58,asset_name:'HoloOrg Org Design Patent',asset_class:'patent',status:'file_now',verification_status:'pending',estimated_value_aud:70000,display_tier:'PARTIAL'},
-  {id:59,asset_name:'MCP Bridge Architecture Patent',asset_class:'patent',status:'file_now',verification_status:'pending',estimated_value_aud:75000,display_tier:'PARTIAL'},
-  {id:60,asset_name:'Biological Resilience Score Patent',asset_class:'patent',status:'file_now',verification_status:'pending',estimated_value_aud:65000,display_tier:'PARTIAL'},
-  {id:61,asset_name:'Consent Telemetry Patent',asset_class:'patent',status:'file_now',verification_status:'pending',estimated_value_aud:60000,display_tier:'PARTIAL'},
-  {id:62,asset_name:'Cognitive Load Measurement Patent',asset_class:'patent',status:'file_now',verification_status:'pending',estimated_value_aud:60000,display_tier:'PARTIAL'},
-  {id:63,asset_name:'Living Stack Framework',asset_class:'patent',status:'file_later',verification_status:'pending',estimated_value_aud:55000,display_tier:'PARTIAL'},
-  {id:64,asset_name:'BCI Standards Framework',asset_class:'patent',status:'file_later',verification_status:'pending',estimated_value_aud:55000,display_tier:'PARTIAL'},
-  {id:65,asset_name:'Sweet Spot Drift Biomarker',asset_class:'patent',status:'file_later',verification_status:'pending',estimated_value_aud:50000,display_tier:'PARTIAL'},
-  {id:66,asset_name:'Cognitive Portfolio Theory',asset_class:'patent',status:'file_later',verification_status:'pending',estimated_value_aud:50000,display_tier:'PARTIAL'},
-  {id:67,asset_name:'Neural Evolution Simulator',asset_class:'patent',status:'file_later',verification_status:'pending',estimated_value_aud:45000,display_tier:'PARTIAL'},
-  {id:68,asset_name:'Human Signal Integrity Protocol',asset_class:'patent',status:'file_later',verification_status:'pending',estimated_value_aud:45000,display_tier:'PARTIAL'},
-  {id:69,asset_name:'Adaptive Performance Index',asset_class:'patent',status:'file_later',verification_status:'pending',estimated_value_aud:40000,display_tier:'PARTIAL'},
-  {id:70,asset_name:'AI Involvement Spectrum',asset_class:'methodology',status:'file_later',verification_status:'pending',estimated_value_aud:35000,display_tier:'PARTIAL'},
-  {id:71,asset_name:'BRS (Biological Reality Signal)',asset_class:'patent',status:'concept',verification_status:'verified',estimated_value_aud:50000,display_tier:'PARTIAL'},
-  {id:72,asset_name:'ConsentX Platform',asset_class:'patent',status:'concept',verification_status:'verified',estimated_value_aud:75000,display_tier:'PARTIAL'},
-  {id:73,asset_name:'Signal Economy Framework',asset_class:'patent',status:'concept',verification_status:'verified',estimated_value_aud:55000,display_tier:'PARTIAL'},
-  {id:74,asset_name:'Agent Personality Mapping',asset_class:'patent',status:'concept',verification_status:'verified',estimated_value_aud:50000,display_tier:'PARTIAL'},
-  {id:75,asset_name:'Biological Truth Engine',asset_class:'patent',status:'concept',verification_status:'verified',estimated_value_aud:55000,display_tier:'PARTIAL'},
-  {id:76,asset_name:'GC-BAT Foresight System',asset_class:'methodology',status:'concept',verification_status:'verified',estimated_value_aud:40000,display_tier:'PARTIAL'},
-  {id:77,asset_name:'Fifth Quadrant Framework',asset_class:'research',status:'concept',verification_status:'verified',estimated_value_aud:35000,display_tier:'PARTIAL'},
-  {id:78,asset_name:'Extreme AI Effects Model',asset_class:'research',status:'concept',verification_status:'verified',estimated_value_aud:35000,display_tier:'PARTIAL'},
-  {id:79,asset_name:'Cultural AI Sovereignty Framework',asset_class:'methodology',status:'concept',verification_status:'verified',estimated_value_aud:30000,display_tier:'PARTIAL'},
-  {id:80,asset_name:'Labour Market Intelligence Engine',asset_class:'methodology',status:'concept',verification_status:'verified',estimated_value_aud:40000,display_tier:'PARTIAL'},
-  {id:81,asset_name:'X-overpoints Economic Model',asset_class:'research',status:'concept',verification_status:'verified',estimated_value_aud:35000,display_tier:'PARTIAL'},
-  {id:82,asset_name:'Human Biology × AI Framework',asset_class:'research',status:'concept',verification_status:'verified',estimated_value_aud:30000,display_tier:'PARTIAL'},
-  {id:83,asset_name:'Psychedelics Workplace Study (n=5,600)',asset_class:'research',status:'concept',verification_status:'verified',estimated_value_aud:25000,display_tier:'PARTIAL'},
-  {id:84,asset_name:'Digital Child Protection Architecture',asset_class:'methodology',status:'concept',verification_status:'verified',estimated_value_aud:40000,display_tier:'PARTIAL'},
-  {id:85,asset_name:'Neuro-Governance Framework',asset_class:'methodology',status:'concept',verification_status:'verified',estimated_value_aud:35000,display_tier:'PARTIAL'},
-  {id:86,asset_name:'UBI Labour Transition Framework',asset_class:'research',status:'concept',verification_status:'verified',estimated_value_aud:30000,display_tier:'PARTIAL'},
-  {id:87,asset_name:'Cognitive Arbitrage Theory',asset_class:'research',status:'concept',verification_status:'verified',estimated_value_aud:25000,display_tier:'PARTIAL'},
-  {id:88,asset_name:'AI Medication Interaction Study',asset_class:'research',status:'concept',verification_status:'verified',estimated_value_aud:20000,display_tier:'PARTIAL'},
-  {id:89,asset_name:'Sleep-AI Performance Correlation',asset_class:'research',status:'research',verification_status:'verified',estimated_value_aud:20000,display_tier:'PARTIAL'},
-  {id:90,asset_name:'Hormonal AI Performance Research',asset_class:'research',status:'research',verification_status:'verified',estimated_value_aud:18000,display_tier:'PARTIAL'},
-  {id:91,asset_name:'Neurodivergence AI Advantage Study',asset_class:'research',status:'research',verification_status:'verified',estimated_value_aud:22000,display_tier:'PARTIAL'},
-  {id:92,asset_name:'Skill Atrophy Measurement Protocol',asset_class:'methodology',status:'research',verification_status:'verified',estimated_value_aud:25000,display_tier:'PARTIAL'},
-  {id:93,asset_name:'Negative Responder Profiling',asset_class:'methodology',status:'research',verification_status:'verified',estimated_value_aud:20000,display_tier:'PARTIAL'},
-  {id:94,asset_name:'Interoception-AI Correlation',asset_class:'research',status:'research',verification_status:'verified',estimated_value_aud:18000,display_tier:'PARTIAL'},
-  {id:95,asset_name:'WorkFamilyAI Research Programme',asset_class:'research',status:'research',verification_status:'verified',estimated_value_aud:25000,display_tier:'PARTIAL'},
-  {id:96,asset_name:'CARE Cultural AI Research',asset_class:'research',status:'research',verification_status:'verified',estimated_value_aud:20000,display_tier:'PARTIAL'},
-  {id:97,asset_name:'Public Sector AI Adoption Study',asset_class:'research',status:'research',verification_status:'verified',estimated_value_aud:22000,display_tier:'PARTIAL'},
-  {id:98,asset_name:'47-Direction Research Pipeline',asset_class:'research',status:'research',verification_status:'verified',estimated_value_aud:35000,display_tier:'PARTIAL'},
-  {id:99,asset_name:'13 Tier-1 Research Directions',asset_class:'research',status:'research',verification_status:'verified',estimated_value_aud:30000,display_tier:'PARTIAL'},
-  {id:100,asset_name:'Assessment Tool V2 Methodology',asset_class:'methodology',status:'research',verification_status:'verified',estimated_value_aud:25000,display_tier:'PARTIAL'},
-  {id:101,asset_name:'LaserDrone',asset_class:'project',status:'active',verification_status:'pending',estimated_value_aud:35000,display_tier:'PRETEND'},
-  {id:102,asset_name:'WorkFamilyAI Network Platform',asset_class:'project',status:'active',verification_status:'pending',estimated_value_aud:30000,display_tier:'PRETEND'},
-  {id:103,asset_name:'AICS (AI Content Scoring)',asset_class:'patent',status:'blocked',verification_status:'verified',estimated_value_aud:40000,display_tier:'PRETEND'},
-  {id:104,asset_name:'Augmented Humanity App V2',asset_class:'project',status:'demo',verification_status:'pending',estimated_value_aud:20000,display_tier:'PRETEND'},
-  {id:105,asset_name:'NEUROPAK Hardware',asset_class:'project',status:'concept',verification_status:'pending',estimated_value_aud:25000,display_tier:'PRETEND'},
-  {id:106,asset_name:'GC-BAT Policy Body',asset_class:'project',status:'concept',verification_status:'pending',estimated_value_aud:15000,display_tier:'PRETEND'},
-  {id:107,asset_name:'Neural Ennead App',asset_class:'project',status:'demo',verification_status:'pending',estimated_value_aud:20000,display_tier:'PRETEND'},
-  {id:108,asset_name:'HoloOrg SaaS',asset_class:'project',status:'demo',verification_status:'pending',estimated_value_aud:25000,display_tier:'PRETEND'},
-  {id:109,asset_name:'SPM Marketplace Platform',asset_class:'project',status:'demo',verification_status:'pending',estimated_value_aud:25000,display_tier:'PRETEND'},
-  {id:110,asset_name:'ConsentX Browser Extension',asset_class:'project',status:'demo',verification_status:'pending',estimated_value_aud:15000,display_tier:'PRETEND'}
+  {id:1,asset_name:'Consent Registry Architecture',asset_class:'patent',status:'deployed',verification_status:'verified',replacement_value_aud:95000,display_tier:'REAL'},
+  {id:2,asset_name:'MCP Bridge Infrastructure',asset_class:'trade_secret',status:'deployed',verification_status:'verified',replacement_value_aud:120000,display_tier:'REAL'},
+  {id:3,asset_name:'Skills Proof Marketplace (SPM)',asset_class:'patent',status:'deployed',verification_status:'verified',replacement_value_aud:75000,display_tier:'REAL'},
+  {id:4,asset_name:'Lambda Function Fleet (345 functions)',asset_class:'trade_secret',status:'deployed',verification_status:'verified',replacement_value_aud:60000,display_tier:'REAL'},
+  {id:5,asset_name:'Atlas Cognitive Profiles',asset_class:'trade_secret',status:'deployed',verification_status:'verified',replacement_value_aud:45000,display_tier:'REAL'},
+  {id:6,asset_name:'Neural Ennead Framework',asset_class:'methodology',status:'deployed',verification_status:'verified',replacement_value_aud:55000,display_tier:'REAL'},
+  {id:7,asset_name:'Bridge API Gateway Architecture',asset_class:'trade_secret',status:'deployed',verification_status:'verified',replacement_value_aud:40000,display_tier:'REAL'},
+  {id:8,asset_name:'Supabase Schema System (800+ tables)',asset_class:'trade_secret',status:'deployed',verification_status:'verified',replacement_value_aud:50000,display_tier:'REAL'},
+  {id:9,asset_name:'HoloOrg Architecture',asset_class:'methodology',status:'deployed',verification_status:'verified',replacement_value_aud:65000,display_tier:'REAL'},
+  {id:10,asset_name:'MAAT Financial Engine',asset_class:'trade_secret',status:'deployed',verification_status:'verified',replacement_value_aud:45000,display_tier:'REAL'},
+  {id:11,asset_name:'Loop OS Operating System',asset_class:'methodology',status:'deployed',verification_status:'verified',replacement_value_aud:55000,display_tier:'REAL'},
+  {id:12,asset_name:'PLMOS Labour Market OS',asset_class:'methodology',status:'deployed',verification_status:'verified',replacement_value_aud:40000,display_tier:'REAL'},
+  {id:13,asset_name:'JET Job Engine Technology',asset_class:'trade_secret',status:'deployed',verification_status:'verified',replacement_value_aud:35000,display_tier:'REAL'},
+  {id:14,asset_name:'Reality Ledger Verification',asset_class:'methodology',status:'deployed',verification_status:'verified',replacement_value_aud:40000,display_tier:'REAL'},
+  {id:15,asset_name:'Ops Ledger System',asset_class:'trade_secret',status:'deployed',verification_status:'verified',replacement_value_aud:30000,display_tier:'REAL'},
+  {id:16,asset_name:'AI Sweet Spots Research Programme',asset_class:'research',status:'active',verification_status:'4247-participants',replacement_value_aud:85000,display_tier:'REAL'},
+  {id:17,asset_name:'Public Sector Architecture Kit',asset_class:'framework',status:'active',verification_status:'found-6-copies',replacement_value_aud:40000,display_tier:'REAL'},
+  {id:18,asset_name:'The Integrity Stack',asset_class:'framework',status:'active',verification_status:'core-differentiator',replacement_value_aud:45000,display_tier:'REAL'},
+  {id:19,asset_name:'727 Named AI Agents',asset_class:'trade_secret',status:'active',verification_status:'verified',replacement_value_aud:30000,display_tier:'REAL'},
+  {id:20,asset_name:'5,983 Conversation Archives',asset_class:'trade_secret',status:'active',verification_status:'verified',replacement_value_aud:25000,display_tier:'REAL'},
+  {id:21,asset_name:'96 GitHub Repositories',asset_class:'copyright',status:'active',verification_status:'verified',replacement_value_aud:20000,display_tier:'REAL'},
+  {id:22,asset_name:'AssetPak Pipeline',asset_class:'trade_secret',status:'active',verification_status:'verified',replacement_value_aud:20000,display_tier:'REAL'},
+  {id:23,asset_name:'CalmBound Platform',asset_class:'trade_secret',status:'active',verification_status:'verified',replacement_value_aud:30000,display_tier:'REAL'},
+  {id:24,asset_name:'Tech4Humanity Portfolio Dashboard',asset_class:'copyright',status:'active',verification_status:'verified',replacement_value_aud:15000,display_tier:'REAL'},
+  {id:25,asset_name:'Research Hub (Origin Octave)',asset_class:'copyright',status:'active',verification_status:'verified',replacement_value_aud:15000,display_tier:'REAL'},
+  {id:26,asset_name:'MAAT Money Console',asset_class:'copyright',status:'active',verification_status:'verified',replacement_value_aud:20000,display_tier:'REAL'},
+  {id:27,asset_name:'MCP Command Centre',asset_class:'copyright',status:'active',verification_status:'verified',replacement_value_aud:20000,display_tier:'REAL'},
+  {id:28,asset_name:'AI Sweet Spots Research Hub',asset_class:'copyright',status:'active',verification_status:'verified',replacement_value_aud:25000,display_tier:'REAL'},
+  {id:29,asset_name:'Augmented Humanity Coach',asset_class:'trade_secret',status:'active',verification_status:'verified',replacement_value_aud:35000,display_tier:'REAL'},
+  {id:30,asset_name:'WorkFamilyAI Framework',asset_class:'methodology',status:'active',verification_status:'verified',replacement_value_aud:30000,display_tier:'REAL'},
+  {id:31,asset_name:'AI Sweet Spots Research Paper',asset_class:'copyright',status:'published',verification_status:'verified',replacement_value_aud:15000,display_tier:'REAL'},
+  {id:32,asset_name:'GC-BAT Vignettes (32 studies)',asset_class:'copyright',status:'published',verification_status:'verified',replacement_value_aud:20000,display_tier:'REAL'},
+  {id:33,asset_name:'LinkedIn Article Archive (6,670)',asset_class:'content',status:'published',verification_status:'6670-articles',replacement_value_aud:18000,display_tier:'REAL'},
+  {id:34,asset_name:'Neural Ennead White Paper',asset_class:'copyright',status:'published',verification_status:'verified',replacement_value_aud:12000,display_tier:'REAL'},
+  {id:35,asset_name:'AI Sweet Spots Poster Series',asset_class:'copyright',status:'published',verification_status:'verified',replacement_value_aud:8000,display_tier:'REAL'},
+  {id:36,asset_name:'Augmented Humanity Research Papers',asset_class:'copyright',status:'published',verification_status:'verified',replacement_value_aud:12000,display_tier:'REAL'},
+  {id:37,asset_name:'Human-AI Performance Science Corpus',asset_class:'research',status:'published',verification_status:'verified',replacement_value_aud:30000,display_tier:'REAL'},
+  {id:38,asset_name:'GCBAT Council Charter',asset_class:'copyright',status:'published',verification_status:'verified',replacement_value_aud:10000,display_tier:'REAL'},
+  {id:39,asset_name:'MyNeuralSignal White Paper',asset_class:'copyright',status:'published',verification_status:'verified',replacement_value_aud:10000,display_tier:'REAL'},
+  {id:40,asset_name:'R&D Tax Incentive Portfolio (RDTI)',asset_class:'framework',status:'published',verification_status:'verified',replacement_value_aud:391000,display_tier:'REAL'},
+  {id:41,asset_name:'Tech4Humanity (TM)',asset_class:'trademark',status:'active',verification_status:'verified',replacement_value_aud:12000,display_tier:'REAL'},
+  {id:42,asset_name:'AI Sweet Spots (TM)',asset_class:'trademark',status:'active',verification_status:'verified',replacement_value_aud:12000,display_tier:'REAL'},
+  {id:43,asset_name:'Neural Ennead (TM)',asset_class:'trademark',status:'active',verification_status:'verified',replacement_value_aud:10000,display_tier:'REAL'},
+  {id:44,asset_name:'HoloOrg (TM)',asset_class:'trademark',status:'active',verification_status:'verified',replacement_value_aud:10000,display_tier:'REAL'},
+  {id:45,asset_name:'MyNeuralSignal (TM)',asset_class:'trademark',status:'active',verification_status:'verified',replacement_value_aud:10000,display_tier:'REAL'},
+  {id:46,asset_name:'ConsentX (TM)',asset_class:'trademark',status:'active',verification_status:'verified',replacement_value_aud:10000,display_tier:'REAL'},
+  {id:47,asset_name:'tech4humanity.com.au',asset_class:'domain',status:'active',verification_status:'verified',replacement_value_aud:3000,display_tier:'REAL'},
+  {id:48,asset_name:'aisweetspots.com',asset_class:'domain',status:'active',verification_status:'verified',replacement_value_aud:5000,display_tier:'REAL'},
+  {id:49,asset_name:'myneuralsignal.com',asset_class:'domain',status:'active',verification_status:'verified',replacement_value_aud:3000,display_tier:'REAL'},
+  {id:50,asset_name:'hologram.org.au',asset_class:'domain',status:'active',verification_status:'verified',replacement_value_aud:3000,display_tier:'REAL'},
+  {id:51,asset_name:'calmbound.com',asset_class:'domain',status:'active',verification_status:'verified',replacement_value_aud:3000,display_tier:'REAL'},
+  {id:52,asset_name:'t4hresearchhub.vercel.app',asset_class:'domain',status:'active',verification_status:'verified',replacement_value_aud:2000,display_tier:'REAL'},
+  {id:53,asset_name:'AI Sweet Spots — Method Patent',asset_class:'patent',status:'file_now',verification_status:'pending',replacement_value_aud:95000,display_tier:'PARTIAL'},
+  {id:54,asset_name:'Neural Ennead — Scoring Patent',asset_class:'patent',status:'file_now',verification_status:'pending',replacement_value_aud:90000,display_tier:'PARTIAL'},
+  {id:55,asset_name:'GAIN Platform Patent',asset_class:'patent',status:'file_now',verification_status:'pending',replacement_value_aud:85000,display_tier:'PARTIAL'},
+  {id:56,asset_name:'MyNeuralSignal Signal Capture',asset_class:'patent',status:'file_now',verification_status:'pending',replacement_value_aud:80000,display_tier:'PARTIAL'},
+  {id:57,asset_name:'NEUROPAK Method Patent',asset_class:'patent',status:'file_now',verification_status:'pending',replacement_value_aud:75000,display_tier:'PARTIAL'},
+  {id:58,asset_name:'HoloOrg Org Design Patent',asset_class:'patent',status:'file_now',verification_status:'pending',replacement_value_aud:70000,display_tier:'PARTIAL'},
+  {id:59,asset_name:'MCP Bridge Architecture Patent',asset_class:'patent',status:'file_now',verification_status:'pending',replacement_value_aud:75000,display_tier:'PARTIAL'},
+  {id:60,asset_name:'Biological Resilience Score Patent',asset_class:'patent',status:'file_now',verification_status:'pending',replacement_value_aud:65000,display_tier:'PARTIAL'},
+  {id:61,asset_name:'Consent Telemetry Patent',asset_class:'patent',status:'file_now',verification_status:'pending',replacement_value_aud:60000,display_tier:'PARTIAL'},
+  {id:62,asset_name:'Cognitive Load Measurement Patent',asset_class:'patent',status:'file_now',verification_status:'pending',replacement_value_aud:60000,display_tier:'PARTIAL'},
+  {id:63,asset_name:'Living Stack Framework',asset_class:'patent',status:'file_later',verification_status:'pending',replacement_value_aud:55000,display_tier:'PARTIAL'},
+  {id:64,asset_name:'BCI Standards Framework',asset_class:'patent',status:'file_later',verification_status:'pending',replacement_value_aud:55000,display_tier:'PARTIAL'},
+  {id:65,asset_name:'Sweet Spot Drift Biomarker',asset_class:'patent',status:'file_later',verification_status:'pending',replacement_value_aud:50000,display_tier:'PARTIAL'},
+  {id:66,asset_name:'Cognitive Portfolio Theory',asset_class:'patent',status:'file_later',verification_status:'pending',replacement_value_aud:50000,display_tier:'PARTIAL'},
+  {id:67,asset_name:'Neural Evolution Simulator',asset_class:'patent',status:'file_later',verification_status:'pending',replacement_value_aud:45000,display_tier:'PARTIAL'},
+  {id:68,asset_name:'Human Signal Integrity Protocol',asset_class:'patent',status:'file_later',verification_status:'pending',replacement_value_aud:45000,display_tier:'PARTIAL'},
+  {id:69,asset_name:'Adaptive Performance Index',asset_class:'patent',status:'file_later',verification_status:'pending',replacement_value_aud:40000,display_tier:'PARTIAL'},
+  {id:70,asset_name:'AI Involvement Spectrum',asset_class:'methodology',status:'file_later',verification_status:'pending',replacement_value_aud:35000,display_tier:'PARTIAL'},
+  {id:71,asset_name:'BRS (Biological Reality Signal)',asset_class:'patent',status:'concept',verification_status:'verified',replacement_value_aud:50000,display_tier:'PARTIAL'},
+  {id:72,asset_name:'ConsentX Platform',asset_class:'patent',status:'concept',verification_status:'verified',replacement_value_aud:75000,display_tier:'PARTIAL'},
+  {id:73,asset_name:'Signal Economy Framework',asset_class:'patent',status:'concept',verification_status:'verified',replacement_value_aud:55000,display_tier:'PARTIAL'},
+  {id:74,asset_name:'Agent Personality Mapping',asset_class:'patent',status:'concept',verification_status:'verified',replacement_value_aud:50000,display_tier:'PARTIAL'},
+  {id:75,asset_name:'Biological Truth Engine',asset_class:'patent',status:'concept',verification_status:'verified',replacement_value_aud:55000,display_tier:'PARTIAL'},
+  {id:76,asset_name:'GC-BAT Foresight System',asset_class:'methodology',status:'concept',verification_status:'verified',replacement_value_aud:40000,display_tier:'PARTIAL'},
+  {id:77,asset_name:'Fifth Quadrant Framework',asset_class:'research',status:'concept',verification_status:'verified',replacement_value_aud:35000,display_tier:'PARTIAL'},
+  {id:78,asset_name:'Extreme AI Effects Model',asset_class:'research',status:'concept',verification_status:'verified',replacement_value_aud:35000,display_tier:'PARTIAL'},
+  {id:79,asset_name:'Cultural AI Sovereignty Framework',asset_class:'methodology',status:'concept',verification_status:'verified',replacement_value_aud:30000,display_tier:'PARTIAL'},
+  {id:80,asset_name:'Labour Market Intelligence Engine',asset_class:'methodology',status:'concept',verification_status:'verified',replacement_value_aud:40000,display_tier:'PARTIAL'},
+  {id:81,asset_name:'X-overpoints Economic Model',asset_class:'research',status:'concept',verification_status:'verified',replacement_value_aud:35000,display_tier:'PARTIAL'},
+  {id:82,asset_name:'Human Biology × AI Framework',asset_class:'research',status:'concept',verification_status:'verified',replacement_value_aud:30000,display_tier:'PARTIAL'},
+  {id:83,asset_name:'Psychedelics Workplace Study (n=5,600)',asset_class:'research',status:'concept',verification_status:'verified',replacement_value_aud:25000,display_tier:'PARTIAL'},
+  {id:84,asset_name:'Digital Child Protection Architecture',asset_class:'methodology',status:'concept',verification_status:'verified',replacement_value_aud:40000,display_tier:'PARTIAL'},
+  {id:85,asset_name:'Neuro-Governance Framework',asset_class:'methodology',status:'concept',verification_status:'verified',replacement_value_aud:35000,display_tier:'PARTIAL'},
+  {id:86,asset_name:'UBI Labour Transition Framework',asset_class:'research',status:'concept',verification_status:'verified',replacement_value_aud:30000,display_tier:'PARTIAL'},
+  {id:87,asset_name:'Cognitive Arbitrage Theory',asset_class:'research',status:'concept',verification_status:'verified',replacement_value_aud:25000,display_tier:'PARTIAL'},
+  {id:88,asset_name:'AI Medication Interaction Study',asset_class:'research',status:'concept',verification_status:'verified',replacement_value_aud:20000,display_tier:'PARTIAL'},
+  {id:89,asset_name:'Sleep-AI Performance Correlation',asset_class:'research',status:'research',verification_status:'verified',replacement_value_aud:20000,display_tier:'PARTIAL'},
+  {id:90,asset_name:'Hormonal AI Performance Research',asset_class:'research',status:'research',verification_status:'verified',replacement_value_aud:18000,display_tier:'PARTIAL'},
+  {id:91,asset_name:'Neurodivergence AI Advantage Study',asset_class:'research',status:'research',verification_status:'verified',replacement_value_aud:22000,display_tier:'PARTIAL'},
+  {id:92,asset_name:'Skill Atrophy Measurement Protocol',asset_class:'methodology',status:'research',verification_status:'verified',replacement_value_aud:25000,display_tier:'PARTIAL'},
+  {id:93,asset_name:'Negative Responder Profiling',asset_class:'methodology',status:'research',verification_status:'verified',replacement_value_aud:20000,display_tier:'PARTIAL'},
+  {id:94,asset_name:'Interoception-AI Correlation',asset_class:'research',status:'research',verification_status:'verified',replacement_value_aud:18000,display_tier:'PARTIAL'},
+  {id:95,asset_name:'WorkFamilyAI Research Programme',asset_class:'research',status:'research',verification_status:'verified',replacement_value_aud:25000,display_tier:'PARTIAL'},
+  {id:96,asset_name:'CARE Cultural AI Research',asset_class:'research',status:'research',verification_status:'verified',replacement_value_aud:20000,display_tier:'PARTIAL'},
+  {id:97,asset_name:'Public Sector AI Adoption Study',asset_class:'research',status:'research',verification_status:'verified',replacement_value_aud:22000,display_tier:'PARTIAL'},
+  {id:98,asset_name:'47-Direction Research Pipeline',asset_class:'research',status:'research',verification_status:'verified',replacement_value_aud:35000,display_tier:'PARTIAL'},
+  {id:99,asset_name:'13 Tier-1 Research Directions',asset_class:'research',status:'research',verification_status:'verified',replacement_value_aud:30000,display_tier:'PARTIAL'},
+  {id:100,asset_name:'Assessment Tool V2 Methodology',asset_class:'methodology',status:'research',verification_status:'verified',replacement_value_aud:25000,display_tier:'PARTIAL'},
+  {id:101,asset_name:'LaserDrone',asset_class:'project',status:'active',verification_status:'pending',replacement_value_aud:35000,display_tier:'PRETEND'},
+  {id:102,asset_name:'WorkFamilyAI Network Platform',asset_class:'project',status:'active',verification_status:'pending',replacement_value_aud:30000,display_tier:'PRETEND'},
+  {id:103,asset_name:'AICS (AI Content Scoring)',asset_class:'patent',status:'blocked',verification_status:'verified',replacement_value_aud:40000,display_tier:'PRETEND'},
+  {id:104,asset_name:'Augmented Humanity App V2',asset_class:'project',status:'demo',verification_status:'pending',replacement_value_aud:20000,display_tier:'PRETEND'},
+  {id:105,asset_name:'NEUROPAK Hardware',asset_class:'project',status:'concept',verification_status:'pending',replacement_value_aud:25000,display_tier:'PRETEND'},
+  {id:106,asset_name:'GC-BAT Policy Body',asset_class:'project',status:'concept',verification_status:'pending',replacement_value_aud:15000,display_tier:'PRETEND'},
+  {id:107,asset_name:'Neural Ennead App',asset_class:'project',status:'demo',verification_status:'pending',replacement_value_aud:20000,display_tier:'PRETEND'},
+  {id:108,asset_name:'HoloOrg SaaS',asset_class:'project',status:'demo',verification_status:'pending',replacement_value_aud:25000,display_tier:'PRETEND'},
+  {id:109,asset_name:'SPM Marketplace Platform',asset_class:'project',status:'demo',verification_status:'pending',replacement_value_aud:25000,display_tier:'PRETEND'},
+  {id:110,asset_name:'ConsentX Browser Extension',asset_class:'project',status:'demo',verification_status:'pending',replacement_value_aud:15000,display_tier:'PRETEND'}
 ];
 let ARMS=STATIC_ARMS,IP_CLAIMS=STATIC_IP,filteredIp=[...STATIC_IP];
 function lc(s){return s==='control'?'control':s==='measurement'?'measurement':'';}
@@ -620,21 +625,25 @@ function renderIp(claims){
   document.getElementById('cntReal').textContent=real;
   document.getElementById('cntPartial').textContent=partial;
   document.getElementById('cntPretend').textContent=pretend;
-  const totalRd=claims.reduce((s,c)=>s+(Number(c.estimated_value_aud)||Number(c.rd_substantiation)||0),0);
-  const totalPortfolio=IP_CLAIMS.reduce((s,c)=>s+(Number(c.estimated_value_aud)||0),0);
-  document.getElementById('rdValue').textContent='$'+totalPortfolio.toLocaleString('en-AU',{minimumFractionDigits:0});
+  const totalReplacement=IP_CLAIMS.reduce((s,c)=>s+(Number(c.replacement_value_aud)||0),0);
+  const totalMarket=IP_CLAIMS.reduce((s,c)=>s+(Number(c.market_value_aud)||Number(c.replacement_value_aud)||0),0);
+  document.getElementById('rdValue').textContent='$'+totalMarket.toLocaleString('en-AU',{minimumFractionDigits:0});
   const heroIp=document.getElementById('kpiIpCount');if(heroIp)heroIp.textContent=IP_CLAIMS.length;
-  const heroPv=document.getElementById('kpiPortValue');if(heroPv){const t=IP_CLAIMS.reduce((s,c)=>s+(Number(c.estimated_value_aud)||0),0);heroPv.textContent='$'+(t/1000000).toFixed(1)+'M';}
-  document.getElementById('ipFooter').textContent=claims.length+' assets shown · Full portfolio: $'+totalPortfolio.toLocaleString('en-AU')+' · Updated '+new Date().toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric'});
+  const heroPv=document.getElementById('kpiPortValue');if(heroPv){heroPv.textContent='$'+(totalMarket/1000000).toFixed(1)+'M';}
+  document.getElementById('ipFooter').textContent=claims.length+' assets shown · Market: $'+totalMarket.toLocaleString('en-AU')+' · Replacement: $'+totalReplacement.toLocaleString('en-AU')+' · Updated '+new Date().toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric'});
+  const licBadge=lp=>lp&&lp!=='none'?'<span style="font-size:9px;padding:1px 5px;border-radius:3px;margin-left:4px;background:'+(lp==='strategic'?'#7c3aed':lp==='high'?'#0ea5e9':lp==='medium'?'#f59e0b':'#6b7280')+';color:#fff;font-weight:600">'+lp.toUpperCase()+'</span>':'';
+  const priBadge=p=>p?'<span style="font-size:9px;padding:1px 4px;border-radius:3px;margin-left:3px;background:#f59e0b;color:#000;font-weight:700">★</span>':'';
   document.getElementById('ipBody').innerHTML=claims.map(row=>{
     const t=tier(row);
-    const rdVal=Number(row.estimated_value_aud)||Number(row.rd_substantiation)||0;
-    const rdStr=rdVal?('$'+rdVal.toLocaleString('en-AU')):'—';
+    const repVal=Number(row.replacement_value_aud)||0;
+    const mktVal=Number(row.market_value_aud)||repVal;
+    const repStr=repVal?('$'+repVal.toLocaleString('en-AU')):'—';
+    const mktStr=mktVal?('$'+mktVal.toLocaleString('en-AU')):'—';
     const verif=row.verification_status||'—';
     const cls=row.asset_class||'—';
     const name=row.asset_name||row.claim||'—';
     const rawStatus=row.status||'—';
-    return '<tr><td><div class="ip-claim-name">'+name+'</div><div class="ip-arm-id">'+cls+' · '+rawStatus+'</div></td><td><span class="ip-arm-id">'+verif+'</span></td><td><span class="ip-status ip-'+t.toLowerCase()+'">'+t+'</span></td><td class="ip-rd">'+rdStr+'</td><td class="ip-ev">—</td></tr>';
+    return '<tr><td><div class="ip-claim-name">'+priBadge(row.priority_flag)+name+licBadge(row.licensing_potential)+'</div><div class="ip-arm-id">'+cls+' · '+rawStatus+'</div></td><td><span class="ip-arm-id">'+verif+'</span></td><td><span class="ip-status ip-'+t.toLowerCase()+'">'+t+'</span></td><td class="ip-rd">'+repStr+'</td><td class="ip-ev">'+mktStr+'</td></tr>';
   }).join('');
 }
 
@@ -659,9 +668,9 @@ function openDetail(arm){
     const n = (c.asset_name||'').toLowerCase();
     return kw.some(k => n.includes(k));
   });
-  const rdTotal = armIp.reduce((s,c)=>s+(Number(c.estimated_value_aud)||0),0);
+  const rdTotal = armIp.reduce((s,c)=>s+(Number(c.market_value_aud)||Number(c.replacement_value_aud)||0),0);
   const tierDot = t => t==='REAL'?'<span style="display:inline-block;width:7px;height:7px;border-radius:99px;background:var(--ctrl);margin-right:5px"></span>':t==='PARTIAL'?'<span style="display:inline-block;width:7px;height:7px;border-radius:99px;background:var(--meas);margin-right:5px"></span>':'<span style="display:inline-block;width:7px;height:7px;border-radius:99px;background:var(--expl);margin-right:5px"></span>';
-  const ipRows = armIp.length ? '<div class="dpr"><label>Linked IP Assets ('+armIp.length+')</label><div style="display:flex;flex-direction:column;gap:4px;margin-top:6px">'+armIp.map(c=>'<div style="display:flex;align-items:center;font-size:12px;gap:4px">'+tierDot(c.display_tier)+'<span>'+c.asset_name+'</span><span style="margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--muted)">$'+Number(c.estimated_value_aud).toLocaleString('en-AU')+'</span></div>').join('')+'</div></div>' : '';
+  const ipRows = armIp.length ? '<div class="dpr"><label>Linked IP Assets ('+armIp.length+')</label><div style="display:flex;flex-direction:column;gap:4px;margin-top:6px">'+armIp.map(c=>{const mv=Number(c.market_value_aud)||Number(c.replacement_value_aud)||0;const rv=Number(c.replacement_value_aud)||0;const premium=mv>rv?' <span style="color:#0ea5e9;font-size:9px">↑mkt</span>':'';return '<div style="display:flex;align-items:center;font-size:12px;gap:4px">'+tierDot(c.display_tier)+(c.priority_flag?'<span style="color:#f59e0b;font-size:10px">★</span>':'')+'<span>'+c.asset_name+'</span><span style="margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--muted)">$'+mv.toLocaleString('en-AU')+premium+'</span></div>';}).join('')+'</div></div>' : '';
   document.getElementById('detailBody').innerHTML=(arm.img?'<div class="dpimg"><img src="'+arm.img+'" alt="'+arm.name+'" onerror="this.parentElement.style.display=\'none\'"></div>':'')+'<div class="dpr"><label>One-liner</label><p>'+arm.one_liner+'</p></div><div class="dpr"><label>Stage</label><p class="at">'+arm.progress+'</p></div><div class="dpr"><label>Entry Point</label><p>'+arm.entry_point+'</p></div><div class="dpr"><label>Revenue Hook</label><p>'+(arm.revenue_hook||'—')+'</p></div><div class="dpr"><label>R&D Substantiation (ATO)</label><p class="at">'+(rdTotal>0?'$'+rdTotal.toLocaleString('en-AU')+' across '+armIp.length+' linked assets':'No linked IP assets yet')+'</p></div>'+ipRows+'<div class="dpr"><label>Capability Lanes ('+arm.lanes.length+')</label><div class="dpll">'+ll+'</div></div>';
   document.getElementById('detailOverlay').classList.add('open');
   document.body.style.overflow='hidden';
@@ -722,7 +731,7 @@ async function tryBridge(){
     const[armsR,lanesR,claimsR]=await Promise.all([
       fetch(BRIDGE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({functionName:SQLFN,payload:{sql:"SELECT id,name,entry_point,one_liner,progress,maturity,revenue_hook FROM research_arms ORDER BY CASE maturity WHEN 'good' THEN 1 WHEN 'warn' THEN 2 ELSE 3 END,id"}}),signal:ctrl.signal}).then(r=>r.json()),
       fetch(BRIDGE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({functionName:SQLFN,payload:{sql:"SELECT arm_id,lane_name,lane_order,status FROM research_lanes ORDER BY arm_id,lane_order"}}),signal:ctrl.signal}).then(r=>r.json()),
-      fetch(BRIDGE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({functionName:SQLFN,payload:{sql:"SELECT id,asset_name,asset_class,status,verification_status,estimated_value_aud,description FROM ip_assets WHERE status NOT IN ('aspirational') ORDER BY CASE status WHEN 'deployed' THEN 1 WHEN 'active' THEN 2 WHEN 'published' THEN 3 WHEN 'file_now' THEN 4 WHEN 'file_later' THEN 5 WHEN 'research' THEN 6 WHEN 'concept' THEN 7 ELSE 8 END, estimated_value_aud DESC NULLS LAST LIMIT 80"}}),signal:ctrl.signal}).then(r=>r.json()),
+      fetch(BRIDGE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({functionName:SQLFN,payload:{sql:"SELECT id,asset_name,asset_class,status,verification_status,replacement_value_aud,market_value_aud,rd_expenditure_aud,licensing_potential,priority_flag,commercialisation_stage,description FROM ip_assets WHERE NOT is_aspirational ORDER BY priority_flag DESC, CASE status WHEN 'deployed' THEN 1 WHEN 'active' THEN 2 WHEN 'published' THEN 3 WHEN 'file_now' THEN 4 WHEN 'file_later' THEN 5 WHEN 'research' THEN 6 WHEN 'concept' THEN 7 ELSE 8 END, market_value_aud DESC NULLS LAST LIMIT 120"}}),signal:ctrl.signal}).then(r=>r.json()),
     ]);
     const parseB=d=>typeof d.result?.body==='string'?JSON.parse(d.result.body):d.result?.body||{};
     const ab=parseB(armsR),lb=parseB(lanesR),cb=parseB(claimsR);
@@ -737,6 +746,7 @@ async function tryBridge(){
       display_tier: r.status==='deployed'||r.status==='published'||(r.status==='active'&&r.verification_status&&r.verification_status!=='pending'&&r.verification_status!=='unverified') ? 'REAL'
         : r.status==='file_now'||(r.status==='file_later'&&r.verification_status==='verified')||(r.status==='concept'&&r.verification_status==='verified')||r.status==='research' ? 'PARTIAL'
         : 'PRETEND',
+      market_value_aud: r.market_value_aud||r.replacement_value_aud||0,
       evidence_urls:[]
     }));}
     renderGrid(ARMS);renderTable(ARMS);renderCards(ARMS);renderFundArms(ARMS);buildArmFilter();renderIp(IP_CLAIMS);filteredIp=[...IP_CLAIMS];
